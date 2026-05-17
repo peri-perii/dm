@@ -1,0 +1,2550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Management & Leadership — Educational Resource</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F4F0;
+    --ink: #0A0A0A;
+    --ink-muted: #444;
+    --border: #0A0A0A;
+    --accent: #0A0A0A;
+    --highlight: #E8E500;
+    --card-bg: #FFFFFF;
+    --sidebar-w: 280px;
+    --progress-h: 4px;
+    --radius: 0px;
+    --mono: 'JetBrains Mono', monospace;
+    --body: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ─── PROGRESS BAR ─────────────────────────── */
+  #progress-track {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--progress-h);
+    background: #ddd;
+    z-index: 9999;
+  }
+  #progress-bar {
+    height: 100%;
+    background: var(--ink);
+    width: 0%;
+    transition: width 0.2s ease;
+  }
+
+  /* ─── LAYOUT ──────────────────────────────── */
+  #app { display: flex; min-height: 100vh; padding-top: var(--progress-h); }
+
+  /* ─── SIDEBAR ─────────────────────────────── */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--ink);
+    color: #F5F4F0;
+    position: fixed;
+    top: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 3px solid var(--ink);
+    z-index: 1000;
+    transform: translateX(0);
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  }
+  #sidebar.collapsed { transform: translateX(calc(-1 * var(--sidebar-w) + 48px)); }
+
+  #sidebar-header {
+    padding: 24px 20px 20px;
+    border-bottom: 2px solid rgba(255,255,255,0.15);
+  }
+  #sidebar-header .site-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    display: block;
+    margin-bottom: 6px;
+  }
+  #sidebar-header h1 {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.3;
+    color: #fff;
+  }
+
+  #sidebar-toggle {
+    position: absolute;
+    top: 16px;
+    right: -18px;
+    width: 36px; height: 36px;
+    background: var(--ink);
+    border: 2px solid var(--bg);
+    color: #fff;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+    z-index: 1001;
+    transition: background 0.15s;
+  }
+  #sidebar-toggle:hover { background: #333; }
+
+  #sidebar-nav { flex: 1; overflow-y: auto; padding: 12px 0; }
+  #sidebar-nav::-webkit-scrollbar { width: 4px; }
+  #sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+  #sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+
+  .nav-section-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    padding: 16px 20px 6px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.1s;
+    border-left: 3px solid transparent;
+    font-size: 13.5px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.07); color: #fff; }
+  .nav-item.active {
+    background: rgba(232,229,0,0.12);
+    border-left-color: var(--highlight);
+    color: var(--highlight);
+    font-weight: 600;
+  }
+  .nav-item .nav-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    opacity: 0.5;
+    min-width: 22px;
+  }
+  .nav-item.active .nav-num { opacity: 1; }
+
+  .nav-done { margin-left: auto; font-size: 11px; opacity: 0.5; }
+  .nav-item.completed .nav-done { color: var(--highlight); opacity: 1; }
+
+  #sidebar-stats {
+    padding: 16px 20px;
+    border-top: 2px solid rgba(255,255,255,0.1);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+  }
+  #sidebar-stats .stat-val {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--highlight);
+    display: block;
+    line-height: 1;
+  }
+
+  /* ─── MAIN CONTENT ────────────────────────── */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-height: 100vh;
+    transition: margin-left 0.3s cubic-bezier(.4,0,.2,1);
+  }
+  #main.expanded { margin-left: 48px; }
+
+  /* ─── PAGE ────────────────────────────────── */
+  .page { display: none; padding: 48px 56px 80px; max-width: 900px; }
+  .page.active { display: block; }
+
+  /* ─── PAGE HEADER ─────────────────────────── */
+  .page-header {
+    border-bottom: 3px solid var(--ink);
+    padding-bottom: 28px;
+    margin-bottom: 48px;
+  }
+  .topic-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--highlight);
+    display: inline-block;
+    padding: 4px 10px;
+    margin-bottom: 16px;
+  }
+  .page-header h2 {
+    font-family: var(--mono);
+    font-size: clamp(24px, 3.5vw, 38px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .page-header p.lead {
+    font-size: 17px;
+    color: var(--ink-muted);
+    max-width: 650px;
+    font-weight: 300;
+  }
+
+  /* ─── SECTION ─────────────────────────────── */
+  .section { margin-bottom: 56px; }
+  .section h3 {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-left: 4px solid var(--ink);
+    padding-left: 12px;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+  .section h4 {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 700;
+    margin: 24px 0 10px;
+    color: var(--ink);
+  }
+  .section p { color: var(--ink-muted); margin-bottom: 14px; font-size: 15.5px; }
+  .section ul, .section ol {
+    padding-left: 24px;
+    color: var(--ink-muted);
+    margin-bottom: 14px;
+  }
+  .section li { margin-bottom: 6px; font-size: 15px; }
+  .section li strong { color: var(--ink); }
+
+  /* ─── CARD GRID ───────────────────────────── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2px;
+    margin-bottom: 32px;
+    border: 2px solid var(--ink);
+  }
+  .card {
+    background: var(--card-bg);
+    padding: 20px;
+    border: 1px solid var(--ink);
+    position: relative;
+  }
+  .card-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .card h5 {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .card p { font-size: 13.5px; color: var(--ink-muted); margin: 0; }
+  .card.accent { background: var(--ink); color: #fff; }
+  .card.accent h5, .card.accent p { color: #fff; }
+  .card.accent .card-label { color: var(--highlight); }
+  .card.highlight { background: var(--highlight); }
+  .card.highlight h5, .card.highlight p { color: var(--ink); }
+
+  /* ─── DIAGRAM BOXES ───────────────────────── */
+  .diagram {
+    border: 2px solid var(--ink);
+    background: #fff;
+    padding: 28px;
+    margin: 28px 0;
+    position: relative;
+  }
+  .diagram-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    position: absolute;
+    top: -12px;
+    left: 16px;
+    background: var(--bg);
+    padding: 0 8px;
+  }
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin: 16px 0;
+  }
+  .flow-box {
+    flex: 1;
+    min-width: 120px;
+    background: var(--ink);
+    color: #fff;
+    padding: 12px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    border: 2px solid var(--ink);
+  }
+  .flow-box.light { background: #fff; color: var(--ink); }
+  .flow-arrow {
+    font-family: var(--mono);
+    font-size: 20px;
+    padding: 0 8px;
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .matrix-2x2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    border: 2px solid var(--ink);
+    margin: 16px 0;
+  }
+  .matrix-cell {
+    padding: 16px;
+    background: #fff;
+    font-size: 13.5px;
+  }
+  .matrix-cell.header {
+    background: var(--ink);
+    color: var(--highlight);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+  .matrix-cell strong { display: block; font-family: var(--mono); font-size: 13px; margin-bottom: 4px; }
+
+  /* ─── TABLE ───────────────────────────────── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid var(--ink);
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  .data-table th {
+    background: var(--ink);
+    color: var(--highlight);
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .data-table td {
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    color: var(--ink-muted);
+    vertical-align: top;
+  }
+  .data-table tr:nth-child(even) td { background: rgba(0,0,0,0.02); }
+
+  /* ─── CASE STUDY ──────────────────────────── */
+  .case-study {
+    border: 2px solid var(--ink);
+    margin: 32px 0;
+    position: relative;
+  }
+  .case-study-header {
+    background: var(--ink);
+    color: var(--highlight);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .case-study-header .cs-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--highlight);
+    color: var(--ink);
+    padding: 3px 8px;
+  }
+  .case-study-header h4 {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+  }
+  .case-study-body { padding: 24px; }
+  .case-study-body p { color: var(--ink-muted); margin-bottom: 12px; font-size: 15px; }
+  .case-insight {
+    background: var(--highlight);
+    border-left: 4px solid var(--ink);
+    padding: 14px 18px;
+    margin-top: 16px;
+  }
+  .case-insight strong {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .case-insight p { color: var(--ink); margin: 0; font-size: 14px; }
+
+  /* ─── ACCORDION ───────────────────────────── */
+  .accordion { border: 2px solid var(--ink); margin: 24px 0; }
+  .accordion-header {
+    background: var(--card-bg);
+    border-bottom: 2px solid var(--ink);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .accordion-header:hover { background: #f0f0ec; }
+  .accordion-header.open { background: var(--ink); color: #fff; }
+  .accordion-header h5 {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: inherit;
+    margin: 0;
+  }
+  .accordion-header:last-child { border-bottom: none; }
+  .accordion-toggle {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    transition: transform 0.2s;
+    min-width: 20px;
+    text-align: right;
+  }
+  .accordion-header.open .accordion-toggle { transform: rotate(45deg); }
+  .accordion-body {
+    display: none;
+    padding: 20px;
+    border-bottom: 2px solid var(--ink);
+    background: #fff;
+  }
+  .accordion-body:last-child { border-bottom: none; }
+  .accordion-body.open { display: block; }
+  .accordion-body ol { padding-left: 20px; }
+  .accordion-body li { margin-bottom: 10px; font-size: 14.5px; color: var(--ink-muted); }
+  .answer-reveal {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: var(--highlight);
+    border: 2px solid var(--ink);
+    display: none;
+    font-size: 14px;
+  }
+  .answer-reveal.shown { display: block; }
+  .btn-reveal {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 2px solid var(--ink);
+    background: transparent;
+    padding: 7px 14px;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: all 0.15s;
+  }
+  .btn-reveal:hover { background: var(--ink); color: #fff; }
+
+  /* ─── BADGE / TAG ─────────────────────────── */
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1.5px solid var(--ink);
+    padding: 3px 8px;
+    margin: 3px 3px 3px 0;
+    color: var(--ink);
+  }
+  .tag.filled { background: var(--ink); color: var(--bg); }
+
+  /* ─── CALLOUT ─────────────────────────────── */
+  .callout {
+    border-left: 5px solid var(--ink);
+    background: #fff;
+    padding: 16px 20px;
+    margin: 20px 0;
+  }
+  .callout.warn { border-color: #E85D04; background: #fff8f5; }
+  .callout.tip { border-color: var(--highlight); background: rgba(232,229,0,0.08); }
+  .callout strong { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 6px; }
+  .callout p { margin: 0; font-size: 14.5px; color: var(--ink-muted); }
+
+  /* ─── HERO (HOME) ─────────────────────────── */
+  #page-home .hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 48px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  #page-home .hero::before {
+    content: 'EDU';
+    position: absolute;
+    right: -20px; top: -20px;
+    font-family: var(--mono);
+    font-size: 160px;
+    font-weight: 800;
+    opacity: 0.04;
+    color: #fff;
+    pointer-events: none;
+    line-height: 1;
+  }
+  #page-home .hero h2 {
+    font-family: var(--mono);
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  #page-home .hero h2 span { color: var(--highlight); }
+  #page-home .hero p { color: rgba(255,255,255,0.65); font-size: 16px; max-width: 500px; margin-bottom: 28px; }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 0;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.07);
+    padding: 16px;
+    text-align: center;
+  }
+  .hero-stat .num {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--highlight);
+    display: block;
+  }
+  .hero-stat .lbl {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+  .module-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    border: 2px solid var(--ink);
+  }
+  .module-card {
+    background: #fff;
+    padding: 24px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border: 1px solid var(--ink);
+    position: relative;
+  }
+  .module-card:hover { background: var(--highlight); }
+  .module-card .mc-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--ink-muted);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .module-card h4 {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .module-card p { font-size: 13px; color: var(--ink-muted); margin: 0; }
+  .module-card .mc-arrow {
+    position: absolute;
+    right: 20px; bottom: 20px;
+    font-size: 20px;
+    opacity: 0.3;
+  }
+
+  /* ─── HAT GRID (6 Thinking Hats) ──────────── */
+  .hat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    border: 2px solid var(--ink);
+    margin: 20px 0;
+  }
+  .hat-card {
+    padding: 18px;
+    border: 1px solid var(--ink);
+  }
+  .hat-card .hat-icon { font-size: 24px; margin-bottom: 8px; }
+  .hat-card .hat-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .hat-card p { font-size: 13px; color: var(--ink-muted); margin: 0; }
+  .hat-white { background: #f9f9f9; }
+  .hat-yellow { background: #fffacc; }
+  .hat-black { background: #1a1a1a; color: #fff; }
+  .hat-black .hat-name, .hat-black p { color: rgba(255,255,255,0.85); }
+  .hat-red { background: #fff0f0; }
+  .hat-green { background: #f0fff4; }
+  .hat-blue { background: #f0f4ff; }
+
+  /* ─── SPECTRUM BAR ─────────────────────────── */
+  .spectrum {
+    display: flex;
+    height: 48px;
+    border: 2px solid var(--ink);
+    overflow: hidden;
+    margin: 16px 0;
+  }
+  .spectrum-seg {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(0,0,0,0.2);
+  }
+  .spectrum-seg:last-child { border-right: none; }
+
+  /* ─── MARK COMPLETE BTN ───────────────────── */
+  .mark-complete-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 48px;
+    padding-top: 28px;
+    border-top: 2px solid var(--ink);
+  }
+  .btn-complete {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--highlight);
+    border: 2px solid var(--ink);
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .btn-complete:hover { background: #333; }
+  .btn-complete.done { background: var(--highlight); color: var(--ink); border-color: var(--ink); }
+  .complete-msg { font-family: var(--mono); font-size: 12px; color: var(--ink-muted); }
+
+  /* ─── MOBILE ──────────────────────────────── */
+  #hamburger {
+    display: none;
+    position: fixed;
+    top: 8px; left: 8px;
+    z-index: 2000;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    width: 40px; height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+  }
+  #overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 900;
+  }
+  @media (max-width: 768px) {
+    #hamburger { display: flex; }
+    #sidebar {
+      transform: translateX(-100%);
+      z-index: 1500;
+    }
+    #sidebar.mobile-open { transform: translateX(0); }
+    #sidebar.collapsed { transform: translateX(-100%); }
+    #main { margin-left: 0 !important; }
+    .page { padding: 56px 20px 60px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .module-list { grid-template-columns: 1fr; }
+    .hat-grid { grid-template-columns: 1fr 1fr; }
+    .hero-stats { grid-template-columns: 1fr; }
+    #sidebar-toggle { display: none; }
+    #overlay.show { display: block; }
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-track"><div id="progress-bar"></div></div>
+
+<button id="hamburger" onclick="toggleMobile()">☰</button>
+<div id="overlay" onclick="closeMobile()"></div>
+
+<div id="app">
+
+<!-- ─── SIDEBAR ──────────────────────────────── -->
+<nav id="sidebar">
+  <button id="sidebar-toggle" onclick="toggleSidebar()" title="Toggle sidebar">◀</button>
+  <div id="sidebar-header">
+    <span class="site-label">© WISTAAR 2025</span>
+    <h1>Management &amp; Leadership</h1>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section-label">Start Here</div>
+    <div class="nav-item active" onclick="showPage('home')" data-page="home">
+      <span class="nav-num">00</span> Overview
+      <span class="nav-done">✓</span>
+    </div>
+
+    <div class="nav-section-label">Module 1 — Leadership</div>
+    <div class="nav-item" onclick="showPage('l1')" data-page="l1">
+      <span class="nav-num">01</span> What is Leadership?
+      <span class="nav-done">✓</span>
+    </div>
+    <div class="nav-item" onclick="showPage('l2')" data-page="l2">
+      <span class="nav-num">02</span> Trait Theories
+      <span class="nav-done">✓</span>
+    </div>
+    <div class="nav-item" onclick="showPage('l3')" data-page="l3">
+      <span class="nav-num">03</span> Behavioral Theories
+      <span class="nav-done">✓</span>
+    </div>
+    <div class="nav-item" onclick="showPage('l4')" data-page="l4">
+      <span class="nav-num">04</span> Contingency Theories
+      <span class="nav-done">✓</span>
+    </div>
+    <div class="nav-item" onclick="showPage('l5')" data-page="l5">
+      <span class="nav-num">05</span> Leadership Styles
+      <span class="nav-done">✓</span>
+    </div>
+
+    <div class="nav-section-label">Module 2 — Change &amp; Conflict</div>
+    <div class="nav-item" onclick="showPage('c1')" data-page="c1">
+      <span class="nav-num">06</span> Managing Change
+      <span class="nav-done">✓</span>
+    </div>
+    <div class="nav-item" onclick="showPage('c2')" data-page="c2">
+      <span class="nav-num">07</span> Resistance to Change
+      <span class="nav-done">✓</span>
+    </div>
+    <div class="nav-item" onclick="showPage('c3')" data-page="c3">
+      <span class="nav-num">08</span> Conflict Management
+      <span class="nav-done">✓</span>
+    </div>
+
+    <div class="nav-section-label">Module 3 — Perception</div>
+    <div class="nav-item" onclick="showPage('p1')" data-page="p1">
+      <span class="nav-num">09</span> Perception Fundamentals
+      <span class="nav-done">✓</span>
+    </div>
+    <div class="nav-item" onclick="showPage('p2')" data-page="p2">
+      <span class="nav-num">10</span> Attribution Theory
+      <span class="nav-done">✓</span>
+    </div>
+    <div class="nav-item" onclick="showPage('p3')" data-page="p3">
+      <span class="nav-num">11</span> Biases &amp; Decision-Making
+      <span class="nav-done">✓</span>
+    </div>
+    <div class="nav-item" onclick="showPage('p4')" data-page="p4">
+      <span class="nav-num">12</span> Decision-Making Tools
+      <span class="nav-done">✓</span>
+    </div>
+  </div>
+  <div id="sidebar-stats">
+    <span class="stat-val" id="stat-pct">0%</span>
+    Topics Completed
+    <div style="margin-top:6px; font-size:10px; opacity:0.4;" id="stat-count">0 / 12 sections</div>
+  </div>
+</nav>
+
+<!-- ─── MAIN ─────────────────────────────────── -->
+<main id="main">
+
+<!-- ══ HOME ══════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <h2>Master <span>Management,</span><br>Leadership &amp; Behaviour</h2>
+    <p>A comprehensive guide across three core disciplines — derived from academic presentations on leadership theory, organisational change, and human perception.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="num">3</span><span class="lbl">Modules</span></div>
+      <div class="hero-stat"><span class="num">12</span><span class="lbl">Topics</span></div>
+      <div class="hero-stat"><span class="num">36+</span><span class="lbl">Practice Qs</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Course Modules</h3>
+    <div class="module-list">
+      <div class="module-card" onclick="showPage('l1')">
+        <span class="mc-num">MODULE 01 — 05</span>
+        <h4>Leadership &amp; Management Skills</h4>
+        <p>Trait, behavioural and contingency theories. Leadership styles from autocratic to servant leadership.</p>
+        <span class="mc-arrow">→</span>
+      </div>
+      <div class="module-card" onclick="showPage('c1')">
+        <span class="mc-num">MODULE 06 — 08</span>
+        <h4>Managing Change &amp; Conflict</h4>
+        <p>Forces for change, ADKAR model, resistance tactics, conflict types and resolution techniques.</p>
+        <span class="mc-arrow">→</span>
+      </div>
+      <div class="module-card" onclick="showPage('p1')">
+        <span class="mc-num">MODULE 09 — 12</span>
+        <h4>Perception &amp; Decision-Making</h4>
+        <p>How perception shapes behaviour, attribution theory, cognitive biases and decision-making frameworks.</p>
+        <span class="mc-arrow">→</span>
+      </div>
+      <div class="module-card" onclick="showPage('p4')" style="background:#f8f8f4;">
+        <span class="mc-num">BONUS TOOLS</span>
+        <h4>Decision-Making Frameworks</h4>
+        <p>Six Thinking Hats, SWOT, Decision Matrix, Pareto Analysis and more.</p>
+        <span class="mc-arrow">→</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <strong>How to Use This Site</strong>
+    <p>Use the sidebar to navigate between topics. Mark each section complete to track your progress. Practice questions include hidden answers — attempt each before revealing.</p>
+  </div>
+</div>
+
+<!-- ══ L1: WHAT IS LEADERSHIP ════════════════ -->
+<div id="page-l1" class="page">
+  <div class="page-header">
+    <span class="topic-tag">Module 01 · Leadership</span>
+    <h2>What Is Leadership?</h2>
+    <p class="lead">Understanding the distinction between leadership and management, and the roles each plays in organisational success.</p>
+  </div>
+
+  <div class="section">
+    <h3>Core Definitions</h3>
+    <div class="card-grid">
+      <div class="card accent">
+        <span class="card-label">Leadership</span>
+        <h5>Influence Toward Goals</h5>
+        <p>The ability to influence a group toward the achievement of a shared vision or set of goals.</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Management</span>
+        <h5>Authority &amp; Compliance</h5>
+        <p>Use of authority inherent in a designated formal rank to obtain compliance from organisational members.</p>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <span class="diagram-title">Roles of Leaders vs Managers</span>
+      <div class="flow" style="margin-top:20px;">
+        <div class="flow-box">Establish<br>Organisational Vision</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box light">Formulate Strategy<br>for Vision</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">Implement<br>Strategy</div>
+      </div>
+      <div style="display:flex; gap:40px; margin-top:12px; font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-muted);">
+        <span>← Leader's Role</span>
+        <span style="margin-left:auto;">Manager's Role →</span>
+      </div>
+    </div>
+
+    <p>While leadership focuses on setting direction and inspiring followers, management concentrates on executing processes and maintaining order. Effective organisations need both — visionary leaders AND competent managers.</p>
+  </div>
+
+  <div class="section">
+    <h3>Leadership Theory Overview</h3>
+    <p>Leadership research has evolved through four major paradigms:</p>
+    <div class="card-grid">
+      <div class="card">
+        <span class="card-label">Era 1</span>
+        <h5>Trait Theories</h5>
+        <p>Leaders are born with innate qualities that differentiate them.</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Era 2</span>
+        <h5>Behavioural Theories</h5>
+        <p>Leadership behaviours can be learned and taught.</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Era 3</span>
+        <h5>Contingency Theories</h5>
+        <p>Effective leadership depends on situational context.</p>
+      </div>
+      <div class="card highlight">
+        <span class="card-label">Era 4</span>
+        <h5>Contemporary Issues</h5>
+        <p>Transformational, servant, charismatic leadership styles.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="case-study">
+    <div class="case-study-header">
+      <span class="cs-tag">Case Study</span>
+      <h4>Satya Nadella at Microsoft</h4>
+    </div>
+    <div class="case-study-body">
+      <p>When Satya Nadella became CEO of Microsoft in 2014, the company was widely regarded as stagnating — a tech giant losing relevance. As a leader (not just a manager), Nadella articulated a new vision: "Mobile-first, cloud-first world." He shifted the culture from a "know-it-all" to a "learn-it-all" mindset.</p>
+      <p>His management team then implemented this vision operationally — restructuring divisions, pivoting Azure, and acquiring GitHub. The result: Microsoft's market capitalisation grew from ~$300 billion to over $2 trillion under his tenure.</p>
+      <div class="case-insight">
+        <strong>Key Insight</strong>
+        <p>Nadella demonstrated that leadership (vision + culture shift) and management (execution + resource allocation) must work in tandem. Neither alone would have achieved the turnaround.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Practice Questions</h3>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q1. What is the fundamental difference between leadership and management?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Leadership involves <strong>influencing</strong> others toward a goal — it is about inspiration, vision, and direction. Management involves using <strong>formal authority</strong> to obtain compliance — it is about planning, organising, and controlling resources.</p>
+        <p>A key distinction: you can be a manager without being a leader (authority without influence) or a leader without being a manager (influence without formal power).</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q2. Can a person be both a leader and a manager simultaneously? Justify.</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Yes. The most effective organisational figures combine both. They use their positional authority (management) while simultaneously inspiring and influencing their teams (leadership). Research suggests that organisations with leader-managers outperform those with only one or the other.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q3. Why did early leadership theories focus on traits rather than behaviours?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Early researchers assumed leadership was an innate quality — that great leaders were "born, not made." By studying historical leaders, they tried to identify common personality attributes. This was largely a reflection of the scientific methods of the time, which focused on selection (finding the right person) rather than development (training people to lead).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark-complete-bar">
+    <button class="btn-complete" onclick="markComplete('l1', this)">Mark as Complete</button>
+    <span class="complete-msg">Mark this topic done to track your progress.</span>
+  </div>
+</div>
+
+<!-- ══ L2: TRAIT THEORIES ═════════════════════ -->
+<div id="page-l2" class="page">
+  <div class="page-header">
+    <span class="topic-tag">Module 02 · Leadership</span>
+    <h2>Trait Theories of Leadership</h2>
+    <p class="lead">Examining the personality, social, and intellectual characteristics that differentiate leaders from non-leaders.</p>
+  </div>
+
+  <div class="section">
+    <h3>Core Premise</h3>
+    <p>Trait theories propose that certain innate characteristics make individuals natural leaders. Researchers sought to identify a universal set of traits by studying historically successful leaders.</p>
+    <div class="callout">
+      <strong>Key Assumption</strong>
+      <p><em>"Leaders are born, not made."</em> — The goal is to <strong>select</strong> leaders based on traits, not develop them through training.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Core Leadership Traits</h3>
+    <div class="card-grid">
+      <div class="card"><h5>Ambition &amp; Energy</h5><p>Drive to achieve and the stamina to persist through challenges.</p></div>
+      <div class="card"><h5>Desire to Lead</h5><p>Genuine motivation to take charge and direct others.</p></div>
+      <div class="card"><h5>Honesty &amp; Integrity</h5><p>Consistent trustworthiness that builds follower confidence.</p></div>
+      <div class="card"><h5>Self-Confidence</h5><p>Belief in one's own judgement and abilities.</p></div>
+      <div class="card"><h5>Intelligence</h5><p>Ability to gather, analyse and interpret complex information.</p></div>
+      <div class="card"><h5>High Self-Monitoring</h5><p>Ability to adapt one's behaviour to different social contexts.</p></div>
+      <div class="card highlight"><h5>Job-Relevant Knowledge</h5><p>Deep domain expertise that enables sound decision-making.</p></div>
+    </div>
+    <p>Additionally, the Big Five personality traits (particularly <strong>Extraversion</strong>, <strong>Conscientiousness</strong>, and <strong>Openness</strong>) show consistent correlations with leadership emergence.</p>
+  </div>
+
+  <div class="section">
+    <h3>Limitations of Trait Theory</h3>
+    <div class="callout warn">
+      <strong>Critical Limitation</strong>
+      <p>No universal traits have been found that predict leadership success <em>across all situations</em>. Traits that make someone an effective CEO may be irrelevant — or even harmful — for a frontline team leader.</p>
+    </div>
+    <ul>
+      <li>Traits do not generalise across contexts</li>
+      <li>Unclear causal relationship — do traits create leaders, or does leading develop traits?</li>
+      <li>Better at predicting <em>leader emergence</em> (who gets promoted) than <em>leader effectiveness</em> (who achieves results)</li>
+      <li>Ignores the influence of followers and the environment</li>
+    </ul>
+  </div>
+
+  <div class="case-study">
+    <div class="case-study-header">
+      <span class="cs-tag">Case Study</span>
+      <h4>Indra Nooyi — PepsiCo CEO (2006–2018)</h4>
+    </div>
+    <div class="case-study-body">
+      <p>Indra Nooyi exemplifies several core leadership traits. Her exceptional intelligence was evident from her academic record; her ambition drove PepsiCo's revenue from $35B to $63.5B. Her integrity — she regularly wrote personal letters to parents of her top executives — built deep loyalty. Her "Performance with Purpose" vision demonstrated high job-relevant knowledge and strategic foresight.</p>
+      <p>However, the Trait limitation is also visible: Nooyi's intensely strategic style worked at the executive level but reportedly created distance from operational teams, illustrating how traits effective in one context may be less so in another.</p>
+      <div class="case-insight">
+        <strong>Key Insight</strong>
+        <p>Nooyi possessed most classical leadership traits, but her effectiveness varied by organisational context — supporting the critique that traits alone do not guarantee situational leadership success.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Practice Questions</h3>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q1. List and explain any four key traits associated with effective leadership.</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p><strong>1. Ambition and Energy:</strong> Effective leaders show a strong drive to achieve goals and maintain the stamina to persist.</p>
+        <p><strong>2. Honesty and Integrity:</strong> They consistently align their words and actions, creating trust among followers.</p>
+        <p><strong>3. Self-Confidence:</strong> They trust their judgment, which helps followers feel secure in uncertain situations.</p>
+        <p><strong>4. Intelligence:</strong> They quickly process information to make sound decisions and adapt strategies.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q2. Why is trait theory considered an incomplete explanation of leadership?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Trait theory is incomplete because: (a) no single set of traits works universally, (b) it ignores situational factors, (c) it predicts who <em>becomes</em> a leader, not who <em>succeeds</em> as one, and (d) it cannot explain why some trait-rich individuals fail while others without those traits succeed in certain contexts.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q3. Is the assumption "leaders are born" valid in modern organisations?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>No, this is largely outdated. Modern research and practice show leadership can be developed. Traits may provide a foundation, but behaviours, skills, emotional intelligence and adaptability can be taught. Most leadership development programmes explicitly reject the "born leader" premise, investing heavily in coaching and mentoring instead.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark-complete-bar">
+    <button class="btn-complete" onclick="markComplete('l2', this)">Mark as Complete</button>
+    <span class="complete-msg">Mark this topic done to track your progress.</span>
+  </div>
+</div>
+
+<!-- ══ L3: BEHAVIOURAL THEORIES ══════════════ -->
+<div id="page-l3" class="page">
+  <div class="page-header">
+    <span class="topic-tag">Module 03 · Leadership</span>
+    <h2>Behavioural Theories of Leadership</h2>
+    <p class="lead">Leadership can be taught — effective leaders are distinguished by what they <em>do</em>, not who they are.</p>
+  </div>
+
+  <div class="section">
+    <h3>Core Premise</h3>
+    <div class="callout tip">
+      <strong>Key Shift</strong>
+      <p>From <em>"Who are leaders?"</em> (traits) to <em>"What do leaders do?"</em> (behaviours). This opened the door to leadership development through training.</p>
+    </div>
+    <p>Two landmark research programmes — the <strong>Ohio State Studies</strong> and the <strong>University of Michigan Studies</strong> — independently identified two fundamental dimensions of leader behaviour that remain influential today.</p>
+  </div>
+
+  <div class="section">
+    <h3>Ohio State Studies — Two Dimensions</h3>
+    <div class="card-grid">
+      <div class="card accent">
+        <span class="card-label">Dimension 1</span>
+        <h5>Initiating Structure</h5>
+        <p>Extent to which a leader defines their role and subordinates' roles in pursuit of goal attainment. Task-focused behaviour: assigning tasks, setting deadlines, specifying procedures.</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Dimension 2</span>
+        <h5>Consideration</h5>
+        <p>Extent to which a leader builds job relationships characterised by mutual trust, respect for ideas, and regard for feelings. People-focused behaviour.</p>
+      </div>
+    </div>
+    <p>These two dimensions are <strong>independent</strong> — a leader can be high on both, low on both, or high on one and low on the other.</p>
+  </div>
+
+  <div class="section">
+    <h3>University of Michigan Studies</h3>
+    <div class="card-grid">
+      <div class="card">
+        <span class="card-label">Michigan — Type 1</span>
+        <h5>Employee-Oriented Leader</h5>
+        <p>Emphasises interpersonal relations; takes personal interest in employee needs; accepts individual differences. Correlates with higher group productivity and satisfaction.</p>
+      </div>
+      <div class="card accent">
+        <span class="card-label">Michigan — Type 2</span>
+        <h5>Production-Oriented Leader</h5>
+        <p>Emphasises technical or task aspects of the job. Treats employees as means to accomplish work goals.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>The Managerial Grid (Blake &amp; Mouton)</h3>
+    <div class="diagram">
+      <span class="diagram-title">Blake &amp; Mouton Managerial Grid</span>
+      <div class="matrix-2x2" style="margin-top:20px;">
+        <div class="matrix-cell header">HIGH PEOPLE<br>LOW TASK</div>
+        <div class="matrix-cell header" style="background:#333;">HIGH PEOPLE<br>HIGH TASK ★</div>
+        <div class="matrix-cell">
+          <strong>Country Club (1,9)</strong>
+          Thoughtful attention to needs; comfortable pace. Low production focus.
+        </div>
+        <div class="matrix-cell" style="background:#fffde7;">
+          <strong>Team Leader (9,9)</strong>
+          Work accomplished by committed people; interdependence; trust and respect.
+        </div>
+        <div class="matrix-cell" style="background:#f5f5f5;">
+          <strong>Impoverished (1,1)</strong>
+          Minimum effort to sustain membership. Avoids trouble.
+        </div>
+        <div class="matrix-cell">
+          <strong>Authority-Compliance (9,1)</strong>
+          Production efficiency; human element interferes minimally.
+        </div>
+        <div class="matrix-cell header">LOW PEOPLE<br>LOW TASK</div>
+        <div class="matrix-cell header">LOW PEOPLE<br>HIGH TASK</div>
+      </div>
+      <p style="font-size:12px; color:var(--ink-muted); margin-top:8px;">★ Team Leader (9,9) is considered the ideal style by Blake &amp; Mouton.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Limitation of Behavioural Approach</h3>
+    <p>Behavioural theories assume there is one best style, but research has not confirmed this universally. Effective behaviours in a startup may differ from those in a military context. This gap led to <strong>contingency theories</strong>.</p>
+  </div>
+
+  <div class="case-study">
+    <div class="case-study-header">
+      <span class="cs-tag">Case Study</span>
+      <h4>Southwest Airlines — Herb Kelleher's (9,9) Leadership</h4>
+    </div>
+    <div class="case-study-body">
+      <p>Herb Kelleher, co-founder of Southwest Airlines, exemplified the 9,9 "Team Leader" style. He was famous for being intensely task-focused (Southwest consistently ranked first in on-time performance) while simultaneously being deeply people-oriented — he memorised employees' names, worked baggage loading on holidays, and wrote personal notes to staff.</p>
+      <p>Southwest's remarkable 47 consecutive years of profitability (unmatched in the airline industry) is partly attributed to this dual-dimension leadership, which drove both operational excellence and exceptional employee loyalty.</p>
+      <div class="case-insight">
+        <strong>Key Insight</strong>
+        <p>High task AND high people focus is not contradictory. Kelleher demonstrated that caring deeply about employees and demanding high operational performance reinforce each other.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Practice Questions</h3>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q1. Compare Initiating Structure and Consideration as leadership behaviours.</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p><strong>Initiating Structure</strong> is task-oriented — the leader defines roles, sets goals, organises work, and establishes deadlines. <strong>Consideration</strong> is relationship-oriented — the leader focuses on employee wellbeing, mutual respect, and trust. Ohio State research found these are independent dimensions, not opposites on a spectrum.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q2. What does the Managerial Grid suggest about the "ideal" leadership style?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Blake and Mouton's grid suggests the <strong>Team Leader style (9,9)</strong> — high concern for both people and production — is the ideal. They argued this style leads to the best outcomes: motivated employees who are also productive. However, contingency theorists later challenged this by showing context matters significantly.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q3. How does behavioural theory differ from trait theory in its practical application?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Trait theory focuses on <strong>selecting</strong> the right person (identify traits → hire/promote). Behavioural theory focuses on <strong>training</strong> existing people (identify behaviours → teach them). This shift has massive practical implications: instead of assuming leadership is fixed, organisations can invest in leadership development programmes.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark-complete-bar">
+    <button class="btn-complete" onclick="markComplete('l3', this)">Mark as Complete</button>
+    <span class="complete-msg">Mark this topic done to track your progress.</span>
+  </div>
+</div>
+
+<!-- ══ L4: CONTINGENCY THEORIES ══════════════ -->
+<div id="page-l4" class="page">
+  <div class="page-header">
+    <span class="topic-tag">Module 04 · Leadership</span>
+    <h2>Contingency Theories</h2>
+    <p class="lead">Effective leadership depends on the situation. There is no single best leadership style — it depends on context, followers, and environment.</p>
+  </div>
+
+  <div class="section">
+    <h3>Key Models Overview</h3>
+    <div class="data-table">
+      <table class="data-table" style="border-collapse:collapse; width:100%;">
+        <thead><tr><th>Model</th><th>Key Idea</th><th>Leader Style</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Fiedler Model</strong></td><td>Match leader to situation; style is fixed</td><td>Task vs Relationship-oriented</td></tr>
+          <tr><td><strong>Cognitive Resource Theory</strong></td><td>Stress determines whether intelligence or experience matters more</td><td>Context-dependent</td></tr>
+          <tr><td><strong>Hersey &amp; Blanchard SLT</strong></td><td>Adapt style to follower readiness</td><td>Directive / Supportive / Participative / Monitoring</td></tr>
+          <tr><td><strong>LMX Theory</strong></td><td>Leaders form different quality relationships with followers</td><td>In-group vs Out-group</td></tr>
+          <tr><td><strong>Path-Goal Theory</strong></td><td>Leader clears obstacles and rewards goal attainment</td><td>Directive / Supportive / Participative / Achievement-oriented</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>3.1 Fiedler Contingency Model</h3>
+    <p>Fiedler's key assumption: <strong>a leader's style is fixed</strong>. Therefore, the solution is to either match leaders to situations or change the situation to suit the leader.</p>
+    <div class="diagram">
+      <span class="diagram-title">Situational Favourableness Factors</span>
+      <div class="card-grid" style="margin-top:16px;">
+        <div class="card"><h5>Leader-Member Relations</h5><p>Degree of confidence, trust and respect followers have for the leader.</p></div>
+        <div class="card"><h5>Task Structure</h5><p>Degree to which job assignments are procedurised (high) vs ambiguous (low).</p></div>
+        <div class="card"><h5>Position Power</h5><p>Degree of influence a leader has — hiring, firing, discipline, promotions.</p></div>
+      </div>
+    </div>
+    <p>The <strong>Least Preferred Co-worker (LPC) Questionnaire</strong> identifies whether a leader is task-oriented (scores LPC low) or relationship-oriented (scores LPC high). Task-oriented leaders perform best in very favourable or very unfavourable situations; relationship-oriented leaders excel in moderate situations.</p>
+  </div>
+
+  <div class="section">
+    <h3>3.2 Cognitive Resource Theory</h3>
+    <div class="card-grid">
+      <div class="card">
+        <span class="card-label">High Stress Context</span>
+        <h5>Experience &gt; Intelligence</h5>
+        <p>Under stress, less intelligent but more experienced leaders outperform highly intelligent but inexperienced ones.</p>
+      </div>
+      <div class="card accent">
+        <span class="card-label">Low Stress Context</span>
+        <h5>Intelligence &gt; Experience</h5>
+        <p>Under low stress, intellectual ability predicts leadership effectiveness better than experience.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>3.3 Hersey &amp; Blanchard — Situational Leadership</h3>
+    <div class="diagram">
+      <span class="diagram-title">Leadership Style vs Follower Readiness</span>
+      <div class="matrix-2x2" style="margin-top:16px;">
+        <div class="matrix-cell" style="background:#fff8e1;">
+          <strong>S2 — Selling/Coaching</strong>
+          High Task + High Relationship. For followers with low ability but high willingness.
+        </div>
+        <div class="matrix-cell" style="background:#e8f5e9;">
+          <strong>S3 — Participating</strong>
+          Low Task + High Relationship. For followers with ability but low confidence or willingness.
+        </div>
+        <div class="matrix-cell">
+          <strong>S1 — Telling/Directing</strong>
+          High Task + Low Relationship. For followers unable and unwilling.
+        </div>
+        <div class="matrix-cell" style="background:#e3f2fd;">
+          <strong>S4 — Delegating</strong>
+          Low Task + Low Relationship. For followers who are both able and willing.
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:10px; margin-top:8px; color:var(--ink-muted);">
+        <span>← LOW Follower Readiness</span><span>HIGH Follower Readiness →</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>3.4 Leader-Member Exchange (LMX) Theory</h3>
+    <div class="card-grid">
+      <div class="card accent">
+        <span class="card-label">In-Group</span>
+        <h5>"Favourites"</h5>
+        <p>Selected based on competence and compatibility. Receive higher quality exchanges, mentoring, and opportunities. Result: Higher performance, less turnover, greater job satisfaction.</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Out-Group</span>
+        <h5>"The Rest"</h5>
+        <p>Receive standard transactional interactions. Lower-quality relationship with the leader. Result: Lower performance ratings and higher turnover.</p>
+      </div>
+    </div>
+    <div class="callout warn">
+      <strong>Ethical Concern</strong>
+      <p>LMX theory describes what naturally happens, but the in-group/out-group dynamic can create perceived favouritism, reducing morale among out-group members. Good leaders should work to expand the "in-group" inclusively.</p>
+    </div>
+  </div>
+
+  <div class="case-study">
+    <div class="case-study-header">
+      <span class="cs-tag">Case Study</span>
+      <h4>Army Leadership — Fiedler in Action</h4>
+    </div>
+    <div class="case-study-body">
+      <p>Military environments provide clear evidence for Fiedler's model. In combat operations (highly unfavourable situation: unclear outcomes, low position power relative to chaos), task-oriented leaders — who focus on structure and clear directives — consistently outperform relationship-oriented leaders. Studies of combat unit performance show that high task orientation correlates with better mission outcomes in ambiguous, high-threat environments.</p>
+      <p>Conversely, in peacetime training scenarios (moderately favourable), relationship-oriented leadership correlates better with troop morale and long-term skill development — exactly as Fiedler's model predicts.</p>
+      <div class="case-insight">
+        <strong>Key Insight</strong>
+        <p>Situational context fundamentally changes what "good leadership" looks like. A leader effective in one scenario may fail in another — reinforcing the need for situational matching over a universal "best style."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Practice Questions</h3>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q1. What are the three key situational factors in Fiedler's model?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p><strong>(1) Leader-Member Relations:</strong> Trust and respect between leader and followers. <strong>(2) Task Structure:</strong> How clearly defined and structured the work is. <strong>(3) Position Power:</strong> The formal authority the leader holds over rewards and punishments. These three factors combine to determine situational favourableness.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q2. According to Hersey &amp; Blanchard, which leadership style suits a new but highly motivated employee?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>A new employee has <strong>low ability</strong> (lacks skills) but <strong>high willingness</strong> (motivated). This maps to a low follower readiness level — specifically <strong>R2</strong> in Hersey &amp; Blanchard's model. The appropriate leadership style is <strong>S2 — Selling/Coaching</strong>: high task direction combined with high relationship support to build both skills and confidence.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q3. What ethical concerns arise from the LMX "in-group/out-group" dynamic?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Key concerns: <strong>Favouritism</strong> may be based on personal similarity rather than merit. <strong>Discrimination</strong> risks arise if in-group selection correlates with gender, ethnicity, or other protected characteristics. <strong>Demoralisation</strong> of out-group members reduces overall team performance. Leaders should actively work to develop high-quality relationships with all team members and make selection criteria transparent and merit-based.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark-complete-bar">
+    <button class="btn-complete" onclick="markComplete('l4', this)">Mark as Complete</button>
+    <span class="complete-msg">Mark this topic done to track your progress.</span>
+  </div>
+</div>
+
+<!-- ══ L5: LEADERSHIP STYLES ═════════════════ -->
+<div id="page-l5" class="page">
+  <div class="page-header">
+    <span class="topic-tag">Module 05 · Leadership</span>
+    <h2>Types of Leadership Styles</h2>
+    <p class="lead">Modern organisations require leaders who can deploy different styles depending on team, context, and goals.</p>
+  </div>
+
+  <div class="section">
+    <h3>11 Contemporary Leadership Styles</h3>
+    <div class="card-grid">
+      <div class="card accent"><span class="card-label">Style 01</span><h5>Autocratic</h5><p>Leader makes all decisions without input. Fast decisions, low morale in long-term contexts.</p></div>
+      <div class="card"><span class="card-label">Style 02</span><h5>Democratic</h5><p>Involves team in decision-making. Higher buy-in, slower decisions.</p></div>
+      <div class="card"><span class="card-label">Style 03</span><h5>Laissez-Faire</h5><p>Team given autonomy. Works with highly skilled, self-motivated teams; fails with inexperienced ones.</p></div>
+      <div class="card highlight"><span class="card-label">Style 04</span><h5>Transformational</h5><p>Inspires and motivates through vision. Creates lasting change in culture and performance.</p></div>
+      <div class="card"><span class="card-label">Style 05</span><h5>Transactional</h5><p>Rewards performance, punishes failure. Clear expectations; limited inspiration.</p></div>
+      <div class="card"><span class="card-label">Style 06</span><h5>Bureaucratic</h5><p>Rules, structure and hierarchy. Efficient in regulated industries; rigid in dynamic environments.</p></div>
+      <div class="card accent"><span class="card-label">Style 07</span><h5>Servant Leadership</h5><p>Leader serves the needs of followers. High trust and purpose; may be exploited if boundaries unclear.</p></div>
+      <div class="card"><span class="card-label">Style 08</span><h5>Situational</h5><p>Adapts style to context and follower readiness. Requires high self-awareness and flexibility.</p></div>
+      <div class="card"><span class="card-label">Style 09</span><h5>Visionary</h5><p>Creates compelling future vision. Galvanises teams around long-term direction.</p></div>
+      <div class="card"><span class="card-label">Style 10</span><h5>Coaching</h5><p>Develops individual potential through strengths, weaknesses and motivation identification.</p></div>
+      <div class="card highlight"><span class="card-label">Style 11</span><h5>Charismatic</h5><p>Uses charm, communication, and persuasiveness to inspire. High impact; can create dependence on leader.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Transformational vs Transactional</h3>
+    <div class="diagram">
+      <span class="diagram-title">Key Distinction</span>
+      <div class="flow" style="margin-top:16px; gap:2px;">
+        <div class="flow-box" style="flex:none; padding:16px 20px;">TRANSACTIONAL<br><small style="opacity:0.7; font-weight:400;">Manage existing order</small></div>
+        <div class="flow-arrow" style="font-size:28px; padding:0 16px;">⟷</div>
+        <div class="flow-box" style="flex:none; padding:16px 20px; background:var(--highlight); color:var(--ink);">TRANSFORMATIONAL<br><small style="opacity:0.7; font-weight:400;">Change the order</small></div>
+      </div>
+      <p style="margin-top:16px; font-size:14px; color:var(--ink-muted);">Transactional leaders maintain the status quo through reward/punishment. Transformational leaders challenge followers to exceed their own interests for the collective good, fostering innovation and deep commitment.</p>
+    </div>
+  </div>
+
+  <div class="case-study">
+    <div class="case-study-header">
+      <span class="cs-tag">Case Study</span>
+      <h4>Nelson Mandela — Transformational + Servant Leadership</h4>
+    </div>
+    <div class="case-study-body">
+      <p>Nelson Mandela embodies the convergence of transformational and servant leadership. His transformational dimension: he articulated a compelling vision of a unified, democratic South Africa that transcended personal and factional interests, inspiring millions globally. His servant dimension: after gaining power, he consistently prioritised reconciliation over revenge — exemplified by retaining the Springbok rugby team that symbolised apartheid-era inequality, to build national unity.</p>
+      <p>The result: South Africa transitioned peacefully from apartheid to democracy — one of the 20th century's most improbable political achievements — driven largely by the example of a single leader's style.</p>
+      <div class="case-insight">
+        <strong>Key Insight</strong>
+        <p>The most impactful leaders often blend styles. Mandela combined transformational vision with servant values — demonstrating that leadership style is not a fixed category but a dynamic, context-sensitive practice.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Practice Questions</h3>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q1. When is autocratic leadership appropriate and when is it harmful?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p><strong>Appropriate:</strong> Crisis or emergency situations requiring immediate decisions; when team members lack expertise; in highly regulated environments with strict compliance needs. <strong>Harmful:</strong> Creative knowledge work requiring intrinsic motivation; long-term team development; diverse teams that need psychological safety to contribute ideas. Sustained autocratic leadership typically leads to disengagement, high turnover, and suppressed innovation.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q2. How does transformational leadership differ from charismatic leadership?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Both involve inspiration, but <strong>transformational leadership</strong> focuses on elevating followers beyond self-interest toward collective goals and instils lasting behavioural change. <strong>Charismatic leadership</strong> relies on the leader's personal magnetism and may not outlast the leader — when the charismatic leader leaves, the motivation often dissipates. Transformational leaders build systems and cultures; charismatic leaders build personal followings.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q3. What are the risks of a purely laissez-faire leadership approach?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Risks include: <strong>Ambiguity</strong> — without direction, teams may pursue conflicting goals. <strong>Accountability gaps</strong> — no clear structure for performance management. <strong>Inequality</strong> — confident team members dominate; quieter members become marginalised. <strong>Stagnation</strong> — without challenge or vision, innovation declines. Laissez-faire works only with highly expert, motivated, and self-directed individuals who require minimal coordination.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark-complete-bar">
+    <button class="btn-complete" onclick="markComplete('l5', this)">Mark as Complete</button>
+    <span class="complete-msg">Mark this topic done to track your progress.</span>
+  </div>
+</div>
+
+<!-- ══ C1: MANAGING CHANGE ════════════════════ -->
+<div id="page-c1" class="page">
+  <div class="page-header">
+    <span class="topic-tag">Module 06 · Change &amp; Conflict</span>
+    <h2>Managing Change</h2>
+    <p class="lead">Change is inevitable. Planned change is intentional. Understanding what drives organisational change and how to manage it effectively is a core leadership competency.</p>
+  </div>
+
+  <div class="section">
+    <h3>Forces Driving Change</h3>
+    <table class="data-table">
+      <thead><tr><th>Force</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Nature of Workforce</strong></td><td>Cultural diversity, ageing population, skills gaps in new entrants</td></tr>
+        <tr><td><strong>Technology</strong></td><td>AI, cloud computing, mobile technology, genetic research</td></tr>
+        <tr><td><strong>Economic Shocks</strong></td><td>Financial crises, interest rate volatility, market crashes</td></tr>
+        <tr><td><strong>Competition</strong></td><td>Global competitors, mergers, growth of e-commerce</td></tr>
+        <tr><td><strong>Social Trends</strong></td><td>Changing consumer values, social media, demographic shifts</td></tr>
+        <tr><td><strong>World Politics</strong></td><td>Trade wars, geopolitical instability, regulatory changes</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>Types of Change</h3>
+    <div class="card-grid">
+      <div class="card"><span class="card-label">Personal</span><h5>Individual Change</h5><p>New environment, relationships, habits — the human dimension of change.</p></div>
+      <div class="card"><span class="card-label">Organisational</span><h5>Structural Change</h5><p>New management, restructuring, technology adoption.</p></div>
+      <div class="card"><span class="card-label">Type 1</span><h5>Developmental</h5><p>Improvement of existing skills, processes, or structures.</p></div>
+      <div class="card accent"><span class="card-label">Type 2</span><h5>Transitional</h5><p>Moving from old state to a new defined state. Managed transition.</p></div>
+      <div class="card"><span class="card-label">Type 3</span><h5>Transformational</h5><p>Radical, fundamental shifts in strategy, culture, or identity.</p></div>
+      <div class="card highlight"><span class="card-label">Societal</span><h5>Cultural Shift</h5><p>Digital transformation, generational value changes, social movements.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>ADKAR Change Model</h3>
+    <div class="callout tip">
+      <strong>About ADKAR</strong>
+      <p>Created by Jeffrey Hiatt, ADKAR is a people-centric model. Unlike sequential methods, each letter represents a <em>goal</em> to be reached — not a step in a fixed order.</p>
+    </div>
+    <div class="diagram">
+      <span class="diagram-title">ADKAR Model</span>
+      <div class="flow" style="margin-top:16px; flex-direction:column; align-items:stretch; gap:2px;">
+        <div style="display:flex; align-items:center; gap:0;">
+          <div style="width:36px; font-family:var(--mono); font-size:20px; font-weight:800; text-align:center; background:var(--highlight); padding:12px 0; border:2px solid var(--ink);">A</div>
+          <div style="flex:1; padding:12px 16px; background:#fff; border:2px solid var(--ink); border-left:none;"><strong>Awareness</strong> — of the need to change</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:0;">
+          <div style="width:36px; font-family:var(--mono); font-size:20px; font-weight:800; text-align:center; background:var(--highlight); padding:12px 0; border:2px solid var(--ink); border-top:none;">D</div>
+          <div style="flex:1; padding:12px 16px; background:#fff; border:2px solid var(--ink); border-left:none; border-top:none;"><strong>Desire</strong> — to participate in and support the change</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:0;">
+          <div style="width:36px; font-family:var(--mono); font-size:20px; font-weight:800; text-align:center; background:var(--highlight); padding:12px 0; border:2px solid var(--ink); border-top:none;">K</div>
+          <div style="flex:1; padding:12px 16px; background:#fff; border:2px solid var(--ink); border-left:none; border-top:none;"><strong>Knowledge</strong> — on how to change</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:0;">
+          <div style="width:36px; font-family:var(--mono); font-size:20px; font-weight:800; text-align:center; background:var(--highlight); padding:12px 0; border:2px solid var(--ink); border-top:none;">A</div>
+          <div style="flex:1; padding:12px 16px; background:#fff; border:2px solid var(--ink); border-left:none; border-top:none;"><strong>Ability</strong> — to implement required skills and behaviours</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:0;">
+          <div style="width:36px; font-family:var(--mono); font-size:20px; font-weight:800; text-align:center; background:var(--ink); color:var(--highlight); padding:12px 0; border:2px solid var(--ink); border-top:none;">R</div>
+          <div style="flex:1; padding:12px 16px; background:#fff; border:2px solid var(--ink); border-left:none; border-top:none;"><strong>Reinforcement</strong> — to sustain the change</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Kübler-Ross Change Curve</h3>
+    <p>Originally developed as the five stages of grief, this model applies powerfully to organisational change — describing the emotional journey individuals experience:</p>
+    <div class="spectrum">
+      <div class="spectrum-seg" style="background:#ffcdd2;">Denial</div>
+      <div class="spectrum-seg" style="background:#ffab91;">Anger</div>
+      <div class="spectrum-seg" style="background:#ffe082;">Bargaining</div>
+      <div class="spectrum-seg" style="background:#b0bec5;">Depression</div>
+      <div class="spectrum-seg" style="background:#a5d6a7;">Acceptance</div>
+    </div>
+    <p>Effective change managers help teams move through these stages by addressing emotions directly — not suppressing them — while maintaining momentum toward the new state.</p>
+  </div>
+
+  <div class="case-study">
+    <div class="case-study-header">
+      <span class="cs-tag">Case Study</span>
+      <h4>Nokia's Failure to Change — A Cautionary Tale</h4>
+    </div>
+    <div class="case-study-body">
+      <p>Nokia once held over 40% of the global mobile phone market. By 2013, it sold its handset division to Microsoft for a fraction of its former value. The forces of change (smartphone technology, touch interfaces, app ecosystems) were visible — but Nokia failed to respond.</p>
+      <p>Internal analysis revealed: leaders were in the "denial" phase of the change curve; siloed culture prevented cross-functional innovation; and management's emphasis on existing strengths (hardware) blinded them to the transformational shift to software. ADKAR's "Desire" was missing at the leadership level — executives did not want to cannibalise their successful feature-phone business.</p>
+      <div class="case-insight">
+        <strong>Key Insight</strong>
+        <p>Knowing change is needed (Awareness) is insufficient. Leaders must create Desire — an active will to change — throughout the organisation. Nokia had awareness but lacked desire, leading to catastrophic inaction.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Practice Questions</h3>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q1. What are the five stages of the ADKAR model? Explain each briefly.</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p><strong>A — Awareness:</strong> Individuals understand why change is needed. <strong>D — Desire:</strong> They are motivated to participate and support. <strong>K — Knowledge:</strong> They know how to change (skills, processes). <strong>A — Ability:</strong> They can actually implement the change behaviourally. <strong>R — Reinforcement:</strong> Systems and rewards sustain the new behaviour long-term.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q2. Distinguish between developmental, transitional, and transformational change.</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p><strong>Developmental change</strong> improves what already exists (e.g., training employees to use software more efficiently). <strong>Transitional change</strong> replaces the old with something new (e.g., migrating from on-premise to cloud systems). <strong>Transformational change</strong> fundamentally reinvents the organisation — strategy, culture, identity may all shift (e.g., a bank becoming a fintech company).</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q3. How does the Kübler-Ross curve apply to an employee whose role is being restructured?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>The employee may initially <strong>deny</strong> the restructuring will really happen. Then feel <strong>anger</strong> at the perceived unfairness. They may <strong>bargain</strong> (try to negotiate keeping their old role). Experience <strong>depression</strong> as the reality sinks in. Finally reach <strong>acceptance</strong> and engage with the new role. Managers should recognise this process, provide clear communication at each stage, and not force premature acceptance — rushing employees past natural emotional stages creates resentment.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark-complete-bar">
+    <button class="btn-complete" onclick="markComplete('c1', this)">Mark as Complete</button>
+    <span class="complete-msg">Mark this topic done to track your progress.</span>
+  </div>
+</div>
+
+<!-- ══ C2: RESISTANCE TO CHANGE ══════════════ -->
+<div id="page-c2" class="page">
+  <div class="page-header">
+    <span class="topic-tag">Module 07 · Change &amp; Conflict</span>
+    <h2>Resistance to Change</h2>
+    <p class="lead">Resistance is not irrational — it is a natural human and organisational response. Understanding its sources is essential to overcoming it.</p>
+  </div>
+
+  <div class="section">
+    <h3>Forms of Resistance</h3>
+    <div class="card-grid">
+      <div class="card accent">
+        <span class="card-label">Overt &amp; Immediate</span>
+        <h5>Visible Resistance</h5>
+        <p>Voicing complaints, engaging in job actions (strikes, slowdowns), publicly opposing decisions.</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Implicit &amp; Deferred</span>
+        <h5>Hidden Resistance</h5>
+        <p>Loss of loyalty, motivation reduction, increased errors, growing absenteeism. Harder to detect, more damaging over time.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Individual Sources of Resistance</h3>
+    <ul>
+      <li><strong>Habit:</strong> Change disrupts comfortable routines; humans naturally prefer familiarity</li>
+      <li><strong>Security:</strong> Change threatens the predictability people rely on</li>
+      <li><strong>Economic factors:</strong> Fear of income reduction, job loss, or reduced benefits</li>
+      <li><strong>Fear of the unknown:</strong> Uncertainty about outcomes triggers anxiety</li>
+      <li><strong>Selective information processing:</strong> People hear only what confirms their fears</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>Organisational Sources of Resistance</h3>
+    <div class="card-grid">
+      <div class="card">
+        <span class="card-label">Source 1</span>
+        <h5>Structural Inertia</h5>
+        <p>Selection, training, formalisation — built-in mechanisms produce stability and act as counterbalances when change is attempted.</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Source 2</span>
+        <h5>Limited Focus of Change</h5>
+        <p>Organisations are interdependent systems. Change in one area (e.g., technology) without corresponding changes elsewhere gets nullified.</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Source 3</span>
+        <h5>Group Inertia</h5>
+        <p>Even if an individual accepts change, group norms (e.g., union rules) may override personal willingness.</p>
+      </div>
+      <div class="card accent">
+        <span class="card-label">Source 4</span>
+        <h5>Threat to Expertise</h5>
+        <p>Specialists resist changes that make their expertise obsolete. E.g., IT departments resisting decentralised computing in the 1980s.</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Source 5</span>
+        <h5>Threat to Power</h5>
+        <p>Redistribution of decision-making authority threatens existing power hierarchies.</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Source 6</span>
+        <h5>Threat to Resources</h5>
+        <p>Groups controlling sizable resources fear budget cuts or reduced staff — change threatens the current allocation.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Tactics for Overcoming Resistance</h3>
+    <table class="data-table">
+      <thead><tr><th>Tactic</th><th>When to Use</th><th>Drawback</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Education &amp; Communication</strong></td><td>Resistance from misinformation</td><td>Time-consuming</td></tr>
+        <tr><td><strong>Participation</strong></td><td>When initiators lack all information</td><td>Can be slow; risk of poor change design</td></tr>
+        <tr><td><strong>Facilitation &amp; Support</strong></td><td>Fear and anxiety driving resistance</td><td>Expensive; not always effective</td></tr>
+        <tr><td><strong>Negotiation</strong></td><td>Powerful resistance group with clear interests</td><td>Can be expensive; invites others to negotiate</td></tr>
+        <tr><td><strong>Manipulation &amp; Cooptation</strong></td><td>When other tactics are too costly</td><td>Can backfire if people feel manipulated</td></tr>
+        <tr><td><strong>Coercion</strong></td><td>Speed is essential; change agents have power</td><td>Risky; creates resentment and long-term damage</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>The Politics of Change</h3>
+    <div class="callout warn">
+      <strong>Political Reality</strong>
+      <p>Change in organisations is never purely rational. Power dynamics, vested interests, and political manoeuvring always shape how change unfolds. Long-time power holders tend to implement only <em>incremental</em> change that doesn't threaten their position.</p>
+    </div>
+    <ul>
+      <li>Impetus for radical change typically comes from <strong>outside change agents</strong> (consultants, new leaders)</li>
+      <li>Internal change agents are most threatened by loss of status</li>
+      <li>Power struggles determine the <strong>speed and quality</strong> of change implementation</li>
+    </ul>
+  </div>
+
+  <div class="case-study">
+    <div class="case-study-header">
+      <span class="cs-tag">Case Study</span>
+      <h4>Kodak — Structural Inertia and Expertise Threat</h4>
+    </div>
+    <div class="case-study-body">
+      <p>Kodak engineers actually invented the digital camera in 1975 — but the technology was shelved. Why? Because digital photography threatened Kodak's core revenue: film and chemical processing. This is a textbook example of <strong>threat to established resource allocations</strong> and <strong>structural inertia</strong>.</p>
+      <p>The teams controlling Kodak's enormously profitable film division actively resisted digital initiatives. Group inertia — a culture built around film chemistry — reinforced individual resistance. By the time Kodak embraced digital, competitors had already established dominant positions. Kodak filed for bankruptcy in 2012.</p>
+      <div class="case-insight">
+        <strong>Key Insight</strong>
+        <p>Organisational resistance sources can kill even innovative organisations. When structural inertia and resource-protection instincts override strategic necessity, the result can be catastrophic — even when the organisation already possesses the answer.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Practice Questions</h3>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q1. What is the difference between overt and implicit resistance to change?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p><strong>Overt resistance</strong> is visible and immediate — strikes, public complaints, open refusal to comply. <strong>Implicit resistance</strong> is hidden and deferred — reduced motivation, quiet disengagement, increased errors, growing absenteeism. Implicit resistance is more dangerous because it is harder to detect and address, allowing damage to accumulate silently.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q2. Why might structural inertia be the most powerful form of organisational resistance?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Structural inertia operates invisibly — it is embedded in selection processes, training programmes, job descriptions, and reward systems. Unlike individual resistance (which can be addressed person-by-person), structural inertia requires changing the entire organisational architecture. Even when individual employees accept change, the structure itself pulls behaviour back toward the old state.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q3. When is coercion an appropriate tactic for overcoming resistance, and what are its risks?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Coercion is appropriate when: there is a genuine crisis requiring immediate action; no time exists for participation or education; and the change agent has sufficient power to enforce compliance. <strong>Risks:</strong> Deep resentment, reduced trust in leadership, compliance without commitment (people comply publicly but sabotage privately), high turnover, and long-term cultural damage. Coercion should be a last resort.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark-complete-bar">
+    <button class="btn-complete" onclick="markComplete('c2', this)">Mark as Complete</button>
+    <span class="complete-msg">Mark this topic done to track your progress.</span>
+  </div>
+</div>
+
+<!-- ══ C3: CONFLICT MANAGEMENT ════════════════ -->
+<div id="page-c3" class="page">
+  <div class="page-header">
+    <span class="topic-tag">Module 08 · Change &amp; Conflict</span>
+    <h2>Conflict Management</h2>
+    <p class="lead">Conflict is not inherently harmful. Understanding its types, causes, and management techniques determines whether conflict destroys or strengthens a group.</p>
+  </div>
+
+  <div class="section">
+    <h3>Defining Conflict</h3>
+    <p>Conflict is a process that begins when one party perceives that another party has <strong>negatively affected, or is about to negatively affect, something the first party cares about</strong>. It encompasses:</p>
+    <ul>
+      <li>Incompatibility of goals between parties</li>
+      <li>Differences in interpretation of facts</li>
+      <li>Disagreements based on behavioural expectations</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>Evolution of Conflict Thought</h3>
+    <div class="card-grid">
+      <div class="card">
+        <span class="card-label">Traditional View</span>
+        <h5>Conflict is Bad</h5>
+        <p>All conflict is harmful. Caused by poor communication, lack of openness, or failure to respond to employee needs. Must be avoided.</p>
+      </div>
+      <div class="card accent">
+        <span class="card-label">Human Relations View</span>
+        <h5>Conflict is Natural</h5>
+        <p>Conflict is a natural and inevitable outcome in any group. Should be accepted, not eliminated.</p>
+      </div>
+      <div class="card highlight">
+        <span class="card-label">Interactionist View</span>
+        <h5>Some Conflict is Necessary</h5>
+        <p>Conflict is not only a positive force — it is <em>absolutely necessary</em> for a group to perform effectively. Leaders should stimulate managed conflict.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Functional vs Dysfunctional Conflict</h3>
+    <div class="diagram">
+      <span class="diagram-title">Conflict Type Comparison</span>
+      <div class="matrix-2x2" style="margin-top:16px;">
+        <div class="matrix-cell header">FUNCTIONAL CONFLICT</div>
+        <div class="matrix-cell header" style="background:#8B0000; color:#fff;">DYSFUNCTIONAL CONFLICT</div>
+        <div class="matrix-cell">
+          Supports group goals<br>
+          Stimulates creativity<br>
+          Encourages healthy debate<br>
+          Improves decision quality<br>
+          <strong>→ Improves performance</strong>
+        </div>
+        <div class="matrix-cell">
+          Hinders group performance<br>
+          Breeds hostility and resentment<br>
+          Creates communication breakdown<br>
+          Distracts from goals<br>
+          <strong>→ Damages team cohesion</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Common Causes of Conflict</h3>
+    <ul>
+      <li>Miscommunication and misunderstandings</li>
+      <li>Differences in opinions, values, or personalities</li>
+      <li>Power struggles and competition for resources</li>
+      <li>Unclear roles and expectations in workplaces or teams</li>
+    </ul>
+    <div class="callout warn">
+      <strong>Impact of Unresolved Conflict</strong>
+      <p>Increased stress and anxiety → reduced productivity → damaged relationships → potential team dissolution. Unmanaged dysfunctional conflict is one of the leading causes of employee turnover.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Conflict Resolution Techniques (Thomas-Kilmann)</h3>
+    <div class="card-grid">
+      <div class="card"><h5>Problem Solving</h5><p>Face-to-face meeting to identify and resolve the conflict through open discussion.</p></div>
+      <div class="card"><h5>Superordinate Goals</h5><p>Creating a shared goal that overrides individual conflicts — both parties need each other to succeed.</p></div>
+      <div class="card"><h5>Expansion of Resources</h5><p>When conflict is caused by resource scarcity — resolve it by expanding the resource pool.</p></div>
+      <div class="card"><h5>Avoidance</h5><p>Withdrawal or suppression. Appropriate when the issue is trivial or cooling-off time is needed.</p></div>
+      <div class="card"><h5>Smoothing</h5><p>Minimise differences and emphasise common interests. Temporary but useful to maintain relationships.</p></div>
+      <div class="card highlight"><h5>Compromise</h5><p>Each party gives up something. No clear winner or loser. Good when goals are moderately important.</p></div>
+      <div class="card"><h5>Authoritative Command</h5><p>Management uses formal authority to resolve conflict. Fast but may not address root causes.</p></div>
+      <div class="card"><h5>Altering Human Variable</h5><p>Behavioural change techniques — training, counselling — to change attitudes causing conflict.</p></div>
+      <div class="card accent"><h5>Altering Structural Variables</h5><p>Redesign jobs, transfer employees, create liaison roles, or use an ombudsperson.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Conflict Stimulation Techniques</h3>
+    <p>When conflict is too low (group complacency, groupthink), managers may deliberately stimulate it:</p>
+    <div class="card-grid">
+      <div class="card"><h5>Communication</h5><p>Sending ambiguous or threatening messages to stimulate debate.</p></div>
+      <div class="card"><h5>Bringing in Outsiders</h5><p>Adding new members with different backgrounds and values.</p></div>
+      <div class="card"><h5>Restructuring</h5><p>Reorganising work groups to break established patterns.</p></div>
+      <div class="card highlight"><h5>Devil's Advocate</h5><p>Appointing a person to intentionally challenge group consensus.</p></div>
+    </div>
+  </div>
+
+  <div class="case-study">
+    <div class="case-study-header">
+      <span class="cs-tag">Case Study</span>
+      <h4>Amazon's "Disagree and Commit" Culture</h4>
+    </div>
+    <div class="case-study-body">
+      <p>Amazon explicitly institutionalises functional conflict through its leadership principles. The principle "Have Backbone; Disagree and Commit" demands that leaders respectfully challenge decisions they disagree with — even when uncomfortable. Jeff Bezos famously required "six-pager" narrative memos before meetings, ensuring all data and logic were exposed to rigorous challenge before decisions were made.</p>
+      <p>Amazon's culture deliberately avoids "harmony at all costs" — recognising that surface-level agreement often masks groupthink, which kills innovation. Once a decision is made after open debate, all parties commit fully — separating the conflict phase from the execution phase.</p>
+      <div class="case-insight">
+        <strong>Key Insight</strong>
+        <p>Institutionalised functional conflict — structured disagreement with clear resolution processes — can drive better decisions than suppressing conflict in the name of "team harmony." The key is directing conflict toward ideas, not people.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Practice Questions</h3>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q1. Differentiate between functional and dysfunctional conflict with examples.</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p><strong>Functional conflict:</strong> A product team debates whether to prioritise speed or security in a new app. The debate surfaces important trade-offs, leads to a better-informed decision, and improves the final product. <strong>Dysfunctional conflict:</strong> Two team members have a personal rivalry that causes them to withhold information from each other, causing project delays and team breakdown. The key distinction: functional conflict is about <em>ideas and goals</em>; dysfunctional conflict is about <em>personalities and power</em>.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q2. When should a manager choose compromise over problem-solving as a conflict resolution technique?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p><strong>Compromise</strong> is preferred when: time is short; the goals of both parties are moderately important (not critical); both parties have equal power; other methods have failed; and a temporary solution is needed to maintain the relationship while a fuller solution is developed. <strong>Problem-solving</strong> is preferred when there is sufficient time to explore root causes, when the issue is complex, and when a lasting, integrated solution is needed.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q3. Explain the interactionist view of conflict and why it is considered the most useful perspective for managers.</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>The interactionist view holds that <em>some</em> conflict is not just inevitable but necessary for effective group performance. Too little conflict leads to complacency, groupthink, and lack of innovation. Too much conflict is destructive. The manager's role is to maintain an <strong>optimal level of conflict</strong> — stimulating it when the group is too harmonious, resolving it when it becomes dysfunctional. This is the most useful perspective because it treats conflict as a <em>management tool</em>, not merely a problem to eliminate.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark-complete-bar">
+    <button class="btn-complete" onclick="markComplete('c3', this)">Mark as Complete</button>
+    <span class="complete-msg">Mark this topic done to track your progress.</span>
+  </div>
+</div>
+
+<!-- ══ P1: PERCEPTION FUNDAMENTALS ═══════════ -->
+<div id="page-p1" class="page">
+  <div class="page-header">
+    <span class="topic-tag">Module 09 · Perception</span>
+    <h2>Perception: Fundamentals</h2>
+    <p class="lead">Behaviour is based on <em>perceived</em> reality, not objective reality. Understanding how perception works is foundational to understanding all human behaviour in organisations.</p>
+  </div>
+
+  <div class="section">
+    <h3>What is Perception?</h3>
+    <div class="callout tip">
+      <strong>Core Principle</strong>
+      <p><em>"People's behaviour is based on their perception of what reality is, not on reality itself. The world as it is perceived is the world that is behaviourally important."</em></p>
+    </div>
+    <p>Perception is the process by which individuals <strong>organise, select, and interpret</strong> sensory stimuli to produce a meaningful picture of their environment. Two people can observe the same event and interpret it in fundamentally different ways.</p>
+  </div>
+
+  <div class="section">
+    <h3>Factors Influencing Perception</h3>
+    <div class="diagram">
+      <span class="diagram-title">The Perception Model</span>
+      <div class="card-grid" style="margin-top:16px;">
+        <div class="card accent">
+          <span class="card-label">In the Perceiver</span>
+          <h5>Internal Factors</h5>
+          <p>Attitudes · Motives · Interests · Experience · Expectations</p>
+        </div>
+        <div class="card highlight">
+          <span class="card-label">In the Target</span>
+          <h5>Object Characteristics</h5>
+          <p>Novelty · Motion · Sounds · Size · Background · Proximity · Similarity</p>
+        </div>
+        <div class="card">
+          <span class="card-label">In the Situation</span>
+          <h5>Context Factors</h5>
+          <p>Time · Work setting · Social setting · Environmental conditions</p>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:16px; font-family:var(--mono); font-size:13px; font-weight:800; letter-spacing:0.1em; padding:12px; background:var(--ink); color:var(--highlight);">ALL THREE → PERCEPTION</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Figure-Ground and Visual Perception</h3>
+    <p>The classic figure-ground illusions demonstrate a core perceptual principle: our brain actively <strong>organises</strong> sensory input, and the same input can be organised in multiple ways. There is no single "correct" perception:</p>
+    <div class="card-grid">
+      <div class="card"><h5>The Vase/Faces Illusion</h5><p>Depending on what you treat as "figure" vs "ground," you see either a vase or two faces — the image itself doesn't change.</p></div>
+      <div class="card"><h5>GOOD/EVIL Letters</h5><p>The word GOOD contains the word EVIL in the white spaces — representing that good cannot exist without the absence of it.</p></div>
+      <div class="card"><h5>TEACH/LEARN Reflection</h5><p>The word TEACH reflects as LEARN — illustrating that teaching and learning are mirror processes.</p></div>
+    </div>
+    <div class="callout">
+      <strong>Organisational Implication</strong>
+      <p>Just as the same image can be "seen" differently, the same managerial action (e.g., close supervision) can be perceived by one employee as helpful support and by another as suffocating micromanagement.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Why Perception Matters in Organisations</h3>
+    <ul>
+      <li>Performance appraisals are perceptual judgements, not objective measurements</li>
+      <li>Customers' buying behaviour is driven by their perception of value, not actual value</li>
+      <li>Employee motivation depends on perceived fairness (equity theory)</li>
+      <li>Conflict often stems from perceptual differences rather than objective disagreements</li>
+      <li>Leadership effectiveness is partly a function of how followers <em>perceive</em> the leader</li>
+    </ul>
+  </div>
+
+  <div class="case-study">
+    <div class="case-study-header">
+      <span class="cs-tag">Case Study</span>
+      <h4>Apple vs Samsung — Same Feature, Different Perception</h4>
+    </div>
+    <div class="case-study-body">
+      <p>When Apple launched Face ID in 2017, it removed the fingerprint sensor. The tech media largely perceived this as "Apple removing a useful feature." When Samsung later struggled with in-screen fingerprint sensors, the same perception framework worked in reverse — Samsung users perceived their own phones as innovative and Apple's as lagging.</p>
+      <p>The objective reality: both companies were managing the same biometric authentication challenge. The perceptual reality: identical technical constraints were interpreted through the lens of brand loyalty, expectations, and framing — producing completely opposite emotional responses from identical users of each brand.</p>
+      <div class="case-insight">
+        <strong>Key Insight</strong>
+        <p>In markets, perception IS reality for the customer. Companies that understand and manage perceptual factors (branding, framing, expectations) can maintain competitive advantage even when objective product differences are minimal.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Practice Questions</h3>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q1. Define perception. Why is it important in organisational behaviour?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Perception is the process by which individuals organise, select, and interpret sensory information to give meaning to their environment. It is crucial in OB because: (1) behaviour is driven by perceived, not objective, reality; (2) managerial decisions — appraisals, promotions, conflict resolution — are all perception-mediated; (3) understanding perception allows leaders to communicate more effectively by accounting for how their actions will be interpreted, not just intended.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q2. List the three sets of factors that influence perception and give one example of each.</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p><strong>Perceiver factors:</strong> A manager who has had bad experiences with tardiness (past experience) immediately perceives a late employee as unmotivated. <strong>Target factors:</strong> A candidate wearing bright red at an interview is noticed more than others (novelty, visual prominence). <strong>Situational factors:</strong> The same work mistake perceived differently in a high-pressure deadline situation (work setting) vs. a normal day.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q3. How do figure-ground perception principles apply in workplace communication?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>The figure-ground principle shows that perception involves selective attention — the "figure" receives focus while the "ground" recedes. In communication: what the <em>sender</em> considers the main point (figure) may be perceived as background by the <em>receiver</em>, who focuses on different aspects (e.g., tone, context, or implications). This is why clear, explicit communication is critical — what seems obvious to the communicator may not be what the audience perceives as the focal point.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark-complete-bar">
+    <button class="btn-complete" onclick="markComplete('p1', this)">Mark as Complete</button>
+    <span class="complete-msg">Mark this topic done to track your progress.</span>
+  </div>
+</div>
+
+<!-- ══ P2: ATTRIBUTION THEORY ════════════════ -->
+<div id="page-p2" class="page">
+  <div class="page-header">
+    <span class="topic-tag">Module 10 · Perception</span>
+    <h2>Attribution Theory</h2>
+    <p class="lead">When we observe behaviour, we instinctively ask "why?" Attribution theory explains how we answer that question — and where we go wrong.</p>
+  </div>
+
+  <div class="section">
+    <h3>Core Concept</h3>
+    <p>Proposed by <strong>Kelley (1972)</strong>, attribution theory suggests that when we observe someone's behaviour, we try to determine whether it was caused <strong>internally</strong> (by the person's character, choices, ability) or <strong>externally</strong> (by the situation, luck, or environment).</p>
+    <div class="card-grid">
+      <div class="card accent">
+        <span class="card-label">Internal Attribution</span>
+        <h5>Personal Cause</h5>
+        <p>Behaviour is under the personal control of the individual. "She succeeded because she's talented." "He failed because he's lazy."</p>
+      </div>
+      <div class="card">
+        <span class="card-label">External Attribution</span>
+        <h5>Situational Cause</h5>
+        <p>Behaviour is caused by outside forces. "She succeeded because the market was favourable." "He failed because the system was unfair."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Three Key Factors in Attribution</h3>
+    <div class="diagram">
+      <span class="diagram-title">Kelley's Attribution Factors</span>
+      <div class="card-grid" style="margin-top:16px;">
+        <div class="card">
+          <span class="card-label">Factor 1</span>
+          <h5>Distinctiveness</h5>
+          <p>Does the individual behave the same way in other situations? <strong>High distinctiveness</strong> (unusual behaviour) → external cause. <strong>Low distinctiveness</strong> (same everywhere) → internal cause.</p>
+        </div>
+        <div class="card accent">
+          <span class="card-label">Factor 2</span>
+          <h5>Consensus</h5>
+          <p>Do others in the same situation respond the same way? <strong>High consensus</strong> (everyone does it) → external cause. <strong>Low consensus</strong> (only this person) → internal cause.</p>
+        </div>
+        <div class="card">
+          <span class="card-label">Factor 3</span>
+          <h5>Consistency</h5>
+          <p>Does the person behave this way regularly? <strong>High consistency</strong> (always does this) → internal cause. <strong>Low consistency</strong> (rare occurrence) → external cause.</p>
+        </div>
+      </div>
+    </div>
+    <div class="diagram" style="margin-top:8px;">
+      <span class="diagram-title">Restaurant Complaint Example</span>
+      <table class="data-table" style="margin:16px 0 0; border:none;">
+        <thead><tr><th>Factor</th><th>Level</th><th>Observation</th><th>Attribution</th></tr></thead>
+        <tbody>
+          <tr><td>Distinctiveness</td><td>High</td><td>Customer rarely complains elsewhere</td><td>→ External</td></tr>
+          <tr><td>Consensus</td><td>High</td><td>Many customers complained today</td><td>→ External</td></tr>
+          <tr><td>Consistency</td><td>High</td><td>This restaurant gets frequent complaints</td><td>→ External</td></tr>
+          <tr><td colspan="3" style="background:var(--highlight); font-family:var(--mono); font-weight:700;">All three high → External Attribution</td><td style="background:var(--highlight); font-weight:700;">Poor restaurant quality</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Attribution Errors and Biases</h3>
+    <div class="card-grid">
+      <div class="card accent">
+        <span class="card-label">Bias 1</span>
+        <h5>Fundamental Attribution Error</h5>
+        <p>We <strong>overestimate internal factors</strong> and underestimate external factors when judging others. "He's late because he's irresponsible" (ignoring traffic). We blame people's character for situational problems.</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Bias 2</span>
+        <h5>Self-Serving Bias</h5>
+        <p>We attribute our <strong>successes to ourselves</strong> (internal) and our <strong>failures to the situation</strong> (external). "I passed because I'm intelligent. I failed because the exam was unfair."</p>
+      </div>
+    </div>
+    <div class="callout warn">
+      <strong>Managerial Implication</strong>
+      <p>Fundamental attribution error leads managers to blame employees personally for performance problems that are actually systemic. This results in the wrong interventions: individual retraining when process redesign is needed.</p>
+    </div>
+  </div>
+
+  <div class="case-study">
+    <div class="case-study-header">
+      <span class="cs-tag">Case Study</span>
+      <h4>Performance Reviews &amp; Fundamental Attribution Error</h4>
+    </div>
+    <div class="case-study-body">
+      <p>A global consulting firm studied 5,000 performance reviews and found a systematic pattern: when high-performers missed targets, managers attributed it to external factors ("the market was tough"). When the same managers reviewed low-performers missing identical targets, they attributed it to internal factors ("lacks the drive to succeed").</p>
+      <p>This is a classic demonstration of both the <strong>fundamental attribution error</strong> (over-attributing low-performer failures to personality) and a <strong>halo/in-group bias</strong> effect (protecting high-performers through external attributions). The result: systematically unfair performance reviews that reinforced pre-existing hierarchies.</p>
+      <div class="case-insight">
+        <strong>Key Insight</strong>
+        <p>Attribution biases are not neutral — they have real consequences for careers, promotions, and organisational fairness. Structured performance review processes (blind evaluations, calibration sessions) are designed to counteract these systematic errors.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Practice Questions</h3>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q1. What are the three factors Kelley used to determine internal vs external attribution?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p><strong>Distinctiveness:</strong> Is the behaviour unique to this situation (external) or consistent across contexts (internal)? <strong>Consensus:</strong> Do others behave the same way in this situation (external) or only this individual (internal)? <strong>Consistency:</strong> Is this behaviour regular for this person (internal) or an anomaly (external)?</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q2. What is the fundamental attribution error? Give an organisational example.</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>The fundamental attribution error is the tendency to overestimate internal (character) factors and underestimate external (situational) factors when judging others' behaviour. Example: An employee consistently submits work late. The manager concludes "she's just not disciplined" (internal attribution), ignoring that her workload is double the team average, her tools are outdated, and she's covering two roles due to understaffing (external factors).</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q3. How does self-serving bias affect a leader's learning and growth?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Self-serving bias prevents accurate self-assessment. Leaders who attribute all success to their own brilliance and all failure to external circumstances miss crucial feedback loops. They fail to learn from mistakes, repeat poor decisions, and may develop overconfidence. Leaders who counteract this bias — asking "what could I have done differently?" after failures — demonstrate superior long-term performance and adaptability.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark-complete-bar">
+    <button class="btn-complete" onclick="markComplete('p2', this)">Mark as Complete</button>
+    <span class="complete-msg">Mark this topic done to track your progress.</span>
+  </div>
+</div>
+
+<!-- ══ P3: BIASES & DECISION-MAKING ══════════ -->
+<div id="page-p3" class="page">
+  <div class="page-header">
+    <span class="topic-tag">Module 11 · Perception</span>
+    <h2>Perceptual Biases &amp; Decision-Making</h2>
+    <p class="lead">Systematic errors in how we perceive and interpret information distort every decision we make. Knowing these biases is the first step to mitigating them.</p>
+  </div>
+
+  <div class="section">
+    <h3>Common Perceptual Shortcuts</h3>
+    <div class="card-grid">
+      <div class="card">
+        <span class="card-label">Shortcut 1</span>
+        <h5>Selective Perception</h5>
+        <p>We interpret what we see based on our background, experience, and attitudes — filtering out information that doesn't fit our existing views.</p>
+      </div>
+      <div class="card accent">
+        <span class="card-label">Shortcut 2</span>
+        <h5>Halo Effect</h5>
+        <p>Drawing a general impression of a person based on a <strong>single characteristic</strong>. "She's well-dressed → she must be competent."</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Shortcut 3</span>
+        <h5>Contrast Effects</h5>
+        <p>Evaluation of a person is affected by comparison with others recently encountered. A "good" candidate seems exceptional after three poor interviews.</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Shortcut 4</span>
+        <h5>Projection</h5>
+        <p>Attributing our own characteristics to other people. A dishonest manager assumes their team is also dishonest.</p>
+      </div>
+      <div class="card highlight">
+        <span class="card-label">Shortcut 5</span>
+        <h5>Stereotyping</h5>
+        <p>Judging someone based on perception of the group to which they belong — ignoring individual variation.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Self-Fulfilling Prophecy</h3>
+    <div class="diagram">
+      <span class="diagram-title">Pygmalion Effect vs Golem Effect</span>
+      <div class="card-grid" style="margin-top:16px;">
+        <div class="card" style="border:2px solid #2e7d32;">
+          <span class="card-label" style="color:#2e7d32;">Pygmalion Effect (+)</span>
+          <h5>High Expectations → High Performance</h5>
+          <p>When leaders hold high expectations of followers and communicate this belief, followers <em>rise</em> to meet those expectations. The belief creates the reality.</p>
+        </div>
+        <div class="card" style="border:2px solid #c62828;">
+          <span class="card-label" style="color:#c62828;">Golem Effect (−)</span>
+          <h5>Low Expectations → Low Performance</h5>
+          <p>When leaders hold low expectations, they unconsciously communicate this through tone, body language, and reduced support — creating the poor performance they expected.</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout tip">
+      <strong>Management Application</strong>
+      <p>Leaders who genuinely believe in their team's potential — not just performatively — produce measurably better team outcomes. Self-fulfilling prophecy is not mystical; it operates through real behavioural mechanisms: allocation of stretch assignments, coaching investment, feedback frequency.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Impact of Perceptual Biases on Decisions</h3>
+    <table class="data-table">
+      <thead><tr><th>Bias</th><th>How it Distorts Decisions</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Anchoring Bias</strong></td><td>Over-reliance on the first piece of information encountered</td><td>Product shown at ₹10,000 then ₹6,000 seems like a deal — the anchor shapes perceived value</td></tr>
+        <tr><td><strong>Confirmation Bias</strong></td><td>Seek and favour information confirming existing beliefs</td><td>Investor who believes in a stock only reads positive analyst reports</td></tr>
+        <tr><td><strong>Overconfidence Bias</strong></td><td>Excessive belief in one's own answers and abilities</td><td>Entrepreneur ignores market research because they're "sure" the product will succeed</td></tr>
+        <tr><td><strong>Halo Effect</strong></td><td>One positive trait inflates overall assessment</td><td>Hiring manager favours candidate who went to a prestigious university despite mediocre answers</td></tr>
+        <tr><td><strong>Stereotyping</strong></td><td>Group membership overrides individual data</td><td>Assuming an older candidate won't adapt to technology</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="case-study">
+    <div class="case-study-header">
+      <span class="cs-tag">Case Study</span>
+      <h4>Google's "Project Oxygen" — Golem Effect in Management</h4>
+    </div>
+    <div class="case-study-body">
+      <p>Google's Project Oxygen (2008) studied thousands of managers and their teams. A striking finding: managers who scored lowest on a new internal metric for "believing in their team's potential" had significantly lower team performance, higher attrition, and worse psychological safety scores — even when controlling for team composition and task difficulty.</p>
+      <p>Conversely, managers who genuinely held high expectations (not just expressed them) systematically produced higher-performing teams. The mechanism: high-expectation managers gave harder problems, more developmental feedback, and more autonomy — creating the conditions in which teams exceeded expectations.</p>
+      <div class="case-insight">
+        <strong>Key Insight</strong>
+        <p>The Pygmalion/Golem effect is not soft psychology — it translates directly into hard performance metrics. Google's data showed that a manager's genuine belief in their team predicts team performance as strongly as team members' actual skill level.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Practice Questions</h3>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q1. What is the halo effect and how does it affect hiring decisions?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>The halo effect is the tendency to let one positive (or negative) trait colour our overall assessment of a person. In hiring: if a candidate is exceptionally articulate in an interview, interviewers may rate them higher on unrelated dimensions (technical skill, attention to detail) simply because the positive first impression radiates outward. Structured interviews with standardised scoring criteria are designed to counteract halo effects.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q2. Distinguish between Pygmalion and Golem effects with workplace examples.</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p><strong>Pygmalion:</strong> A new team lead tells a junior developer "I think you're ready to lead the next feature release." The developer receives more autonomy and guidance, rises to the challenge, and delivers successfully — fulfilling the leader's positive expectation. <strong>Golem:</strong> A manager consistently assigns the same employee "routine" tasks because she doubts their strategic capability. Denied stretch opportunities, the employee's skills stagnate — confirming the manager's low initial assessment.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q3. How can organisations reduce the impact of perceptual biases in performance management?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Key interventions: <strong>(1) Calibration sessions:</strong> Managers discuss and align ratings in groups, surfacing individual biases. <strong>(2) Structured rating scales:</strong> Behavioural anchors reduce subjectivity. <strong>(3) 360-degree feedback:</strong> Multiple rater perspectives counteract single-rater bias. <strong>(4) Blind evaluations:</strong> Remove identifying information (names, photos) from initial assessments. <strong>(5) Bias training:</strong> Make managers aware of their specific bias patterns using data from past reviews.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark-complete-bar">
+    <button class="btn-complete" onclick="markComplete('p3', this)">Mark as Complete</button>
+    <span class="complete-msg">Mark this topic done to track your progress.</span>
+  </div>
+</div>
+
+<!-- ══ P4: DECISION-MAKING TOOLS ═════════════ -->
+<div id="page-p4" class="page">
+  <div class="page-header">
+    <span class="topic-tag">Module 12 · Perception</span>
+    <h2>Decision-Making: Types &amp; Tools</h2>
+    <p class="lead">From intuition to structured frameworks — effective decision-making requires knowing which approach fits the situation, and which tools sharpen your thinking.</p>
+  </div>
+
+  <div class="section">
+    <h3>Individual Decision-Making</h3>
+    <p>Individual decision-making involves a single person identifying and choosing a course of action from several alternatives based on their own judgment, values, knowledge, and perception. The process includes:</p>
+    <div class="flow">
+      <div class="flow-box light">Recognise Problem</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box light">Gather Info</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box light">Evaluate Options</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Make Choice</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box light">Own Outcome</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Types of Decision-Making</h3>
+    <div class="card-grid">
+      <div class="card accent">
+        <span class="card-label">Type 1</span>
+        <h5>Rational</h5>
+        <p>Step-by-step logical approach: define problem → identify criteria → weigh criteria → generate alternatives → evaluate → select best. Used for high-stakes, structured decisions with available data.</p>
+        <p><em>Example: A company comparing cost, quality and ROI before selecting a supplier.</em></p>
+      </div>
+      <div class="card">
+        <span class="card-label">Type 2</span>
+        <h5>Intuitive</h5>
+        <p>Based on instincts and pattern recognition from past experience. Fast, tacit, and often surprisingly accurate for experts in their domain.</p>
+        <p><em>Example: Experienced manager quickly senses which candidate is suitable in an interview.</em></p>
+      </div>
+      <div class="card">
+        <span class="card-label">Type 3</span>
+        <h5>Emotional</h5>
+        <p>Influenced by feelings, biases, and mood states. Common, often unconscious, and can produce poor outcomes when unrecognised.</p>
+        <p><em>Example: Buying an expensive product due to excitement or brand attachment.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Perception and Decision-Making Link</h3>
+    <div class="callout">
+      <strong>Core Principle</strong>
+      <p>Decisions are made by interpreting and evaluating information. The perceiver's frame determines: which data sources are consulted, which data are considered relevant, and how alternatives are framed. Two rational decision-makers with identical data but different perceptual frameworks will make different decisions.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Decision-Making Tools</h3>
+    <div class="card-grid">
+      <div class="card"><span class="card-label">Tool 1</span><h5>SWOT Analysis</h5><p>Maps Strengths, Weaknesses, Opportunities, Threats. Useful for strategic decisions under uncertainty.</p></div>
+      <div class="card highlight"><span class="card-label">Tool 2</span><h5>Cost-Benefit Analysis</h5><p>Quantifies expected benefits against costs. Brings financial rigour to trade-off decisions.</p></div>
+      <div class="card"><span class="card-label">Tool 3</span><h5>Pros &amp; Cons List</h5><p>Simple enumeration of advantages and disadvantages. Best for low-stakes, rapid decisions.</p></div>
+      <div class="card"><span class="card-label">Tool 4</span><h5>Pareto Analysis</h5><p>80/20 rule: focus on the 20% of causes generating 80% of problems. Prioritisation tool.</p></div>
+      <div class="card accent"><span class="card-label">Tool 5</span><h5>Decision Matrix</h5><p>Evaluates options against weighted criteria systematically. Reduces intuitive bias in multi-factor decisions.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Six Thinking Hats (Edward de Bono)</h3>
+    <p>A structured framework for parallel thinking — each "hat" represents one perspective, ensuring a decision is examined from all angles before commitment:</p>
+    <div class="hat-grid">
+      <div class="hat-card hat-white">
+        <div class="hat-icon">🎩</div>
+        <div class="hat-name">White Hat</div>
+        <p>Facts and data only. What do we know? What information do we need? No opinions here.</p>
+      </div>
+      <div class="hat-card hat-yellow">
+        <div class="hat-icon">🟡</div>
+        <div class="hat-name">Yellow Hat</div>
+        <p>Optimism and benefits. What is the best possible outcome? What value does this create?</p>
+      </div>
+      <div class="hat-card hat-black">
+        <div class="hat-icon">⚫</div>
+        <div class="hat-name">Black Hat</div>
+        <p>Caution and risk. What can go wrong? What are the weaknesses and dangers?</p>
+      </div>
+      <div class="hat-card hat-red">
+        <div class="hat-icon">❤️</div>
+        <div class="hat-name">Red Hat</div>
+        <p>Emotions and intuition. What does your gut say? What are the feelings behind this?</p>
+      </div>
+      <div class="hat-card hat-green">
+        <div class="hat-icon">🟢</div>
+        <div class="hat-name">Green Hat</div>
+        <p>Creativity and alternatives. What other approaches exist? What new ideas are possible?</p>
+      </div>
+      <div class="hat-card hat-blue">
+        <div class="hat-icon">🔵</div>
+        <div class="hat-name">Blue Hat</div>
+        <p>Process and control. How should we think about this? Manages the thinking process itself.</p>
+      </div>
+    </div>
+    <div class="callout tip">
+      <strong>Why Six Thinking Hats Works</strong>
+      <p>By separating thinking types, groups avoid the common failure of mixing fact, emotion, and criticism simultaneously — which produces confused, emotionally charged debates. Each hat is "worn" sequentially by the whole group, ensuring all perspectives are explored without conflict.</p>
+    </div>
+  </div>
+
+  <div class="case-study">
+    <div class="case-study-header">
+      <span class="cs-tag">Case Study</span>
+      <h4>NASA and the Challenger Disaster — Failure of Rational Decision-Making</h4>
+    </div>
+    <div class="case-study-body">
+      <p>The 1986 Space Shuttle Challenger disaster is one of history's most analysed decision-making failures. Despite engineers' rational data showing O-ring failure risk in cold temperatures, the launch decision was ultimately driven by: confirmation bias (management focused on data confirming readiness), availability bias (no previous O-ring catastrophe made one feel unlikely), and social pressure from NASA's schedule commitments.</p>
+      <p>Had the Six Thinking Hats framework been applied formally — forcing explicit Black Hat thinking (what can go wrong?) and White Hat thinking (what does the temperature data actually show?) — the structural issues preventing safety concerns from reaching decision-makers might have been overcome.</p>
+      <div class="case-insight">
+        <strong>Key Insight</strong>
+        <p>Even technically sophisticated organisations fail at decision-making when perceptual biases, social pressures, and poor process override rational analysis. Structured decision frameworks are not bureaucratic overhead — they save lives.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Practice Questions</h3>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q1. Compare rational, intuitive, and emotional decision-making. When is each appropriate?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p><strong>Rational:</strong> Best for complex, high-stakes, reversible decisions with available data (e.g., supplier selection, investment decisions). <strong>Intuitive:</strong> Best for time-pressured, expert-domain decisions where pattern recognition is reliable (e.g., emergency medical decisions, chess moves). <strong>Emotional:</strong> Rarely optimal alone, but emotional signals (discomfort with an ethical grey area, excitement about creative work) can be valuable input when consciously integrated — not when they unconsciously override logic.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q2. Explain how the Six Thinking Hats technique improves group decision-making.</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Six Thinking Hats improves group decisions by: (1) Ensuring all dimensions (facts, risks, benefits, creativity, emotions, process) are explicitly considered — teams can't skip the Black Hat (risk analysis) because it's uncomfortable. (2) Reducing ego-driven conflict — everyone is wearing the same hat simultaneously, so criticism is directed at ideas not people. (3) Expanding the solution space — Green Hat thinking pushes beyond the first solution to explore alternatives. (4) Managing meeting dynamics — the Blue Hat structures the process, preventing one voice from dominating.</p>
+      </div>
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h5>Q3. How does perception link to the quality of decisions made in organisations?</h5>
+        <span class="accordion-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Perception is the gateway through which all information enters decision-making. Poor perception → poor decisions: (1) Selective perception causes decision-makers to miss critical signals. (2) Halo effects distort evaluation of options. (3) Stereotyping limits consideration of diverse alternatives. (4) Anchoring bias causes over-reliance on initial information. Improving perceptual awareness — through diverse teams, structured processes, and deliberate data collection — is therefore one of the highest-leverage ways to improve decision quality.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark-complete-bar">
+    <button class="btn-complete" onclick="markComplete('p4', this)">Mark as Complete</button>
+    <span class="complete-msg">All 12 modules complete! 🎉</span>
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- ─── FOOTER ──────────────────────────────── -->
+<footer style="
+  margin-left: var(--sidebar-w);
+  padding: 20px 56px;
+  border-top: 2px solid var(--ink);
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+  text-align: center;
+  transition: margin-left 0.3s cubic-bezier(.4,0,.2,1);
+" id="site-footer">
+  &copy; WISTAAR 2025 &nbsp;|&nbsp;
+  <a href="https://github.com/peri-perii/lsec.git" target="_blank" style="
+    color: var(--ink-muted);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    transition: color 0.15s;
+  " onmouseover="this.style.color='#0A0A0A'" onmouseout="this.style.color=''">
+    GitHub ↗
+  </a>
+</footer>
+
+<script>
+// ─── STATE ──────────────────────────────────
+const completed = new Set();
+const totalPages = 12;
+const pageIds = ['l1','l2','l3','l4','l5','c1','c2','c3','p1','p2','p3','p4'];
+let currentPage = 'home';
+let sidebarCollapsed = false;
+
+// ─── NAVIGATION ─────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+
+  const navItem = document.querySelector(`[data-page="${id}"]`);
+  if (navItem) navItem.classList.add('active');
+
+  currentPage = id;
+  window.scrollTo(0, 0);
+  updateProgressBar();
+  closeMobile();
+}
+
+// ─── PROGRESS BAR ───────────────────────────
+function updateProgressBar() {
+  const pct = (completed.size / totalPages) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('stat-pct').textContent = Math.round(pct) + '%';
+  document.getElementById('stat-count').textContent = completed.size + ' / ' + totalPages + ' sections';
+}
+
+// ─── MARK COMPLETE ───────────────────────────
+function markComplete(pageId, btn) {
+  if (completed.has(pageId)) return;
+  completed.add(pageId);
+  btn.textContent = '✓ Completed';
+  btn.classList.add('done');
+
+  const navItem = document.querySelector(`[data-page="${pageId}"]`);
+  if (navItem) navItem.classList.add('completed');
+
+  updateProgressBar();
+
+  // Auto-advance to next page
+  const idx = pageIds.indexOf(pageId);
+  if (idx !== -1 && idx < pageIds.length - 1) {
+    const nextId = pageIds[idx + 1];
+    const nextLabel = document.querySelector(`[data-page="${nextId}"]`)?.querySelector('span:not(.nav-num):not(.nav-done)')?.closest('.nav-item')?.textContent?.trim();
+    const completeMsg = btn.closest('.mark-complete-bar').querySelector('.complete-msg');
+    if (completeMsg) completeMsg.textContent = '✓ Saved! Next: navigate to the next topic.';
+  }
+}
+
+// ─── ACCORDION ──────────────────────────────
+function toggleAccordion(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+
+  // Close all in same accordion
+  const accordion = header.closest('.accordion');
+  accordion.querySelectorAll('.accordion-header.open').forEach(h => {
+    h.classList.remove('open');
+    h.nextElementSibling.classList.remove('open');
+  });
+
+  if (!isOpen) {
+    header.classList.add('open');
+    body.classList.add('open');
+  }
+}
+
+// ─── SIDEBAR ────────────────────────────────
+function toggleSidebar() {
+  sidebarCollapsed = !sidebarCollapsed;
+  document.getElementById('sidebar').classList.toggle('collapsed', sidebarCollapsed);
+  document.getElementById('main').classList.toggle('expanded', sidebarCollapsed);
+  document.getElementById('sidebar-toggle').textContent = sidebarCollapsed ? '▶' : '◀';
+  document.getElementById('site-footer').style.marginLeft = sidebarCollapsed ? '48px' : 'var(--sidebar-w)';
+}
+
+function toggleMobile() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  sidebar.classList.toggle('mobile-open');
+  overlay.classList.toggle('show');
+}
+
+function closeMobile() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// ─── SCROLL PROGRESS ────────────────────────
+window.addEventListener('scroll', () => {
+  const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+  // Only show reading progress if no completed pages
+  if (completed.size === 0) {
+    document.getElementById('progress-bar').style.width = Math.min(scrolled * 0.1, 5) + '%';
+  }
+});
+
+// ─── INIT ────────────────────────────────────
+updateProgressBar();
+</script>
+</body>
+</html>
