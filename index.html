@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
 <style>
-
   :root {
     --bg: #F5F4F0;
     --ink: #0A0A0A;
@@ -755,7 +754,7 @@
 <nav id="sidebar">
   <button id="sidebar-toggle" onclick="toggleSidebar()" title="Toggle sidebar">◀</button>
   <div id="sidebar-header">
-    <span class="site-label">Educational Resource</span>
+    <span class="site-label">© WISTAAR 2025</span>
     <h1>Management &amp; Leadership</h1>
   </div>
   <div id="sidebar-nav">
@@ -2414,6 +2413,23 @@
 </main>
 </div>
 
+<!-- ─── FOOTER ──────────────────────────────── -->
+<footer style="
+  margin-left: var(--sidebar-w);
+  padding: 20px 56px;
+  border-top: 2px solid var(--ink);
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+  text-align: center;
+  transition: margin-left 0.3s cubic-bezier(.4,0,.2,1);
+" id="site-footer">
+  &copy; WISTAAR 2025
+</footer>
+
 <script>
 // ─── STATE ──────────────────────────────────
 const completed = new Set();
@@ -2493,6 +2509,7 @@ function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('collapsed', sidebarCollapsed);
   document.getElementById('main').classList.toggle('expanded', sidebarCollapsed);
   document.getElementById('sidebar-toggle').textContent = sidebarCollapsed ? '▶' : '◀';
+  document.getElementById('site-footer').style.marginLeft = sidebarCollapsed ? '48px' : 'var(--sidebar-w)';
 }
 
 function toggleMobile() {
@@ -2517,8 +2534,9 @@ window.addEventListener('scroll', () => {
     document.getElementById('progress-bar').style.width = Math.min(scrolled * 0.1, 5) + '%';
   }
 });
+
+// ─── INIT ────────────────────────────────────
 updateProgressBar();
 </script>
-
 </body>
 </html>
