@@ -3382,19 +3382,25 @@ v₄ [  1  0  1  0 ]
       </div>
     </div>
 
-    <div class="donate-container">
+    <div class="donate-grid">
+      <!-- Card 1: UPI Donation with QR switcher -->
       <div class="donate-card">
-        <div class="donate-icon">❤️</div>
-        <h3 class="donate-title">Support Our Work</h3>
+        <div class="donate-icon">⚡</div>
+        <h3 class="donate-title">UPI Donation</h3>
         <p class="donate-desc">
-          If this study reference helped you prepare for your exams and tutorials, consider making a contribution. Your donations support server hosting and content development to keep these guides free and up-to-date.
+          Scan the QR code or copy either of our UPI addresses to pay instantly from GPay, PhonePe, Paytm, or BHIM.
         </p>
         
+        <div class="qr-tabs">
+          <button class="qr-tab-btn active" data-upi="7225834789@ybl" data-qr="https://api.qrserver.com/v1/create-qr-code/?size=220x220&amp;data=upi%3A%2F%2Fpay%3Fpa%3D7225834789%40ybl%26pn%3DWistaar%2520DM%2520Support" aria-label="Use Primary UPI" title="Use Primary UPI">Primary</button>
+          <button class="qr-tab-btn" data-upi="7067292708@ybl" data-qr="https://api.qrserver.com/v1/create-qr-code/?size=220x220&amp;data=upi%3A%2F%2Fpay%3Fpa%3D7067292708%40ybl%26pn%3DWistaar%2520DM%2520Support" aria-label="Use Secondary UPI" title="Use Secondary UPI">Secondary</button>
+        </div>
+
         <div class="upi-box">
-          <div class="upi-label">UPI Address</div>
+          <div class="upi-label">UPI Address (<span id="upiLabel">Primary</span>)</div>
           <div class="upi-input-group">
             <code class="upi-id" id="upiId">7225834789@ybl</code>
-            <button class="copy-btn" id="copyUpiBtn" aria-label="Copy UPI ID" title="Copy UPI ID">
+            <button class="copy-btn" id="copyUpiBtn" data-clipboard-target="#upiId" aria-label="Copy UPI ID" title="Copy UPI ID">
               <span class="copy-icon">📋</span>
               <span class="copy-text">Copy</span>
             </button>
@@ -3402,9 +3408,8 @@ v₄ [  1  0  1  0 ]
         </div>
 
         <div class="qr-container">
-          <div class="qr-title">Scan QR Code to Pay</div>
           <div class="qr-box">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi%3A%2F%2Fpay%3Fpa%3D7225834789%40ybl%26pn%3DWistaar%2520DM%2520Support" alt="Donation QR Code" class="qr-image" />
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&amp;data=upi%3A%2F%2Fpay%3Fpa%3D7225834789%40ybl%26pn%3DWistaar%2520DM%2520Support" alt="Donation QR Code" id="qrImage" class="qr-image" />
           </div>
           <div class="qr-apps">
             <span class="app-tag">GPay</span>
@@ -3414,6 +3419,60 @@ v₄ [  1  0  1  0 ]
           </div>
         </div>
       </div>
+
+      <!-- Card 2: PayPal Payment -->
+      <div class="donate-card">
+        <div class="donate-icon">🌐</div>
+        <h3 class="donate-title">PayPal Support</h3>
+        <p class="donate-desc">
+          For international contributions, feel free to support us on PayPal either via direct link or by copying the username.
+        </p>
+
+        <div class="upi-box">
+          <div class="upi-label">PayPal Username</div>
+          <div class="upi-input-group">
+            <code class="upi-id" id="paypalUsername">@periiperi</code>
+            <button class="copy-btn" id="copyPaypalBtn" data-clipboard-target="#paypalUsername" aria-label="Copy PayPal Username" title="Copy PayPal Username">
+              <span class="copy-icon">📋</span>
+              <span class="copy-text">Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="paypal-link-box">
+          <a href="https://paypal.me/periiperi" target="_blank" rel="noopener noreferrer" class="donate-link-btn" title="Open paypal.me/periiperi">
+            <span>Pay on PayPal.me</span>
+            <span class="link-arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 3: Email / Direct Queries -->
+      <div class="donate-card">
+        <div class="donate-icon">✉️</div>
+        <h3 class="donate-title">Direct Inquiry</h3>
+        <p class="donate-desc">
+          Have an alternate payment method in mind, questions about contributions, or interest in sponsorship? Let's connect.
+        </p>
+
+        <div class="upi-box">
+          <div class="upi-label">Contact Email</div>
+          <div class="upi-input-group">
+            <code class="upi-id" id="contactEmail">priyamm2804@gmail.com</code>
+            <button class="copy-btn" id="copyEmailBtn" data-clipboard-target="#contactEmail" aria-label="Copy Email" title="Copy Email">
+              <span class="copy-icon">📋</span>
+              <span class="copy-text">Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="paypal-link-box">
+          <a href="mailto:priyamm2804@gmail.com?subject=Wistaar%20Support%20/%20Donation%20Inquiry" class="donate-link-btn" title="Email priyamm2804@gmail.com">
+            <span>Send an Email</span>
+            <span class="link-arrow">→</span>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -3421,6 +3480,17 @@ v₄ [  1  0  1  0 ]
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-line"></div>
+    <div class="footer-socials">
+      <a href="https://github.com/peri-perii" target="_blank" rel="noopener noreferrer" class="social-link" title="Follow peri-perii on GitHub">
+        <span class="social-icon">🐱</span> GitHub
+      </a>
+      <a href="https://www.linkedin.com/company/wistaarr" target="_blank" rel="noopener noreferrer" class="social-link" title="Wistaar LinkedIn Page">
+        <span class="social-icon">🏢</span> LinkedIn (Wistaar)
+      </a>
+      <a href="https://linkedin.com/in/priyam2804" target="_blank" rel="noopener noreferrer" class="social-link" title="Priyam LinkedIn Profile">
+        <span class="social-icon">👤</span> LinkedIn (Priyam)
+      </a>
+    </div>
     <div class="footer-bottom">
       <p class="footer-wistaar">@wistaar</p>
     </div>
@@ -3440,12 +3510,53 @@ v₄ [  1  0  1  0 ]
       <button class="popover-close" id="popoverCloseBtn" aria-label="Close popover">&times;</button>
     </div>
     <p class="popover-desc">Help keep this guide fast, updated, and 100% ad-free!</p>
-    <div class="popover-upi">
-      <code id="floatUpiId">7225834789@ybl</code>
-      <button class="popover-copy-btn" id="floatCopyBtn" title="Copy UPI ID" aria-label="Copy UPI ID">
-        <span class="float-copy-icon">📋</span>
-      </button>
+    
+    <div class="popover-options">
+      <!-- Option 1: Primary UPI -->
+      <div class="popover-option-row">
+        <div class="option-details">
+          <span class="option-name">Primary UPI</span>
+          <code class="option-value" id="popoverUpi1">7225834789@ybl</code>
+        </div>
+        <button class="popover-copy-btn float-copy-action" data-clipboard-target="#popoverUpi1" title="Copy Primary UPI ID" aria-label="Copy Primary UPI ID">
+          <span class="float-copy-icon">📋</span>
+        </button>
+      </div>
+
+      <!-- Option 2: Secondary UPI -->
+      <div class="popover-option-row">
+        <div class="option-details">
+          <span class="option-name">Secondary UPI</span>
+          <code class="option-value" id="popoverUpi2">7067292708@ybl</code>
+        </div>
+        <button class="popover-copy-btn float-copy-action" data-clipboard-target="#popoverUpi2" title="Copy Secondary UPI ID" aria-label="Copy Secondary UPI ID">
+          <span class="float-copy-icon">📋</span>
+        </button>
+      </div>
+
+      <!-- Option 3: PayPal -->
+      <div class="popover-option-row">
+        <div class="option-details">
+          <span class="option-name">PayPal</span>
+          <code class="option-value" id="popoverPaypal">@periiperi</code>
+        </div>
+        <button class="popover-copy-btn float-copy-action" data-clipboard-target="#popoverPaypal" title="Copy PayPal Username" aria-label="Copy PayPal Username">
+          <span class="float-copy-icon">📋</span>
+        </button>
+      </div>
+
+      <!-- Option 4: Email -->
+      <div class="popover-option-row">
+        <div class="option-details">
+          <span class="option-name">Email</span>
+          <code class="option-value" id="popoverEmail">priyamm2804@gmail.com</code>
+        </div>
+        <button class="popover-copy-btn float-copy-action" data-clipboard-target="#popoverEmail" title="Copy Email Address" aria-label="Copy Email Address">
+          <span class="float-copy-icon">📋</span>
+        </button>
+      </div>
     </div>
+    
     <a href="#donate" class="popover-more-link" id="popoverMoreLink">Scan QR & More Options →</a>
   </div>
 </div>

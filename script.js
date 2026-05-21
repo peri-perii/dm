@@ -142,30 +142,85 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ── Copy UPI ID ──
+// ── Copy Clipboard Functionality ──
 document.addEventListener('DOMContentLoaded', () => {
-  const copyUpiBtn = document.getElementById('copyUpiBtn');
-  if (copyUpiBtn) {
-    copyUpiBtn.addEventListener('click', () => {
-      const upiId = document.getElementById('upiId').textContent.trim();
-      navigator.clipboard.writeText(upiId).then(() => {
-        const copyText = copyUpiBtn.querySelector('.copy-text');
-        const copyIcon = copyUpiBtn.querySelector('.copy-icon');
+  // Main copy buttons (.copy-btn)
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetSelector = btn.getAttribute('data-clipboard-target');
+      const targetEl = document.querySelector(targetSelector);
+      if (!targetEl) return;
+      
+      const textToCopy = targetEl.textContent.trim();
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const copyText = btn.querySelector('.copy-text');
+        const copyIcon = btn.querySelector('.copy-icon');
         
-        const originalText = copyText.textContent;
-        const originalIcon = copyIcon.textContent;
+        const originalText = copyText ? copyText.textContent : 'Copy';
+        const originalIcon = copyIcon ? copyIcon.textContent : '📋';
         
-        copyText.textContent = 'Copied!';
-        copyIcon.textContent = '✓';
-        copyUpiBtn.classList.add('copied');
+        if (copyText) copyText.textContent = 'Copied!';
+        if (copyIcon) copyIcon.textContent = '✓';
+        btn.classList.add('copied');
         
         setTimeout(() => {
-          copyText.textContent = originalText;
-          copyIcon.textContent = originalIcon;
-          copyUpiBtn.classList.remove('copied');
+          if (copyText) copyText.textContent = originalText;
+          if (copyIcon) copyIcon.textContent = originalIcon;
+          btn.classList.remove('copied');
         }, 2000);
       }).catch(err => {
-        console.error('Failed to copy text: ', err);
+        console.error('Failed to copy: ', err);
+      });
+    });
+  });
+
+  // Floating popover copy buttons (.float-copy-action)
+  document.querySelectorAll('.float-copy-action').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetSelector = btn.getAttribute('data-clipboard-target');
+      const targetEl = document.querySelector(targetSelector);
+      if (!targetEl) return;
+      
+      const textToCopy = targetEl.textContent.trim();
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const icon = btn.querySelector('.float-copy-icon');
+        const originalIcon = icon ? icon.textContent : '📋';
+        
+        if (icon) icon.textContent = '✓';
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+          if (icon) icon.textContent = originalIcon;
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy floating data: ', err);
+      });
+    });
+  });
+});
+
+// ── UPI QR Code Tab Switcher ──
+document.addEventListener('DOMContentLoaded', () => {
+  const qrTabs = document.querySelectorAll('.qr-tab-btn');
+  const qrImage = document.getElementById('qrImage');
+  const upiIdText = document.getElementById('upiId');
+  const upiLabel = document.getElementById('upiLabel');
+
+  if (qrTabs.length && qrImage && upiIdText) {
+    qrTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        qrTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const newUpi = tab.getAttribute('data-upi');
+        const newQr = tab.getAttribute('data-qr');
+        const typeLabel = tab.textContent.trim();
+
+        upiIdText.textContent = newUpi;
+        qrImage.src = newQr;
+        if (upiLabel) upiLabel.textContent = typeLabel;
       });
     });
   }
@@ -176,8 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('floatingDonateContainer');
   const btn       = document.getElementById('floatingDonateBtn');
   const closeBtn  = document.getElementById('popoverCloseBtn');
-  const copyBtn   = document.getElementById('floatCopyBtn');
-  const upiCode   = document.getElementById('floatUpiId');
   const moreLink  = document.getElementById('popoverMoreLink');
 
   if (!container || !btn) return;
@@ -215,28 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (popover) {
     popover.addEventListener('click', (e) => {
       e.stopPropagation();
-    });
-  }
-
-  // Popover UPI Copy
-  if (copyBtn && upiCode) {
-    copyBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const upiId = upiCode.textContent.trim();
-      navigator.clipboard.writeText(upiId).then(() => {
-        const icon = copyBtn.querySelector('.float-copy-icon');
-        const originalIcon = icon.textContent;
-        
-        icon.textContent = '✓';
-        copyBtn.classList.add('copied');
-        
-        setTimeout(() => {
-          icon.textContent = originalIcon;
-          copyBtn.classList.remove('copied');
-        }, 2000);
-      }).catch(err => {
-        console.error('Failed to copy floating UPI ID: ', err);
-      });
     });
   }
 });
