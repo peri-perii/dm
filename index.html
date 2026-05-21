@@ -77,158 +77,1388 @@
       <div class="section-number">01</div>
       <div>
         <h2 class="section-title">Previous Year Questions</h2>
-        <p class="section-subtitle">T-3 Even Semester 2024 · Max Duration: 2 Hours · Max Marks: 35</p>
+        <p class="section-subtitle">Solved JUET T-3 Exam Reference Guides · MA105 / MA211</p>
       </div>
     </div>
 
-    <!-- Q1 -->
-    <div class="question-card" id="pyq-q1">
-      <div class="q-header">
-        <span class="q-number">Q1</span>
-        <div class="q-meta"><span class="co-badge">CO5</span></div>
+    <!-- ═══ TAB CONTROL ═══ -->
+    <div class="pyq-tabs">
+      <button class="pyq-tab-btn active" data-target="pyq-2024">T-3 Even Sem 2024</button>
+      <button class="pyq-tab-btn" data-target="pyq-2025">T-3 Even Sem 2025</button>
+    </div>
+
+    <!-- ═══ TAB 1: 2024 PAPER ═══ -->
+    <div class="pyq-tab-content active" id="pyq-2024">
+      <div class="paper-meta">
+        <span class="meta-item"><strong>University:</strong> JUET, Guna</span>
+        <span class="meta-item"><strong>Duration:</strong> 2 Hours</span>
+        <span class="meta-item"><strong>Marks:</strong> 35</span>
+        <span class="meta-item"><strong>Syllabus:</strong> Graph Theory, FSM, Huffman, Kruskal</span>
       </div>
-      <div class="q-body">
-        <div class="sub-question">
-          <span class="sub-label">(a) [3 Marks]</span>
-          <p>A networking company uses a compression technique to encode the message before transmitting over the network. Suppose the message contains the following characters with their frequency:</p>
-          <div class="table-wrap">
-            <table class="dm-table">
-              <thead><tr><th>Character</th><th>a</th><th>b</th><th>c</th><th>d</th><th>e</th><th>f</th><th>g</th><th>h</th><th>k</th></tr></thead>
-              <tbody><tr><td>Frequency</td><td>4</td><td>3</td><td>2</td><td>7</td><td>14</td><td>9</td><td>13</td><td>11</td><td>5</td></tr></tbody>
-            </table>
+
+      <!-- Q1 -->
+      <div class="question-card" id="pyq-q1">
+        <div class="q-header">
+          <span class="q-number">Q1</span>
+          <div class="q-meta"><span class="co-badge">CO5</span><span class="marks-badge">3+4 Marks</span></div>
+        </div>
+        <div class="q-body">
+          <div class="sub-question">
+            <span class="sub-label">(a) [3 Marks]</span>
+            <p>A networking company uses a compression technique to encode the message before transmitting over the network. Suppose the message contains the following characters with their frequency:</p>
+            <div class="table-wrap">
+              <table class="dm-table">
+                <thead><tr><th>Character</th><th>a</th><th>b</th><th>c</th><th>d</th><th>e</th><th>f</th><th>g</th><th>h</th><th>k</th></tr></thead>
+                <tbody><tr><td>Frequency</td><td>4</td><td>3</td><td>2</td><td>7</td><td>14</td><td>9</td><td>13</td><td>11</td><td>5</td></tr></tbody>
+              </table>
+            </div>
+            <p>Construct the Huffman tree for the character. What is the average number of bits used to encode a character?</p>
+            <div class="hint-box">
+              <span class="hint-icon">💡</span>
+              <strong>Approach:</strong> Sort by frequency → Build min-heap → Merge two smallest repeatedly → Assign 0/1 to branches → Calculate weighted average = Σ(freq × code_length) / Σfreq
+            </div>
           </div>
-          <p>Construct the Huffman tree for the character. What is the average number of bits used to encode a character?</p>
-          <div class="hint-box">
-            <span class="hint-icon">💡</span>
-            <strong>Approach:</strong> Sort by frequency → Build min-heap → Merge two smallest repeatedly → Assign 0/1 to branches → Calculate weighted average = Σ(freq × code_length) / Σfreq
+
+          <div class="sub-question">
+            <span class="sub-label">(b) [4 Marks]</span>
+            <p>Following figure shows the floor plan of a haunted house. A person enters it through the front door and the door locks behind him. In fact, every time he passes through a door, it locks behind him. Is it possible for him to visit every room exactly once and exit through the back door?</p>
+            <div class="info-box">
+              <strong>Key Concept:</strong> Model rooms as vertices and doors as edges. Check for Eulerian Path: exactly 0 or 2 vertices of odd degree required. Count degrees of each vertex (room).
+            </div>
           </div>
         </div>
+      </div>
 
-        <div class="sub-question">
-          <span class="sub-label">(b) [4 Marks]</span>
-          <p>Following figure shows the floor plan of a haunted house. A person enters it through the front door and the door locks behind him. In fact, every time he passes through a door, it locks behind him. Is it possible for him to visit every room exactly once and exit through the back door?</p>
-          <div class="info-box">
-            <strong>Key Concept:</strong> Model rooms as vertices and doors as edges. Check for Eulerian Path: exactly 0 or 2 vertices of odd degree required. Count degrees of each vertex (room).
+      <!-- Q2 -->
+      <div class="question-card" id="pyq-q2">
+        <div class="q-header">
+          <span class="q-number">Q2</span>
+          <div class="q-meta"><span class="co-badge">CO5</span><span class="marks-badge">3+4 Marks</span></div>
+        </div>
+        <div class="q-body">
+          <div class="sub-question">
+            <span class="sub-label">(a) [3 Marks]</span>
+            <p>Design a finite state automata that recognize the set of bit strings that ends with only one '0'.</p>
+            <div class="hint-box">
+              <span class="hint-icon">💡</span>
+              <strong>Solution:</strong> States: q₀ (start), q₁ (saw one 0), q₂ (saw 00 or more). Accept state: q₁. Transitions: q₀→q₁ on 0, q₀→q₀ on 1, q₁→q₁ on … (see FSM section for full diagram)
+            </div>
+          </div>
+          <div class="sub-question">
+            <span class="sub-label">(b) [4 Marks]</span>
+            <p>Construct a vending machine that accepts Rs 5, Rs 10, and Rs 25, when a total of Rs 30 or more has been deposited, the machine immediately returns the amount in excess of Rs 30. When Rs 30 has been deposited and any excess refunded, the customer can push an orange button and receive an orange juice or push a red button and receive an apple juice. Design the state table for the machine.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question-card" id="pyq-q3">
+        <div class="q-header">
+          <span class="q-number">Q3</span>
+          <div class="q-meta"><span class="co-badge">CO3</span><span class="marks-badge">3+4 Marks</span></div>
+        </div>
+        <div class="q-body">
+          <div class="sub-question">
+            <span class="sub-label">(a) [3 Marks]</span>
+            <p>Sketch the ordered rooted tree corresponding to the arithmetic expression <code class="inline-code">* / 9 3 + 2 4 − 7 6</code> written in prefix notation. Then find its infix notation. Also find its value.</p>
+            <div class="solution-steps">
+              <div class="step"><span class="step-num">1</span><span>Parse prefix: * [/93] [+2[4-76]]</span></div>
+              <div class="step"><span class="step-num">2</span><span>Root = *, left child = /, right child = +</span></div>
+              <div class="step"><span class="step-num">3</span><span>Infix: (9/3) * (2 + (4 − 7×6)) → evaluate step by step</span></div>
+              <div class="step"><span class="step-num">4</span><span>9/3=3, 7×6=42, 4−42=−38, 2+(−38)=−36, 3×(−36) = <strong>−108</strong></span></div>
+            </div>
+          </div>
+          <div class="sub-question">
+            <span class="sub-label">(b) [4 Marks]</span>
+            <p>A university is offering eight courses during its summer session. The table shows which pairs of courses have one or more students in common. Only two air-conditioned lecture halls are available at any one time. Schedule the final examination of the university.</p>
+            <div class="table-wrap">
+              <table class="dm-table">
+                <thead><tr><th>Course</th><th>F</th><th>M</th><th>H</th><th>P</th><th>E</th><th>I</th><th>S</th><th>C</th></tr></thead>
+                <tbody>
+                  <tr><td>French (F)</td><td>—</td><td>x</td><td></td><td></td><td>x</td><td></td><td>x</td><td></td></tr>
+                  <tr><td>Math (M)</td><td>x</td><td>—</td><td></td><td></td><td></td><td>x</td><td></td><td></td></tr>
+                  <tr><td>History (H)</td><td></td><td></td><td>—</td><td>x</td><td></td><td>x</td><td>x</td><td></td></tr>
+                  <tr><td>Philosophy (P)</td><td>x</td><td></td><td>x</td><td>—</td><td></td><td></td><td></td><td></td></tr>
+                  <tr><td>English (E)</td><td>x</td><td>x</td><td></td><td></td><td>—</td><td>x</td><td></td><td></td></tr>
+                  <tr><td>Italian (I)</td><td></td><td>x</td><td>x</td><td></td><td>x</td><td>—</td><td></td><td></td></tr>
+                  <tr><td>Spanish (S)</td><td>x</td><td></td><td>x</td><td></td><td></td><td></td><td>—</td><td>x</td></tr>
+                  <tr><td>Chemistry (C)</td><td></td><td></td><td></td><td></td><td></td><td></td><td>x</td><td>—</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="info-box"><strong>Graph Coloring Approach:</strong> Model as graph, apply Welch-Powell. Slot 1: F,H,I → Slot 2: M,P,S → Slot 3: E,C → Schedule requires 3 time slots.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question-card" id="pyq-q4">
+        <div class="q-header">
+          <span class="q-number">Q4</span>
+          <div class="q-meta"><span class="co-badge">CO3</span><span class="co-badge">CO2</span><span class="marks-badge">3+4 Marks</span></div>
+        </div>
+        <div class="q-body">
+          <div class="sub-question">
+            <span class="sub-label">(a) [3 Marks]</span>
+            <p>Show that isomorphism of simple graphs is an equivalence relation.</p>
+            <div class="solution-steps">
+              <div class="step"><span class="step-num">R</span><span><strong>Reflexive:</strong> f: V→V (identity) is an isomorphism. G ≅ G ✓</span></div>
+              <div class="step"><span class="step-num">S</span><span><strong>Symmetric:</strong> If f: G₁→G₂ is isomorphism, then f⁻¹: G₂→G₁ is also isomorphism ✓</span></div>
+              <div class="step"><span class="step-num">T</span><span><strong>Transitive:</strong> If G₁≅G₂ via f, G₂≅G₃ via g, then g∘f: G₁→G₃ is isomorphism ✓</span></div>
+            </div>
+          </div>
+          <div class="sub-question">
+            <span class="sub-label">(b) [4 Marks]</span>
+            <p>Let V be the set of vectors defined as directed line segments. Check whether V forms a group with respect to vector (cross) product.</p>
+            <div class="info-box">
+              <strong>Analysis:</strong> Cross product is NOT a group operation — it fails <em>associativity</em>: (A×B)×C ≠ A×(B×C) in general, and lacks a proper identity element for all vectors. Therefore V under × is <em>not</em> a group.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="question-card" id="pyq-q5">
+        <div class="q-header">
+          <span class="q-number">Q5</span>
+          <div class="q-meta"><span class="co-badge">CO4</span><span class="marks-badge">3+4 Marks</span></div>
+        </div>
+        <div class="q-body">
+          <div class="sub-question">
+            <span class="sub-label">(a) [3 Marks]</span>
+            <p>Examine whether the graphs G₁ and G₂ given in the following figure are isomorphic.</p>
+            <div class="hint-box">
+              <span class="hint-icon">💡</span>
+              <strong>Check:</strong> Same number of vertices ✓, Same number of edges ✓, Same degree sequence ✓, Adjacent vertices must map to adjacent vertices. Use bijection test.
+            </div>
+          </div>
+          <div class="sub-question">
+            <span class="sub-label">(b) [4 Marks]</span>
+            <p>A company plans to build a communications network connecting its five computer centers. Any pair of these centers can be linked with a leased telephone line. Which links should be made to ensure that there is a path between any two computer centers so that the total cost of the network is minimized?</p>
+            <div class="solution-steps">
+              <div class="step"><span class="step-num">1</span><span>Model as weighted graph with cities: SF, Chicago, New York, Denver, Atlanta</span></div>
+              <div class="step"><span class="step-num">2</span><span>Apply <strong>Kruskal's Algorithm</strong>: Sort all edges by weight ascending</span></div>
+              <div class="step"><span class="step-num">3</span><span>Add edges without creating cycle until n-1 = 4 edges selected</span></div>
+              <div class="step"><span class="step-num">4</span><span>MST gives minimum cost communications network</span></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Q2 -->
-    <div class="question-card" id="pyq-q2">
-      <div class="q-header">
-        <span class="q-number">Q2</span>
-        <div class="q-meta"><span class="co-badge">CO5</span></div>
+    <!-- ═══ TAB 2: 2025 PAPER (NEW) ═══ -->
+    <div class="pyq-tab-content" id="pyq-2025">
+      <div class="paper-meta">
+        <span class="meta-item"><strong>University:</strong> JUET, Guna</span>
+        <span class="meta-item"><strong>Duration:</strong> 2 Hours</span>
+        <span class="meta-item"><strong>Marks:</strong> 35</span>
+        <span class="meta-item"><strong>Syllabus:</strong> FSA, Chromatic Coloring, Equivalence Matrices, Tautology, MST, Huffman, Tree traversals, Logic Validity, Planarity, Groups</span>
       </div>
-      <div class="q-body">
-        <div class="sub-question">
-          <span class="sub-label">(a) [3 Marks]</span>
-          <p>Design a finite state automata that recognize the set of bit strings that ends with only one '0'.</p>
-          <div class="hint-box">
-            <span class="hint-icon">💡</span>
-            <strong>Solution:</strong> States: q₀ (start), q₁ (saw one 0), q₂ (saw 00 or more). Accept state: q₁. Transitions: q₀→q₁ on 0, q₀→q₀ on 1, q₁→q₁ on … (see FSM section for full diagram)
+
+      <!-- Q1: FSA and FSM -->
+      <div class="question-card" id="pyq25-q1">
+        <div class="q-header">
+          <span class="q-number">Q1</span>
+          <div class="q-meta"><span class="co-badge">CO5</span><span class="marks-badge">3+3 Marks</span></div>
+        </div>
+        <div class="q-body">
+          <!-- Q1(a) -->
+          <div class="sub-question">
+            <span class="sub-label">(a) ATM Passcode FSA [3 Marks]</span>
+            <p>After a bank customer inserts his bank card into the ATM, it requests him to input his secret identification number (ID). Suppose the ID is <strong>234</strong>. Design the Finite State Automata (FSA) that models the ATM.</p>
+            
+            <div class="solution-box">
+              <div class="sol-title">FSA Solution & Design</div>
+              <div class="sol-part">
+                <p>We model the passcode check using a deterministic finite automaton (DFA). Let the inputs be digits $\{0-9\}$. Correct input sequences advance the state towards the success state. Any invalid input permanently shifts the machine into an error/lockout state.</p>
+                <ul>
+                  <li><strong>States:</strong>
+                    <ul>
+                      <li><code>q₀</code>: Start state (awaiting input).</li>
+                      <li><code>q₁</code>: Correct digit '2' entered.</li>
+                      <li><code>q₂</code>: Correct digits '23' entered.</li>
+                      <li><code>q₃</code>: Accept/Success State (Correct passcode '234' completed).</li>
+                      <li><code>q_E</code>: Error/Lockout State (reached if an incorrect digit is input).</li>
+                    </ul>
+                  </li>
+                  <li><strong>Transitions:</strong>
+                    <ul>
+                      <li>From <code>q₀</code>: Go to <code>q₁</code> on <code>2</code>; go to <code>q_E</code> on any input $x \neq 2$.</li>
+                      <li>From <code>q₁</code>: Go to <code>q₂</code> on <code>3</code>; go to <code>q_E</code> on any input $x \neq 3$.</li>
+                      <li>From <code>q₂</code>: Go to <code>q₃</code> on <code>4</code>; go to <code>q_E</code> on any input $x \neq 4$.</li>
+                      <li>From <code>q₃</code>: Remain in <code>q₃</code> on any input (Access Granted).</li>
+                      <li>From <code>q_E</code>: Remain in <code>q_E</code> on any input (Access Denied / Card Blocked).</li>
+                    </ul>
+                  </li>
+                </ul>
+
+                <!-- FSA SVG DIAGRAM -->
+                <div class="tree-container">
+                  <svg width="100%" height="150" viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <marker id="arrow" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--text)" />
+                      </marker>
+                      <marker id="arrow-error" viewBox="0 0 10 10" refX="20" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--text3)" />
+                      </marker>
+                    </defs>
+                    
+                    <!-- State Transitions -->
+                    <line x1="50" y1="75" x2="150" y2="75" class="tree-edge-visual" marker-end="url(#arrow)" />
+                    <text x="100" y="65" class="tree-text-visual">2</text>
+
+                    <line x1="150" y1="75" x2="275" y2="75" class="tree-edge-visual" marker-end="url(#arrow)" />
+                    <text x="212.5" y="65" class="tree-text-visual">3</text>
+
+                    <line x1="275" y1="75" x2="400" y2="75" class="tree-edge-visual" marker-end="url(#arrow)" />
+                    <text x="337.5" y="65" class="tree-text-visual">4</text>
+
+                    <!-- Transitions to Error State -->
+                    <path d="M 50,75 Q 150,140 250,115" fill="none" class="tree-edge-visual" stroke-dasharray="3,3" marker-end="url(#arrow-error)" />
+                    <text x="130" y="125" class="tree-text-visual" style="font-size: 10px;">x ≠ 2</text>
+
+                    <line x1="150" y1="75" x2="250" y2="115" class="tree-edge-visual" stroke-dasharray="3,3" marker-end="url(#arrow-error)" />
+                    <text x="195" y="105" class="tree-text-visual" style="font-size: 10px;">x ≠ 3</text>
+
+                    <line x1="275" y1="75" x2="250" y2="115" class="tree-edge-visual" stroke-dasharray="3,3" marker-end="url(#arrow-error)" />
+                    <text x="275" y="105" class="tree-text-visual" style="font-size: 10px;">x ≠ 4</text>
+
+                    <!-- Loops -->
+                    <!-- Loop q3 -->
+                    <path d="M 400,60 C 385,25 415,25 400,60" fill="none" class="tree-edge-visual" marker-end="url(#arrow)" />
+                    <text x="400" y="20" class="tree-text-visual" style="font-size: 10px;">any digit</text>
+
+                    <!-- Loop qE -->
+                    <path d="M 250,130 C 235,160 265,160 250,130" fill="none" class="tree-edge-visual" marker-end="url(#arrow-error)" stroke-dasharray="3,3" />
+                    <text x="250" y="160" class="tree-text-visual" style="font-size: 10px;">any digit</text>
+
+                    <!-- State Circles -->
+                    <circle cx="50" cy="75" r="20" class="fsm-state-visual" />
+                    <text x="50" y="75" class="tree-text-visual">q₀</text>
+
+                    <circle cx="150" cy="75" r="20" class="fsm-state-visual" />
+                    <text x="150" y="75" class="tree-text-visual">q₁</text>
+
+                    <circle cx="275" cy="75" r="20" class="fsm-state-visual" />
+                    <text x="275" y="75" class="tree-text-visual">q₂</text>
+
+                    <!-- Success double-circle q3 -->
+                    <circle cx="400" cy="75" r="20" class="fsm-state-visual accept" />
+                    <circle cx="400" cy="75" r="16" fill="none" stroke="var(--text)" stroke-width="1" />
+                    <text x="400" y="75" class="tree-text-visual">q₃</text>
+
+                    <!-- Error state circle qE -->
+                    <circle cx="250" cy="115" r="18" class="fsm-state-visual" style="stroke-dasharray: 2,2; stroke: var(--text3);" />
+                    <text x="250" y="115" class="tree-text-visual" style="fill: var(--text3);">q_E</text>
+
+                  </svg>
+                </div>
+                <div class="svg-caption">Figure 1.1: State transition graph representing passcode-locked bank ATM FSA.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q1(b) -->
+          <div class="sub-question">
+            <span class="sub-label">(b) FSM Transition Diagram & Tracing [3 Marks]</span>
+            <p>Construct the state diagram for the finite-state machine with the state table shown below. Also find the output string corresponding to the given input string <strong>110011</strong>.</p>
+            <div class="table-wrap">
+              <table class="dm-table sm-table">
+                <thead>
+                  <tr>
+                    <th rowspan="2">State</th>
+                    <th colspan="2">Transition f (Input)</th>
+                    <th colspan="2">Output g (Input)</th>
+                  </tr>
+                  <tr>
+                    <th>0</th>
+                    <th>1</th>
+                    <th>0</th>
+                    <th>1</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>s₀</td><td>s₁</td><td>s₀</td><td>1</td><td>0</td></tr>
+                  <tr><td>s₁</td><td>s₃</td><td>s₀</td><td>1</td><td>1</td></tr>
+                  <tr><td>s₂</td><td>s₁</td><td>s₂</td><td>0</td><td>1</td></tr>
+                  <tr><td>s₃</td><td>s₂</td><td>s₁</td><td>0</td><td>0</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="solution-box">
+              <div class="sol-title">FSM State Graph & Trace</div>
+              <div class="sol-part">
+                <p>This is a <strong>Mealy Machine</strong> where the output depends on both the current state and the input. Each transition edge is labeled as <code>input / output</code>.</p>
+
+                <!-- FSM SVG -->
+                <div class="tree-container">
+                  <svg width="100%" height="220" viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <marker id="fsm-arrow" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--text)" />
+                      </marker>
+                    </defs>
+                    
+                    <!-- Edges -->
+                    <!-- s0 -> s0 loop -->
+                    <path d="M 100,40 C 80,10 120,10 100,40" fill="none" class="fsm-arrow-visual" marker-end="url(#fsm-arrow)" />
+                    <text x="100" y="15" class="tree-text-visual">1/0</text>
+
+                    <!-- s0 -> s1 -->
+                    <line x1="100" y1="60" x2="250" y2="60" class="fsm-arrow-visual" marker-end="url(#fsm-arrow)" />
+                    <text x="175" y="50" class="tree-text-visual">0/1</text>
+
+                    <!-- s1 -> s0 (curved back) -->
+                    <path d="M 250,50 Q 175,20 100,50" fill="none" class="fsm-arrow-visual" marker-end="url(#fsm-arrow)" />
+                    <text x="175" y="25" class="tree-text-visual">1/1</text>
+
+                    <!-- s1 -> s3 -->
+                    <line x1="250" y1="60" x2="100" y2="160" class="fsm-arrow-visual" marker-end="url(#fsm-arrow)" />
+                    <text x="155" y="105" class="tree-text-visual">0/1</text>
+
+                    <!-- s3 -> s1 -->
+                    <path d="M 100,160 Q 185,120 250,60" fill="none" class="fsm-arrow-visual" marker-end="url(#fsm-arrow)" />
+                    <text x="200" y="130" class="tree-text-visual">1/0</text>
+
+                    <!-- s3 -> s2 -->
+                    <line x1="100" y1="160" x2="250" y2="160" class="fsm-arrow-visual" marker-end="url(#fsm-arrow)" />
+                    <text x="175" y="150" class="tree-text-visual">0/0</text>
+
+                    <!-- s2 -> s1 -->
+                    <line x1="250" y1="160" x2="250" y2="60" class="fsm-arrow-visual" marker-end="url(#fsm-arrow)" />
+                    <text x="265" y="115" class="tree-text-visual">0/0</text>
+
+                    <!-- s2 -> s2 loop -->
+                    <path d="M 250,180 C 230,210 270,210 250,180" fill="none" class="fsm-arrow-visual" marker-end="url(#fsm-arrow)" />
+                    <text x="250" y="215" class="tree-text-visual">1/1</text>
+
+                    <!-- State Circles -->
+                    <circle cx="100" cy="60" r="20" class="fsm-state-visual" />
+                    <text x="100" y="64" class="tree-text-visual">s₀</text>
+
+                    <circle cx="250" cy="60" r="20" class="fsm-state-visual" />
+                    <text x="250" y="64" class="tree-text-visual">s₁</text>
+
+                    <circle cx="250" cy="160" r="20" class="fsm-state-visual" />
+                    <text x="250" y="164" class="tree-text-visual">s₂</text>
+
+                    <circle cx="100" cy="160" r="20" class="fsm-state-visual" />
+                    <text x="100" y="164" class="tree-text-visual">s₃</text>
+                  </svg>
+                </div>
+                <div class="svg-caption">Figure 1.2: Mealy Finite State Machine state transition graph.</div>
+
+                <p><strong>Input string tracing starting from state $s_0$:</strong></p>
+                <div class="solution-steps">
+                  <div class="step"><span class="step-num">1</span><span><strong>Input: 1</strong> · State: $s_0 \rightarrow s_0$ (Transition output = <strong>0</strong>)</span></div>
+                  <div class="step"><span class="step-num">2</span><span><strong>Input: 1</strong> · State: $s_0 \rightarrow s_0$ (Transition output = <strong>0</strong>)</span></div>
+                  <div class="step"><span class="step-num">3</span><span><strong>Input: 0</strong> · State: $s_0 \rightarrow s_1$ (Transition output = <strong>1</strong>)</span></div>
+                  <div class="step"><span class="step-num">4</span><span><strong>Input: 0</strong> · State: $s_1 \rightarrow s_3$ (Transition output = <strong>1</strong>)</span></div>
+                  <div class="step"><span class="step-num">5</span><span><strong>Input: 1</strong> · State: $s_3 \rightarrow s_1$ (Transition output = <strong>0</strong>)</span></div>
+                  <div class="step"><span class="step-num">6</span><span><strong>Input: 1</strong> · State: $s_1 \rightarrow s_0$ (Transition output = <strong>1</strong>)</span></div>
+                </div>
+
+                <div class="result-box" style="margin-top: 15px;">
+                  Output String: <strong>001101</strong>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="sub-question">
-          <span class="sub-label">(b) [4 Marks]</span>
-          <p>Construct a vending machine that accepts Rs 5, Rs 10, and Rs 25, when a total of Rs 30 or more has been deposited, the machine immediately returns the amount in excess of Rs 30. When Rs 30 has been deposited and any excess refunded, the customer can push an orange button and receive an orange juice or push a red button and receive an apple juice. Design the state table for the machine.</p>
+      </div>
+
+      <!-- Q2: Radio Stations & Isomorphism -->
+      <div class="question-card" id="pyq25-q2">
+        <div class="q-header">
+          <span class="q-number">Q2</span>
+          <div class="q-meta"><span class="co-badge">CO3</span><span class="marks-badge">3+3 Marks</span></div>
+        </div>
+        <div class="q-body">
+          <!-- Q2(a) -->
+          <div class="sub-question">
+            <span class="sub-label">(a) Radio Station Interference Coloring [3 Marks]</span>
+            <p>Suppose 10 new radio stations are to be set up in a currently unpopulated region. The radio stations that are close enough to each other to cause interference are recorded in the table below. What is the fewest number of frequencies the station could use?</p>
+            
+            <div class="table-wrap">
+              <table class="dm-table sm-table">
+                <thead>
+                  <tr>
+                    <th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><th>A</th><td></td><td></td><td>✓</td><td></td><td></td><td>✓</td><td>✓</td><td></td><td></td><td>✓</td></tr>
+                  <tr><th>B</th><td></td><td></td><td>✓</td><td>✓</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                  <tr><th>C</th><td>✓</td><td></td><td></td><td></td><td></td><td>✓</td><td>✓</td><td></td><td></td><td>✓</td></tr>
+                  <tr><th>D</th><td></td><td>✓</td><td></td><td></td><td></td><td>✓</td><td></td><td>✓</td><td></td><td></td></tr>
+                  <tr><th>E</th><td></td><td></td><td></td><td>✓</td><td></td><td></td><td></td><td></td><td>✓</td><td></td></tr>
+                  <tr><th>F</th><td>✓</td><td></td><td>✓</td><td>✓</td><td></td><td></td><td>✓</td><td></td><td></td><td></td></tr>
+                  <tr><th>G</th><td>✓</td><td></td><td>✓</td><td></td><td></td><td>✓</td><td></td><td></td><td></td><td>✓</td></tr>
+                  <tr><th>H</th><td></td><td></td><td></td><td>✓</td><td></td><td></td><td></td><td></td><td>✓</td><td></td></tr>
+                  <tr><th>I</th><td></td><td></td><td></td><td></td><td>✓</td><td></td><td></td><td>✓</td><td></td><td>✓</td></tr>
+                  <tr><th>J</th><td>✓</td><td></td><td>✓</td><td></td><td></td><td>✓</td><td>✓</td><td></td><td>✓</td><td></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="solution-box">
+              <div class="sol-title">Welch-Powell Graph Coloring Solution</div>
+              <div class="sol-part">
+                <p>We represent each radio station as a vertex in graph $G$, and draw an edge between stations if they interfere (marked with ✓). Finding the fewest number of frequencies corresponds to finding the <strong>chromatic number $\chi(G)$</strong> of this graph.</p>
+                
+                <p><strong>1. Identify Vertices and their Adjacency Sets:</strong></p>
+                <ul>
+                  <li><strong>A:</strong> {C, F, G, J}</li>
+                  <li><strong>B:</strong> {C, D}</li>
+                  <li><strong>C:</strong> {A, B, F, G, J}</li>
+                  <li><strong>D:</strong> {B, E, F, H}</li>
+                  <li><strong>E:</strong> {D, I}</li>
+                  <li><strong>F:</strong> {A, C, D, G, J}</li>
+                  <li><strong>G:</strong> {A, C, F, J}</li>
+                  <li><strong>H:</strong> {D, I}</li>
+                  <li><strong>I:</strong> {E, H, J}</li>
+                  <li><strong>J:</strong> {A, C, F, G, I}</li>
+                </ul>
+
+                <p><strong>2. Find a Large Clique (Complete Subgraph):</strong></p>
+                <div class="info-box">
+                  Observe the subset of vertices <strong>$\{A, C, F, G, J\}$</strong>:
+                  <ul>
+                    <li>A is adjacent to C, F, G, J</li>
+                    <li>C is adjacent to A, F, G, J</li>
+                    <li>F is adjacent to A, C, G, J</li>
+                    <li>G is adjacent to A, C, F, J</li>
+                    <li>J is adjacent to A, C, F, G</li>
+                  </ul>
+                  These 5 vertices are completely mutually connected. Thus, they form a **clique of size 5 ($K_5$)**. Since a graph containing $K_n$ requires at least $n$ colors, we establish a lower bound:
+                  $$\chi(G) \ge 5$$
+                </div>
+
+                <!-- Radio Station Interference Graph SVG -->
+                <div class="tree-container">
+                  <svg width="100%" height="320" viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Edges (Outer Connections) -->
+                    <line x1="373" y1="110" x2="316.6" y2="128.4" class="tree-edge-visual" />
+                    <line x1="373" y1="110" x2="326" y2="255" class="tree-edge-visual" />
+                    
+                    <line x1="326" y1="255" x2="291.2" y2="206.6" class="tree-edge-visual" />
+                    <line x1="326" y1="255" x2="250" y2="280" class="tree-edge-visual" />
+                    <line x1="326" y1="255" x2="126" y2="190" class="tree-edge-visual" />
+                    
+                    <line x1="250" y1="280" x2="126" y2="110" class="tree-edge-visual" />
+                    
+                    <line x1="126" y1="190" x2="126" y2="110" class="tree-edge-visual" />
+                    
+                    <line x1="126" y1="110" x2="183.4" y2="128.4" class="tree-edge-visual" />
+                    
+                    <!-- Edges (K5 Clique mutually connected) -->
+                    <line x1="250" y1="80" x2="316.6" y2="128.4" class="tree-edge-visual" style="stroke-width: 2; stroke: var(--text2);" />
+                    <line x1="250" y1="80" x2="291.2" y2="206.6" class="tree-edge-visual" style="stroke-width: 2; stroke: var(--text2);" />
+                    <line x1="250" y1="80" x2="208.8" y2="206.6" class="tree-edge-visual" style="stroke-width: 2; stroke: var(--text2);" />
+                    <line x1="250" y1="80" x2="183.4" y2="128.4" class="tree-edge-visual" style="stroke-width: 2; stroke: var(--text2);" />
+                    
+                    <line x1="316.6" y1="128.4" x2="291.2" y2="206.6" class="tree-edge-visual" style="stroke-width: 2; stroke: var(--text2);" />
+                    <line x1="316.6" y1="128.4" x2="208.8" y2="206.6" class="tree-edge-visual" style="stroke-width: 2; stroke: var(--text2);" />
+                    <line x1="316.6" y1="128.4" x2="183.4" y2="128.4" class="tree-edge-visual" style="stroke-width: 2; stroke: var(--text2);" />
+                    
+                    <line x1="291.2" y1="206.6" x2="208.8" y2="206.6" class="tree-edge-visual" style="stroke-width: 2; stroke: var(--text2);" />
+                    <line x1="291.2" y1="206.6" x2="183.4" y2="128.4" class="tree-edge-visual" style="stroke-width: 2; stroke: var(--text2);" />
+                    
+                    <line x1="208.8" y1="206.6" x2="183.4" y2="128.4" class="tree-edge-visual" style="stroke-width: 2; stroke: var(--text2);" />
+                    
+                    <!-- Clique Polygon boundary highlighting -->
+                    <polygon points="250,80 316.6,128.4 291.2,206.6 208.8,206.6 183.4,128.4" fill="none" stroke="var(--text)" stroke-width="2.5" stroke-dasharray="4,4" />
+
+                    <!-- Vertices (Nodes) -->
+                    <!-- Clique nodes (A, C, F, G, J) -->
+                    <circle cx="250" cy="80" r="16" class="tree-node-visual" style="fill: var(--bg2); stroke-width: 2.5;" />
+                    <text x="250" y="80" class="tree-text-visual">A¹</text>
+                    
+                    <circle cx="316.6" cy="128.4" r="16" class="tree-node-visual" style="fill: var(--bg2); stroke-width: 2.5;" />
+                    <text x="316.6" y="128.4" class="tree-text-visual">C²</text>
+                    
+                    <circle cx="291.2" cy="206.6" r="16" class="tree-node-visual" style="fill: var(--bg2); stroke-width: 2.5;" />
+                    <text x="291.2" y="206.6" class="tree-text-visual">F³</text>
+                    
+                    <circle cx="208.8" cy="206.6" r="16" class="tree-node-visual" style="fill: var(--bg2); stroke-width: 2.5;" />
+                    <text x="208.8" y="206.6" class="tree-text-visual">G⁴</text>
+                    
+                    <circle cx="183.4" cy="128.4" r="16" class="tree-node-visual" style="fill: var(--bg2); stroke-width: 2.5;" />
+                    <text x="183.4" y="128.4" class="tree-text-visual">J⁵</text>
+                    
+                    <!-- Peripheral nodes -->
+                    <circle cx="373" cy="110" r="16" class="tree-node-visual" />
+                    <text x="373" y="110" class="tree-text-visual">B¹</text>
+                    
+                    <circle cx="326" cy="255" r="16" class="tree-node-visual" />
+                    <text x="326" y="255" class="tree-text-visual">D²</text>
+                    
+                    <circle cx="250" cy="280" r="16" class="tree-node-visual" />
+                    <text x="250" y="280" class="tree-text-visual">E¹</text>
+                    
+                    <circle cx="126" cy="190" r="16" class="tree-node-visual" />
+                    <text x="126" y="190" class="tree-text-visual">H¹</text>
+                    
+                    <circle cx="126" cy="110" r="16" class="tree-node-visual" />
+                    <text x="126" y="110" class="tree-text-visual">I²</text>
+                    
+                    <!-- Title/Legend -->
+                    <text x="490" y="80" font-family="var(--mono)" font-size="12" font-weight="bold" fill="var(--text)">LEGEND:</text>
+                    <rect x="440" y="95" width="140" height="40" fill="none" stroke="var(--text)" stroke-width="1" stroke-dasharray="4,4" />
+                    <text x="450" y="112" font-family="var(--mono)" font-size="11" fill="var(--text2)">--- K₅ Clique</text>
+                    <text x="450" y="127" font-family="var(--mono)" font-size="11" fill="var(--text2)">(A, C, F, G, J)</text>
+                    
+                    <text x="440" y="165" font-family="var(--mono)" font-size="11" fill="var(--text2)">Superscripts 1-5</text>
+                    <text x="440" y="180" font-family="var(--mono)" font-size="11" fill="var(--text2)">represent the</text>
+                    <text x="440" y="195" font-family="var(--mono)" font-size="11" fill="var(--text2)">assigned color</text>
+                    <text x="440" y="210" font-family="var(--mono)" font-size="11" fill="var(--text2)">frequencies.</text>
+                  </svg>
+                </div>
+                <div class="svg-caption">Figure 2.1: Radio Station Interference Graph. Mutually connected inner vertices form the K₅ clique, establishing the χ(G) ≥ 5 boundary.</div>
+
+                <p><strong>3. Construct a 5-Coloring to Show Tightness:</strong></p>
+                <div class="table-wrap">
+                  <table class="dm-table sm-table">
+                    <thead><tr><th>Vertex</th><th>Clique Neighbors</th><th>Assigned Color</th><th>Valid?</th></tr></thead>
+                    <tbody>
+                      <tr><td><strong>A</strong></td><td>C, F, G, J</td><td><span class="inline-code">Color 1</span></td><td>Base Clique</td></tr>
+                      <tr><td><strong>C</strong></td><td>A, F, G, J</td><td><span class="inline-code">Color 2</span></td><td>Base Clique</td></tr>
+                      <tr><td><strong>F</strong></td><td>A, C, G, J</td><td><span class="inline-code">Color 3</span></td><td>Base Clique</td></tr>
+                      <tr><td><strong>G</strong></td><td>A, C, F, J</td><td><span class="inline-code">Color 4</span></td><td>Base Clique</td></tr>
+                      <tr><td><strong>J</strong></td><td>A, C, F, G</td><td><span class="inline-code">Color 5</span></td><td>Base Clique</td></tr>
+                      <tr><td><strong>B</strong></td><td>C (Color 2), D (Color 2)</td><td><span class="inline-code">Color 1</span></td><td>No conflicts with C, D ✓</td></tr>
+                      <tr><td><strong>D</strong></td><td>B (Color 1), F (Color 3), E (Color 1), H (Color 1)</td><td><span class="inline-code">Color 2</span></td><td>No conflicts with B, F, E, H ✓</td></tr>
+                      <tr><td><strong>E</strong></td><td>D (Color 2), I (Color 2)</td><td><span class="inline-code">Color 1</span></td><td>No conflicts with D, I ✓</td></tr>
+                      <tr><td><strong>H</strong></td><td>D (Color 2), I (Color 2)</td><td><span class="inline-code">Color 1</span></td><td>No conflicts with D, I ✓</td></tr>
+                      <tr><td><strong>I</strong></td><td>E (Color 1), H (Color 1), J (Color 5)</td><td><span class="inline-code">Color 2</span></td><td>No conflicts with E, H, J ✓</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="result-box" style="margin-top: 15px;">
+                  The chromatic number of the graph is exactly <strong>5</strong>. Therefore, the fewest number of frequencies the station could use is <strong>5</strong>.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q2(b) -->
+          <div class="sub-question">
+            <span class="sub-label">(b) Graph Isomorphism Proof [3 Marks]</span>
+            <p>Define Isomorphism between two graphs. Are the simple graphs with the following adjacency matrices isomorphic?</p>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; margin: 15px 0; flex-wrap: wrap;">
+              <div>
+                <div class="matrix-label">Adjacency Matrix $M_1$ (Graph $G_1$)</div>
+                <pre class="matrix">
+[ 0 1 0 0 0 1 ]
+[ 1 0 1 0 1 0 ]
+[ 0 1 0 1 0 1 ]
+[ 0 0 1 0 1 0 ]
+[ 0 1 0 1 0 1 ]
+[ 1 0 1 0 1 0 ]</pre>
+              </div>
+              <div style="font-size: 24px; font-weight: bold;">and</div>
+              <div>
+                <div class="matrix-label">Adjacency Matrix $M_2$ (Graph $G_2$)</div>
+                <pre class="matrix">
+[ 0 1 0 0 0 1 ]
+[ 1 0 1 0 0 1 ]
+[ 0 1 0 1 1 0 ]
+[ 0 0 1 0 1 0 ]
+[ 0 0 1 1 0 1 ]
+[ 1 1 0 0 1 0 ]</pre>
+              </div>
+            </div>
+
+            <div class="solution-box">
+              <div class="sol-title">Isomorphism Definition & Structural Analysis</div>
+              <div class="sol-part">
+                <p><strong>Definition:</strong> Two simple graphs $G_1 = (V_1, E_1)$ and $G_2 = (V_2, E_2)$ are <strong>isomorphic</strong> if there exists a bijection (one-to-one and onto function) $f: V_1 \rightarrow V_2$ such that for all $u, v \in V_1$, $u$ and $v$ are adjacent in $G_1$ if and only if $f(u)$ and $f(v)$ are adjacent in $G_2$. The bijection $f$ is called an isomorphism.</p>
+
+                <p><strong>Analysis of the given graphs:</strong></p>
+                <div class="solution-steps">
+                  <div class="step">
+                    <span class="step-num">1</span>
+                    <span><strong>Vertex Count and Degree Sequence:</strong> Both graphs have 6 vertices.
+                      <br/>Row sums for $M_1$ (degrees of $v_1-v_6$): <strong>2, 3, 3, 2, 3, 3</strong>
+                      <br/>Row sums for $M_2$ (degrees of $u_1-u_6$): <strong>2, 3, 3, 2, 3, 3</strong>
+                      <br/>Both graphs have the exact same sorted degree sequence: <strong>3, 3, 3, 3, 2, 2</strong>.
+                    </span>
+                  </div>
+                  <div class="step">
+                    <span class="step-num">2</span>
+                    <span><strong>Bipartiteness Test ($G_1$):</strong> Let us divide the vertices of $G_1$ into two partitions:
+                      <br/>$V_A = \{v_1, v_3, v_5\}$ and $V_B = \{v_2, v_4, v_6\}$.
+                      <br/>Let's check for any edges within each set using $M_1$:
+                      <br/>- $M_1[1,3] = M_1[1,5] = M_1[3,5] = 0$. No internal edges in $V_A$!
+                      <br/>- $M_1[2,4] = M_1[2,6] = M_1[4,6] = 0$. No internal edges in $V_B$!
+                      <br/>Since all edges only connect a vertex in $V_A$ to a vertex in $V_B$, **$G_1$ is a bipartite graph**. Consequently, it has **no odd cycles** (it has no triangles, girth is 4).
+                    </span>
+                  </div>
+                  <div class="step">
+                    <span class="step-num">3</span>
+                    <span><strong>Triangle Check ($G_2$):</strong> Let's search for a cycle of length 3 (a triangle) in $G_2$ using $M_2$:
+                      <br/>- Vertex $u_1$ is connected to $u_2$ ($M_2[1,2] = 1$) and $u_6$ ($M_2[1,6] = 1$).
+                      <br/>- Vertex $u_2$ is connected to $u_6$ ($M_2[2,6] = 1$).
+                      <br/>Thus, <strong>$\{u_1, u_2, u_6\}$ forms a complete triangle ($C_3$)</strong> in $G_2$!
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Side-by-Side Graph Isomorphism SVG -->
+                <div class="tree-container">
+                  <svg width="100%" height="240" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Left Side: Graph G1 (Bipartite Layout) -->
+                    <text x="150" y="25" font-family="var(--mono)" font-size="13" font-weight="bold" fill="var(--text)" text-anchor="middle">Graph G₁ (Bipartite)</text>
+                    
+                    <!-- Edges for G1 -->
+                    <line x1="100" y1="60" x2="200" y2="60" class="tree-edge-visual" />
+                    <line x1="100" y1="60" x2="200" y2="180" class="tree-edge-visual" />
+                    
+                    <line x1="100" y1="120" x2="200" y2="60" class="tree-edge-visual" />
+                    <line x1="100" y1="120" x2="200" y2="120" class="tree-edge-visual" />
+                    <line x1="100" y1="120" x2="200" y2="180" class="tree-edge-visual" />
+                    
+                    <line x1="100" y1="180" x2="200" y2="60" class="tree-edge-visual" />
+                    <line x1="100" y1="180" x2="200" y2="120" class="tree-edge-visual" />
+                    <line x1="100" y1="180" x2="200" y2="180" class="tree-edge-visual" />
+                    
+                    <!-- Partition Boxes -->
+                    <rect x="75" y="45" width="50" height="150" rx="6" fill="none" stroke="var(--border)" stroke-width="1" stroke-dasharray="3,3" />
+                    <text x="100" y="210" font-family="var(--mono)" font-size="10" fill="var(--text3)" text-anchor="middle">Set VA</text>
+                    
+                    <rect x="175" y="45" width="50" height="150" rx="6" fill="none" stroke="var(--border)" stroke-width="1" stroke-dasharray="3,3" />
+                    <text x="200" y="210" font-family="var(--mono)" font-size="10" fill="var(--text3)" text-anchor="middle">Set VB</text>
+
+                    <!-- Vertices for G1 -->
+                    <circle cx="100" cy="60" r="14" class="tree-node-visual" />
+                    <text x="100" y="60" class="tree-text-visual">v₁</text>
+                    
+                    <circle cx="100" cy="120" r="14" class="tree-node-visual" />
+                    <text x="100" y="120" class="tree-text-visual">v₃</text>
+                    
+                    <circle cx="100" cy="180" r="14" class="tree-node-visual" />
+                    <text x="100" y="180" class="tree-text-visual">v₅</text>
+                    
+                    <circle cx="200" cy="60" r="14" class="tree-node-visual" />
+                    <text x="200" y="60" class="tree-text-visual">v₂</text>
+                    
+                    <circle cx="200" cy="120" r="14" class="tree-node-visual" />
+                    <text x="200" y="120" class="tree-text-visual">v₄</text>
+                    
+                    <circle cx="200" cy="180" r="14" class="tree-node-visual" />
+                    <text x="200" y="180" class="tree-text-visual">v₆</text>
+
+                    <!-- Right Side: Graph G2 (Circular Layout with Highlighted Triangle) -->
+                    <text x="450" y="25" font-family="var(--mono)" font-size="13" font-weight="bold" fill="var(--text)" text-anchor="middle">Graph G₂ (Circular)</text>
+                    
+                    <!-- Edges for G2 -->
+                    <line x1="506" y1="142" x2="450" y2="175" class="tree-edge-visual" />
+                    <line x1="506" y1="142" x2="394" y2="142" class="tree-edge-visual" />
+                    <line x1="450" y1="175" x2="394" y2="142" class="tree-edge-visual" />
+                    <line x1="394" y1="142" x2="394" y2="77" class="tree-edge-visual" />
+                    <line x1="506" y1="77" x2="506" y2="142" class="tree-edge-visual" />
+                    
+                    <!-- Highlighted Triangle Edges (u1 - u2 - u6) -->
+                    <line x1="450" y1="45" x2="506" y2="77" class="tree-edge-visual" style="stroke-width: 3; stroke: var(--text);" />
+                    <line x1="450" y1="45" x2="394" y2="77" class="tree-edge-visual" style="stroke-width: 3; stroke: var(--text);" />
+                    <line x1="506" y1="77" x2="394" y2="77" class="tree-edge-visual" style="stroke-width: 3; stroke: var(--text);" />
+
+                    <!-- Shaded Triangle Background -->
+                    <polygon points="450,45 506,77 394,77" fill="var(--text)" opacity="0.08" />
+                    <text x="450" y="70" font-family="var(--mono)" font-size="9" font-weight="bold" fill="var(--text2)" text-anchor="middle">Triangle (C₃)</text>
+
+                    <!-- Vertices for G2 -->
+                    <circle cx="450" cy="45" r="14" class="tree-node-visual" style="stroke-width: 2.5; fill: var(--bg2);" />
+                    <text x="450" y="45" class="tree-text-visual">u₁</text>
+                    
+                    <circle cx="506" cy="77" r="14" class="tree-node-visual" style="stroke-width: 2.5; fill: var(--bg2);" />
+                    <text x="506" y="77" class="tree-text-visual">u₂</text>
+                    
+                    <circle cx="394" cy="77" r="14" class="tree-node-visual" style="stroke-width: 2.5; fill: var(--bg2);" />
+                    <text x="394" y="77" class="tree-text-visual">u₆</text>
+                    
+                    <circle cx="506" cy="142" r="14" class="tree-node-visual" />
+                    <text x="506" y="142" class="tree-text-visual">u₃</text>
+                    
+                    <circle cx="450" cy="175" r="14" class="tree-node-visual" />
+                    <text x="450" y="175" class="tree-text-visual">u₄</text>
+                    
+                    <circle cx="394" cy="142" r="14" class="tree-node-visual" />
+                    <text x="394" y="142" class="tree-text-visual">u₅</text>
+                  </svg>
+                </div>
+                <div class="svg-caption">Figure 2.2: Structural comparison. G₁ is cleanly bipartite (VA/VB partition, no odd cycles). G₂ contains a highlighted triangle cycle (u₁-u₂-u₆), proving they are not isomorphic.</div>
+
+                <div class="result-box" style="margin-top: 15px; border-left-color: var(--text);">
+                  Conclusion: Since $G_1$ is a bipartite graph (no odd cycles / no triangles) and $G_2$ contains a triangle, they differ in a fundamental structural invariant (girth and bipartiteness). Therefore, the graphs are <strong>NOT isomorphic</strong>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3: Tautology and Kruskal's MST -->
+      <div class="question-card" id="pyq25-q3">
+        <div class="q-header">
+          <span class="q-number">Q3</span>
+          <div class="q-meta"><span class="co-badge">CO4</span><span class="co-badge">CO3</span><span class="marks-badge">3+5 Marks</span></div>
+        </div>
+        <div class="q-body">
+          <!-- Q3(a) -->
+          <div class="sub-question">
+            <span class="sub-label">(a) Propositional Logic Tautology Proof [3 Marks]</span>
+            <p>Determine whether the expression $[(p \rightarrow (q \rightarrow r)) \rightarrow ((p \rightarrow q) \rightarrow (p \rightarrow r))]$ is a tautology or contradiction.</p>
+            
+            <div class="solution-box">
+              <div class="sol-title">Truth Table & Logical Equivalence Proof</div>
+              <div class="sol-part">
+                <p>This expression is a fundamental axiom in propositional logic (sometimes called the <strong>Self-Distribution of Implication</strong> or Axiom S). We can prove it is a <strong>tautology</strong> (always true) using a truth-value breakdown.</p>
+                
+                <p><strong>Proof by Contradiction:</strong></p>
+                <p>Assume the entire implication is **False**. An implication $A \rightarrow B$ is false if and only if $A$ is True and $B$ is False.</p>
+                <div class="solution-steps">
+                  <div class="step"><span class="step-num">1</span><span>Let Premise $A = [p \rightarrow (q \rightarrow r)]$ be <strong>True</strong>.</span></div>
+                  <div class="step"><span class="step-num">2</span><span>Let Conclusion $B = [(p \rightarrow q) \rightarrow (p \rightarrow r)]$ be <strong>False</strong>.</span></div>
+                  <div class="step"><span class="step-num">3</span><span>For $B$ to be False, we must have:
+                    <br/>- $p \rightarrow q$ is <strong>True</strong>
+                    <br/>- $p \rightarrow r$ is <strong>False</strong>
+                  </span></div>
+                  <div class="step"><span class="step-num">4</span><span>For $p \rightarrow r$ to be False, we must have:
+                    <br/>- $p$ is <strong>True</strong>
+                    <br/>- $r$ is <strong>False</strong>
+                  </span></div>
+                  <div class="step"><span class="step-num">5</span><span>Substitute $p = \text{True}$ into $p \rightarrow q = \text{True}$:
+                    <br/>- Since $p$ is True, $q$ must be <strong>True</strong>.
+                  </span></div>
+                  <div class="step"><span class="step-num">6</span><span>Now substitute our values ($p = \text{True}$, $q = \text{True}$, $r = \text{False}$) into Premise $A$:
+                    <br/>- $q \rightarrow r \equiv \text{True} \rightarrow \text{False} \equiv \text{False}$.
+                    <br/>- $p \rightarrow (q \rightarrow r) \equiv \text{True} \rightarrow \text{False} \equiv \text{False}$.
+                    <br/>This directly contradicts our initial requirement that Premise $A$ must be True!
+                  </span></div>
+                </div>
+
+                <div class="result-box" style="margin-top: 15px;">
+                  Since assuming the expression is false leads to a logical contradiction, the expression can never be false. Therefore, it is a <strong>Tautology</strong>.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q3(b) -->
+          <div class="sub-question">
+            <span class="sub-label">(b) Kruskal's Sprinkler Spanning Tree [5 Marks]</span>
+            <p>The network below shows the distances in meters between sprinklers on the ceiling of a room. Find the minimum spanning tree using Kruskal's algorithm. Also find the length of minimum spanning tree.</p>
+            
+            <div class="solution-box">
+              <div class="sol-title">Kruskal's Algorithm Step-by-Step Execution</div>
+              <div class="sol-part">
+                <p>Kruskal's algorithm operates greedily: sort all edges in ascending order of weight, then add them one-by-one to form the tree, skipping any edge that forms a closed loop (cycle), until we have selected exactly $n-1 = 9$ edges for the $10$ vertices.</p>
+
+                <p><strong>1. Sorted Edges & Selection Table:</strong></p>
+                <div class="table-wrap">
+                  <table class="dm-table sm-table">
+                    <thead>
+                      <tr>
+                        <th>Step</th>
+                        <th>Edge</th>
+                        <th>Weight</th>
+                        <th>Action</th>
+                        <th>Reason</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="background: var(--bg3);"><td>1</td><td><strong>F - G</strong></td><td><strong>2.6</strong></td><td>Selected</td><td>Smallest edge. Connects Component {F, G} ✓</td></tr>
+                      <tr style="background: var(--bg3);"><td>2</td><td><strong>E - G</strong></td><td><strong>2.8</strong></td><td>Selected</td><td>Connects E to {F, G} ✓</td></tr>
+                      <tr style="background: var(--bg3);"><td>3</td><td><strong>A - B</strong></td><td><strong>3.0</strong></td><td>Selected</td><td>Connects A and B ✓</td></tr>
+                      <tr style="background: var(--bg3);"><td>4</td><td><strong>I - J</strong></td><td><strong>3.4</strong></td><td>Selected</td><td>Connects I and J ✓</td></tr>
+                      <tr style="background: var(--bg3);"><td>5</td><td><strong>A - C</strong></td><td><strong>3.6</strong></td><td>Selected</td><td>Connects C to {A, B} ✓</td></tr>
+                      <tr style="background: var(--bg3);"><td>6</td><td><strong>A - D</strong></td><td><strong>3.7</strong></td><td>Selected</td><td>Connects D to {A, B, C} ✓</td></tr>
+                      <tr style="background: var(--bg3);"><td>7</td><td><strong>H - J</strong></td><td><strong>3.9</strong></td><td>Selected</td><td>Connects H to {I, J} ✓</td></tr>
+                      <tr style="background: var(--bg3);"><td>8</td><td><strong>G - J</strong></td><td><strong>4.1</strong></td><td>Selected</td><td>Connects {E, F, G} to {H, I, J} ✓</td></tr>
+                      <tr><td>9</td><td>G - I</td><td>4.2</td><td>Rejected</td><td>Forms cycle: G-J-I-G ✗</td></tr>
+                      <tr style="background: var(--bg3);"><td>10</td><td><strong>B - E</strong></td><td><strong>4.4</strong></td><td>Selected</td><td>Connects left component {A,B,C,D} to right {E,F,G,H,I,J} ✓</td></tr>
+                      <tr><td>-</td><td>D - G</td><td>4.6</td><td>Rejected</td><td>Forms cycle: D-A-B-E-G-D ✗</td></tr>
+                      <tr><td>-</td><td>B - D</td><td>4.8</td><td>Rejected</td><td>All other remaining edges form cycles ✗</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- MST GRAPH VISUAL -->
+                <div class="tree-container">
+                  <svg width="100%" height="280" viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Non-MST Edges (dashed) -->
+                    <line x1="180" y1="50" x2="280" y2="140" class="tree-edge-visual" stroke-dasharray="3,3" />
+                    <text x="215" y="85" class="tree-text-visual" style="font-size: 10px; fill: var(--text3);">4.8</text>
+
+                    <line x1="180" y1="230" x2="280" y2="140" class="tree-edge-visual" stroke-dasharray="3,3" />
+                    <text x="215" y="200" class="tree-text-visual" style="font-size: 10px; fill: var(--text3);">5.7</text>
+
+                    <line x1="280" y1="140" x2="400" y2="50" class="tree-edge-visual" stroke-dasharray="3,3" />
+                    <text x="350" y="85" class="tree-text-visual" style="font-size: 10px; fill: var(--text3);">4.9</text>
+
+                    <line x1="280" y1="140" x2="400" y2="230" class="tree-edge-visual" stroke-dasharray="3,3" />
+                    <text x="350" y="200" class="tree-text-visual" style="font-size: 10px; fill: var(--text3);">6.3</text>
+
+                    <line x1="180" y1="230" x2="400" y2="230" class="tree-edge-visual" stroke-dasharray="3,3" />
+                    <text x="290" y="245" class="tree-text-visual" style="font-size: 10px; fill: var(--text3);">6.2</text>
+
+                    <line x1="280" y1="140" x2="480" y2="140" class="tree-edge-visual" stroke-dasharray="3,3" />
+                    <text x="380" y="130" class="tree-text-visual" style="font-size: 10px; fill: var(--text3);">4.6</text>
+
+                    <line x1="400" y1="50" x2="580" y2="50" class="tree-edge-visual" stroke-dasharray="3,3" />
+                    <text x="490" y="40" class="tree-text-visual" style="font-size: 10px; fill: var(--text3);">5.2</text>
+
+                    <line x1="480" y1="140" x2="580" y2="50" class="tree-edge-visual" stroke-dasharray="3,3" />
+                    <text x="540" y="85" class="tree-text-visual" style="font-size: 10px; fill: var(--text3);">5.5</text>
+
+                    <line x1="480" y1="140" x2="580" y2="230" class="tree-edge-visual" stroke-dasharray="3,3" />
+                    <text x="540" y="200" class="tree-text-visual" style="font-size: 10px; fill: var(--text3);">4.2</text>
+
+                    <line x1="400" y1="230" x2="580" y2="230" class="tree-edge-visual" stroke-dasharray="3,3" />
+                    <text x="490" y="245" class="tree-text-visual" style="font-size: 10px; fill: var(--text3);">5.9</text>
+
+                    <!-- Selected MST Edges (thick) -->
+                    <line x1="50" y1="140" x2="180" y2="50" class="tree-edge-visual mst" />
+                    <text x="100" y="85" class="tree-text-visual">3.0</text>
+
+                    <line x1="50" y1="140" x2="180" y2="230" class="tree-edge-visual mst" />
+                    <text x="100" y="200" class="tree-text-visual">3.6</text>
+
+                    <line x1="50" y1="140" x2="280" y2="140" class="tree-edge-visual mst" />
+                    <text x="165" y="130" class="tree-text-visual">3.7</text>
+
+                    <line x1="180" y1="50" x2="400" y2="50" class="tree-edge-visual mst" />
+                    <text x="290" y="40" class="tree-text-visual">4.4</text>
+
+                    <line x1="400" y1="50" x2="480" y2="140" class="tree-edge-visual mst" />
+                    <text x="450" y="85" class="tree-text-visual">2.8</text>
+
+                    <line x1="400" y1="230" x2="480" y2="140" class="tree-edge-visual mst" />
+                    <text x="450" y="200" class="tree-text-visual">2.6</text>
+
+                    <line x1="480" y1="140" x2="650" y2="140" class="tree-edge-visual mst" />
+                    <text x="565" y="130" class="tree-text-visual">4.1</text>
+
+                    <line x1="580" y1="50" x2="650" y2="140" class="tree-edge-visual mst" />
+                    <text x="625" y="85" class="tree-text-visual">3.9</text>
+
+                    <line x1="580" y1="230" x2="650" y2="140" class="tree-edge-visual mst" />
+                    <text x="625" y="200" class="tree-text-visual">3.4</text>
+
+                    <!-- Vertices -->
+                    <circle cx="50" cy="140" r="16" class="tree-node-visual" />
+                    <text x="50" y="140" class="tree-text-visual">A</text>
+
+                    <circle cx="180" cy="50" r="16" class="tree-node-visual" />
+                    <text x="180" y="50" class="tree-text-visual">B</text>
+
+                    <circle cx="180" cy="230" r="16" class="tree-node-visual" />
+                    <text x="180" y="230" class="tree-text-visual">C</text>
+
+                    <circle cx="280" cy="140" r="16" class="tree-node-visual" />
+                    <text x="280" y="140" class="tree-text-visual">D</text>
+
+                    <circle cx="400" cy="50" r="16" class="tree-node-visual" />
+                    <text x="400" y="50" class="tree-text-visual">E</text>
+
+                    <circle cx="400" cy="230" r="16" class="tree-node-visual" />
+                    <text x="400" y="230" class="tree-text-visual">F</text>
+
+                    <circle cx="480" cy="140" r="16" class="tree-node-visual" />
+                    <text x="480" y="140" class="tree-text-visual">G</text>
+
+                    <circle cx="580" cy="50" r="16" class="tree-node-visual" />
+                    <text x="580" y="50" class="tree-text-visual">H</text>
+
+                    <circle cx="580" cy="230" r="16" class="tree-node-visual" />
+                    <text x="580" y="230" class="tree-text-visual">I</text>
+
+                    <circle cx="650" cy="140" r="16" class="tree-node-visual" />
+                    <text x="650" y="140" class="tree-text-visual">J</text>
+                  </svg>
+                </div>
+                <div class="svg-caption">Figure 3.1: Minimum Spanning Tree highlighted with solid black lines.</div>
+
+                <div class="result-box" style="margin-top: 15px;">
+                  Total Length of Minimum Spanning Tree:
+                  $$\text{Total Cost} = 2.6 + 2.8 + 3.0 + 3.4 + 3.6 + 3.7 + 3.9 + 4.1 + 4.4 = \mathbf{31.5}\text{ meters}$$
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4: Huffman & Binary Tree Reconstruction -->
+      <div class="question-card" id="pyq25-q4">
+        <div class="q-header">
+          <span class="q-number">Q4</span>
+          <div class="q-meta"><span class="co-badge">CO3</span><span class="co-badge">CO4</span><span class="marks-badge">3+3 Marks</span></div>
+        </div>
+        <div class="q-body">
+          <!-- Q4(a) -->
+          <div class="sub-question">
+            <span class="sub-label">(a) Huffman Coding [3 Marks]</span>
+            <p>Suppose a data file has the following characters and the frequencies:</p>
+            <div class="table-wrap">
+              <table class="dm-table">
+                <thead><tr><th>Character</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr></thead>
+                <tbody><tr><td>Frequency</td><td>12</td><td>15</td><td>7</td><td>13</td><td>9</td></tr></tbody>
+              </table>
+            </div>
+            <p>If Huffman coding is used, calculate the Huffman code of each character.</p>
+
+            <div class="solution-box">
+              <div class="sol-title">Huffman Tree Construction</div>
+              <div class="sol-part">
+                <p><strong>Step-by-Step Heap Merging:</strong></p>
+                <div class="solution-steps">
+                  <div class="step"><span class="step-num">1</span><span>Sort nodes by frequency: <code>C: 7</code>, <code>E: 9</code>, <code>A: 12</code>, <code>D: 13</code>, <code>B: 15</code></span></div>
+                  <div class="step"><span class="step-num">2</span><span>Merge two smallest <code>C(7)</code> and <code>E(9)</code> $\rightarrow$ New node <code>CE(16)</code>.
+                    <br/>List: <code>A: 12</code>, <code>D: 13</code>, <code>B: 15</code>, <code>CE: 16</code>
+                  </span></div>
+                  <div class="step"><span class="step-num">3</span><span>Merge two smallest <code>A(12)</code> and <code>D(13)</code> $\rightarrow$ New node <code>AD(25)</code>.
+                    <br/>List: <code>B: 15</code>, <code>CE: 16</code>, <code>AD: 25</code>
+                  </span></div>
+                  <div class="step"><span class="step-num">4</span><span>Merge two smallest <code>B(15)</code> and <code>CE(16)</code> $\rightarrow$ New node <code>BCE(31)</code>.
+                    <br/>List: <code>AD: 25</code>, <code>BCE: 31</code>
+                  </span></div>
+                  <div class="step"><span class="step-num">5</span><span>Merge final two <code>AD(25)</code> and <code>BCE(31)</code> $\rightarrow$ Root node <code>ADBCE(56)</code>.</span></div>
+                </div>
+
+                <!-- HUFFMAN SVG -->
+                <div class="tree-container">
+                  <svg width="100%" height="240" viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Edges -->
+                    <line x1="250" y1="30" x2="120" y2="90" class="tree-edge-visual" />
+                    <text x="175" y="55" class="tree-text-visual" style="font-size: 11px;">0</text>
+
+                    <line x1="250" y1="30" x2="380" y2="90" class="tree-edge-visual" />
+                    <text x="325" y="55" class="tree-text-visual" style="font-size: 11px;">1</text>
+
+                    <line x1="120" y1="90" x2="60" y2="160" class="tree-edge-visual" />
+                    <text x="80" y="125" class="tree-text-visual" style="font-size: 11px;">0</text>
+
+                    <line x1="120" y1="90" x2="180" y2="160" class="tree-edge-visual" />
+                    <text x="160" y="125" class="tree-text-visual" style="font-size: 11px;">1</text>
+
+                    <line x1="380" y1="90" x2="310" y2="160" class="tree-edge-visual" />
+                    <text x="335" y="125" class="tree-text-visual" style="font-size: 11px;">0</text>
+
+                    <line x1="380" y1="90" x2="440" y2="160" class="tree-edge-visual" />
+                    <text x="420" y="125" class="tree-text-visual" style="font-size: 11px;">1</text>
+
+                    <line x1="440" y1="160" x2="400" y2="220" class="tree-edge-visual" />
+                    <text x="410" y="190" class="tree-text-visual" style="font-size: 11px;">0</text>
+
+                    <line x1="440" y1="160" x2="480" y2="220" class="tree-edge-visual" />
+                    <text x="470" y="190" class="tree-text-visual" style="font-size: 11px;">1</text>
+
+                    <!-- Nodes -->
+                    <circle cx="250" cy="30" r="16" class="tree-node-visual" />
+                    <text x="250" y="30" class="tree-text-visual">56</text>
+
+                    <circle cx="120" cy="90" r="16" class="tree-node-visual" />
+                    <text x="120" y="90" class="tree-text-visual">25</text>
+
+                    <circle cx="380" cy="90" r="16" class="tree-node-visual" />
+                    <text x="380" y="90" class="tree-text-visual">31</text>
+
+                    <!-- Leaves -->
+                    <circle cx="60" cy="160" r="16" class="tree-node-visual" style="stroke-width: 2;" />
+                    <text x="60" y="160" class="tree-text-visual">A:12</text>
+
+                    <circle cx="180" cy="160" r="16" class="tree-node-visual" style="stroke-width: 2;" />
+                    <text x="180" y="160" class="tree-text-visual">D:13</text>
+
+                    <circle cx="310" cy="160" r="16" class="tree-node-visual" style="stroke-width: 2;" />
+                    <text x="310" y="160" class="tree-text-visual">B:15</text>
+
+                    <circle cx="440" cy="160" r="16" class="tree-node-visual" />
+                    <text x="440" y="160" class="tree-text-visual">16</text>
+
+                    <circle cx="400" cy="220" r="16" class="tree-node-visual" style="stroke-width: 2;" />
+                    <text x="400" y="220" class="tree-text-visual">C:7</text>
+
+                    <circle cx="480" cy="220" r="16" class="tree-node-visual" style="stroke-width: 2;" />
+                    <text x="480" y="220" class="tree-text-visual">E:9</text>
+                  </svg>
+                </div>
+                <div class="svg-caption">Figure 4.1: Constructed Huffman tree with left path = 0, right path = 1.</div>
+
+                <p><strong>Lookup Code Table:</strong></p>
+                <div class="table-wrap">
+                  <table class="dm-table">
+                    <thead><tr><th>Character</th><th>Frequency</th><th>Path Code</th><th>Code Length</th></tr></thead>
+                    <tbody>
+                      <tr><td><strong>A</strong></td><td>12</td><td><code>00</code></td><td>2</td></tr>
+                      <tr><td><strong>B</strong></td><td>15</td><td><code>10</code></td><td>2</td></tr>
+                      <tr><td><strong>C</strong></td><td>7</td><td><code>110</code></td><td>3</td></tr>
+                      <tr><td><strong>D</strong></td><td>13</td><td><code>01</code></td><td>2</td></tr>
+                      <tr><td><strong>E</strong></td><td>9</td><td><code>111</code></td><td>3</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="result-box" style="margin-top: 15px;">
+                  Average bits used per character:
+                  $$\text{Avg Length} = \frac{12(2) + 15(2) + 7(3) + 13(2) + 9(3)}{56} = \frac{128}{56} \approx \mathbf{2.286}\text{ bits}$$
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q4(b) -->
+          <div class="sub-question">
+            <span class="sub-label">(b) Binary Tree Reconstruction [3 Marks]</span>
+            <p>Given the preorder and inorder traversal of a binary tree, draw the unique tree.</p>
+            <div class="formula-box" style="margin: 10px 0;">
+              <strong>Preorder:</strong> &nbsp;<code>6 &nbsp;2 &nbsp;b &nbsp;1 &nbsp;3 &nbsp;a &nbsp;4 &nbsp;5 &nbsp;c</code><br/>
+              <strong>Inorder:</strong> &nbsp;&nbsp;<code>b &nbsp;2 &nbsp;3 &nbsp;1 &nbsp;6 &nbsp;a &nbsp;5 &nbsp;4 &nbsp;c</code>
+            </div>
+
+            <div class="solution-box">
+              <div class="sol-title">Subtree Partition & Trace Solution</div>
+              <div class="sol-part">
+                <p><strong>Step-by-step Reconstruction:</strong></p>
+                <div class="solution-steps">
+                  <div class="step"><span class="step-num">1</span><span><strong>Root Identification:</strong> The first element of Preorder is the root $\rightarrow$ <strong>6</strong>.</span></div>
+                  <div class="step"><span class="step-num">2</span><span><strong>Left/Right Subtree split (using Inorder):</strong> Find 6 in Inorder.
+                    <br/>- Left subtree elements: <code>b, 2, 3, 1</code> (Inorder: <code>b 2 3 1</code>)
+                    <br/>- Right subtree elements: <code>a, 5, 4, c</code> (Inorder: <code>a 5 4 c</code>)
+                  </span></div>
+                  <div class="step"><span class="step-num">3</span><span><strong>Reconstruct Left Subtree (Root = 2):</strong> First element of Left's Preorder (<code>2 b 1 3</code>) is <strong>2</strong>.
+                    <br/>- In Inorder <code>b 2 3 1</code>, vertex 2 splits it into left: <code>b</code>, right: <code>3 1</code>.
+                    <br/>- Hence, <strong>b</strong> is the left child of 2.
+                  </span></div>
+                  <div class="step"><span class="step-num">4</span><span><strong>Reconstruct Right of 2 (Root = 1):</strong> First of Remaining Preorder (<code>1 3</code>) is <strong>1</strong>.
+                    <br/>- In Inorder <code>3 1</code>, vertex 1 has left: <code>3</code>, right: empty.
+                    <br/>- Hence, <strong>3</strong> is the left child of 1.
+                  </span></div>
+                  <div class="step"><span class="step-num">5</span><span><strong>Reconstruct Right Subtree (Root = a):</strong> First element of Right's Preorder (<code>a 4 5 c</code>) is <strong>a</strong>.
+                    <br/>- In Inorder <code>a 5 4 c</code>, vertex a has left: empty, right: <code>5 4 c</code>.
+                  </span></div>
+                  <div class="step"><span class="step-num">6</span><span><strong>Reconstruct Right of a (Root = 4):</strong> First of remaining (<code>4 5 c</code>) is <strong>4</strong>.
+                    <br/>- In Inorder <code>5 4 c</code>, 4 splits into left: <strong>5</strong>, right: <strong>c</strong>.
+                  </span></div>
+                </div>
+
+                <!-- CSS SVG UNIQUE TREE -->
+                <div class="tree-container">
+                  <svg width="100%" height="250" viewBox="0 0 500 250" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Left branch -->
+                    <line x1="250" y1="30" x2="150" y2="80" class="tree-edge-visual" />
+                    <line x1="150" y1="80" x2="100" y2="130" class="tree-edge-visual" />
+                    <line x1="150" y1="80" x2="200" y2="130" class="tree-edge-visual" />
+                    <line x1="200" y1="130" x2="160" y2="180" class="tree-edge-visual" />
+
+                    <!-- Right branch -->
+                    <line x1="250" y1="30" x2="350" y2="80" class="tree-edge-visual" />
+                    <line x1="350" y1="80" x2="400" y2="130" class="tree-edge-visual" />
+                    <line x1="400" y1="130" x2="360" y2="180" class="tree-edge-visual" />
+                    <line x1="400" y1="130" x2="440" y2="180" class="tree-edge-visual" />
+
+                    <!-- Nodes -->
+                    <circle cx="250" cy="30" r="16" class="tree-node-visual" style="stroke-width: 2;" />
+                    <text x="250" y="30" class="tree-text-visual">6</text>
+
+                    <circle cx="150" cy="80" r="16" class="tree-node-visual" />
+                    <text x="150" y="80" class="tree-text-visual">2</text>
+
+                    <circle cx="350" cy="80" r="16" class="tree-node-visual" />
+                    <text x="350" y="80" class="tree-text-visual">a</text>
+
+                    <circle cx="100" cy="130" r="16" class="tree-node-visual" />
+                    <text x="100" y="130" class="tree-text-visual">b</text>
+
+                    <circle cx="200" cy="130" r="16" class="tree-node-visual" />
+                    <text x="200" y="130" class="tree-text-visual">1</text>
+
+                    <circle cx="400" cy="130" r="16" class="tree-node-visual" />
+                    <text x="400" y="130" class="tree-text-visual">4</text>
+
+                    <circle cx="160" cy="180" r="16" class="tree-node-visual" />
+                    <text x="160" y="180" class="tree-text-visual">3</text>
+
+                    <circle cx="360" cy="180" r="16" class="tree-node-visual" />
+                    <text x="360" y="180" class="tree-text-visual">5</text>
+
+                    <circle cx="440" cy="180" r="16" class="tree-node-visual" />
+                    <text x="440" y="180" class="tree-text-visual">c</text>
+                  </svg>
+                </div>
+                <div class="svg-caption">Figure 4.2: Reconstructed binary tree from Inorder & Preorder.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q5: Logic Argument & Planarity -->
+      <div class="question-card" id="pyq25-q5">
+        <div class="q-header">
+          <span class="q-number">Q5</span>
+          <div class="q-meta"><span class="co-badge">CO5</span><span class="co-badge">CO3</span><span class="marks-badge">3+3 Marks</span></div>
+        </div>
+        <div class="q-body">
+          <!-- Q5(a) -->
+          <div class="sub-question">
+            <span class="sub-label">(a) Predicate Logic Validity Proof [3 Marks]</span>
+            <p>Test the validity of the following argument: <em>"If an integer is divisible by 10 then it is divisible by 2. If an integer is divisible by 2 then it is divisible by 3. Therefore the integer divisible by 10 is also divisible by 3."</em></p>
+            
+            <div class="solution-box">
+              <div class="sol-title">Formal Proof of Validity</div>
+              <div class="sol-part">
+                <p>Let $x$ represent an arbitrary integer in the domain of all integers. We define the following predicates:</p>
+                <ul>
+                  <li>$P(x)$: "$x$ is divisible by 10"</li>
+                  <li>$Q(x)$: "$x$ is divisible by 2"</li>
+                  <li>$R(x)$: "$x$ is divisible by 3"</li>
+                </ul>
+
+                <p>We write the premises and the conclusion formally:</p>
+                <div class="formula-box">
+                  Premise 1: $\forall x (P(x) \rightarrow Q(x))$ <br/>
+                  Premise 2: $\forall x (Q(x) \rightarrow R(x))$ <br/>
+                  Conclusion: $\forall x (P(x) \rightarrow R(x))$
+                </div>
+
+                <p><strong>Logical Proof Steps:</strong></p>
+                <div class="solution-steps">
+                  <div class="step"><span class="step-num">1</span><span><strong>Universal Instantiation:</strong> Take an arbitrary integer $c$. From Premise 1, we get $P(c) \rightarrow Q(c)$.</span></div>
+                  <div class="step"><span class="step-num">2</span><span><strong>Universal Instantiation:</strong> From Premise 2, we get $Q(c) \rightarrow R(c)$.</span></div>
+                  <div class="step"><span class="step-num">3</span><span><strong>Hypothetical Syllogism Rule:</strong> From propositional rules of inference, if we have $A \rightarrow B$ and $B \rightarrow C$, we can infer $A \rightarrow C$.
+                    <br/>Applying this to $P(c) \rightarrow Q(c)$ and $Q(c) \rightarrow R(c)$ yields:
+                    $$\mathbf{P(c) \rightarrow R(c)}$$
+                  </span></div>
+                  <div class="step"><span class="step-num">4</span><span><strong>Universal Generalization:</strong> Since $c$ was selected as an arbitrary integer from the domain, we generalize the result to all integers:
+                    $$\forall x (P(x) \rightarrow R(x))$$
+                  </span></div>
+                </div>
+
+                <div class="result-box" style="margin-top: 15px;">
+                  Conclusion: The argument is <strong>LOGICALLY VALID</strong> (the structural implication holds true).
+                  <p style="font-size: 12px; font-weight: normal; margin-top: 5px; color: var(--text3);">
+                    <em>Note on Soundness:</em> An argument is "sound" only if it is valid AND all its premises are factually true. While structurally valid, the argument is <strong>not sound</strong> in ordinary arithmetic because Premise 2 ("divisible by 2 implies divisible by 3") is factually false (e.g. 4 is divisible by 2 but not by 3).
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q5(b) -->
+          <div class="sub-question">
+            <span class="sub-label">(b) Graph Planarity & Chromatic Numbers [3 Marks]</span>
+            <p>Check whether the graphs $K_4$ and $K_{4,4}$ are planar or not. Also find the chromatic number of each graph.</p>
+            
+            <div class="solution-box">
+              <div class="sol-title">Planarity Proof & Chromatic Number Derivations</div>
+              <div class="sol-part">
+                <p><strong>1. Complete Graph $K_4$:</strong></p>
+                <ul>
+                  <li><strong>Planarity:</strong> $K_4$ is **planar**. It consists of 4 vertices and 6 edges. Although typically drawn with a central cross (non-planar representation), it can be easily drawn in the plane without crossing edges (e.g. three vertices forming a triangle with the fourth placed inside it and linked to the three outer vertices).</li>
+                  <li><strong>Chromatic Number:</strong> $\chi(K_4) = \mathbf{4}$. Since all 4 vertices are mutually adjacent (complete graph), every single vertex must receive a unique color.</li>
+                </ul>
+
+                <p><strong>2. Complete Bipartite Graph $K_{4,4}$:</strong></p>
+                <ul>
+                  <li><strong>Planarity:</strong> $K_{4,4}$ is **NOT planar**.
+                    <br/><em>Proof using Euler's formula inequality for bipartite graphs:</em>
+                    <br/>For any simple connected planar bipartite graph, every face is bounded by at least 4 edges (since bipartite graphs have no odd cycles, no triangles, so girth $g \ge 4$). This yields the relation:
+                    $$e \le 2v - 4$$
+                    Here for $K_{4,4}$:
+                    <ul>
+                      <li>Vertices $v = 4 + 4 = 8$</li>
+                      <li>Edges $e = 4 \times 4 = 16$</li>
+                    </ul>
+                    Substituting these values:
+                    $$16 \le 2(8) - 4 \implies 16 \le 12 \quad \text{(FALSE!)}$$
+                    Since this inequality is violated, $K_{4,4}$ cannot be planar.
+                    <p style="font-size: 12px; margin-top: 5px; color: var(--text3);">
+                      <em>Kuratowski's Theorem:</em> Alternately, $K_{4,4}$ contains $K_{3,3}$ (the utilities graph) as a subgraph, which is one of the two core non-planar obstructions. Thus $K_{4,4}$ is non-planar.
+                    </p>
+                  </li>
+                  <li><strong>Chromatic Number:</strong> $\chi(K_{4,4}) = \mathbf{2}$. A complete bipartite graph by definition has its vertices partitioned into two independent sets $V_1$ and $V_2$ where no edges exist within a partition. Thus, all vertices in $V_1$ can be colored with color 1, and all in $V_2$ colored with color 2.</li>
+                </ul>
+
+                <!-- Planarity SVG for K4 and K4,4 -->
+                <div class="tree-container">
+                  <svg width="100%" height="220" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Left Side: K4 Planar representation -->
+                    <text x="150" y="25" font-family="var(--mono)" font-size="13" font-weight="bold" fill="var(--text)" text-anchor="middle">K₄ (Planar Drawing)</text>
+                    
+                    <!-- Edges for K4 -->
+                    <line x1="150" y1="45" x2="240" y2="185" class="tree-edge-visual" style="stroke-width: 2;" />
+                    <line x1="240" y1="185" x2="60" y2="185" class="tree-edge-visual" style="stroke-width: 2;" />
+                    <line x1="60" y1="185" x2="150" y2="45" class="tree-edge-visual" style="stroke-width: 2;" />
+                    
+                    <line x1="150" y1="135" x2="150" y2="45" class="tree-edge-visual" style="stroke-dasharray: 2,2;" />
+                    <line x1="150" y1="135" x2="240" y2="185" class="tree-edge-visual" style="stroke-dasharray: 2,2;" />
+                    <line x1="150" y1="135" x2="60" y2="185" class="tree-edge-visual" style="stroke-dasharray: 2,2;" />
+
+                    <!-- Vertices for K4 -->
+                    <circle cx="150" cy="45" r="14" class="tree-node-visual" />
+                    <text x="150" y="45" class="tree-text-visual">v₁</text>
+                    
+                    <circle cx="240" cy="185" r="14" class="tree-node-visual" />
+                    <text x="240" y="185" class="tree-text-visual">v₂</text>
+                    
+                    <circle cx="60" cy="185" r="14" class="tree-node-visual" />
+                    <text x="60" y="185" class="tree-text-visual">v₃</text>
+                    
+                    <circle cx="150" cy="135" r="14" class="tree-node-visual" style="fill: var(--bg2);" />
+                    <text x="150" y="135" class="tree-text-visual">v₄</text>
+                    
+                    <text x="150" y="210" font-family="var(--mono)" font-size="11" fill="var(--text2)" text-anchor="middle">No edge crossings (χ = 4)</text>
+
+                    <!-- Right Side: K4,4 Bipartite drawing -->
+                    <text x="450" y="25" font-family="var(--mono)" font-size="13" font-weight="bold" fill="var(--text)" text-anchor="middle">K₄,₄ (Bipartite Drawing)</text>
+                    
+                    <!-- Edges for K4,4 -->
+                    <line x1="400" y1="45" x2="500" y2="45" class="tree-edge-visual" opacity="0.4" />
+                    <line x1="400" y1="45" x2="500" y2="90" class="tree-edge-visual" opacity="0.4" />
+                    <line x1="400" y1="45" x2="500" y2="135" class="tree-edge-visual" opacity="0.4" />
+                    <line x1="400" y1="45" x2="500" y2="180" class="tree-edge-visual" opacity="0.4" />
+                    
+                    <line x1="400" y1="90" x2="500" y2="45" class="tree-edge-visual" opacity="0.4" />
+                    <line x1="400" y1="90" x2="500" y2="90" class="tree-edge-visual" opacity="0.4" />
+                    <line x1="400" y1="90" x2="500" y2="135" class="tree-edge-visual" opacity="0.4" />
+                    <line x1="400" y1="90" x2="500" y2="180" class="tree-edge-visual" opacity="0.4" />
+                    
+                    <line x1="400" y1="135" x2="500" y2="45" class="tree-edge-visual" opacity="0.4" />
+                    <line x1="400" y1="135" x2="500" y2="90" class="tree-edge-visual" opacity="0.4" />
+                    <line x1="400" y1="135" x2="500" y2="135" class="tree-edge-visual" opacity="0.4" />
+                    <line x1="400" y1="135" x2="500" y2="180" class="tree-edge-visual" opacity="0.4" />
+                    
+                    <line x1="400" y1="180" x2="500" y2="45" class="tree-edge-visual" opacity="0.4" />
+                    <line x1="400" y1="180" x2="500" y2="90" class="tree-edge-visual" opacity="0.4" />
+                    <line x1="400" y1="180" x2="500" y2="135" class="tree-edge-visual" opacity="0.4" />
+                    <line x1="400" y1="180" x2="500" y2="180" class="tree-edge-visual" opacity="0.4" />
+
+                    <!-- Vertices for K4,4 (Left column) -->
+                    <circle cx="400" cy="45" r="12" class="tree-node-visual" style="fill: var(--bg);" />
+                    <text x="400" y="45" class="tree-text-visual" font-size="10">L₁</text>
+                    
+                    <circle cx="400" cy="90" r="12" class="tree-node-visual" style="fill: var(--bg);" />
+                    <text x="400" y="90" class="tree-text-visual" font-size="10">L₂</text>
+                    
+                    <circle cx="400" cy="135" r="12" class="tree-node-visual" style="fill: var(--bg);" />
+                    <text x="400" y="135" class="tree-text-visual" font-size="10">L₃</text>
+                    
+                    <circle cx="400" cy="180" r="12" class="tree-node-visual" style="fill: var(--bg);" />
+                    <text x="400" y="180" class="tree-text-visual" font-size="10">L₄</text>
+
+                    <!-- Vertices for K4,4 (Right column) -->
+                    <circle cx="500" cy="45" r="12" class="tree-node-visual" style="fill: var(--bg2);" />
+                    <text x="500" y="45" class="tree-text-visual" font-size="10">R₁</text>
+                    
+                    <circle cx="500" cy="90" r="12" class="tree-node-visual" style="fill: var(--bg2);" />
+                    <text x="500" y="90" class="tree-text-visual" font-size="10">R₂</text>
+                    
+                    <circle cx="500" cy="135" r="12" class="tree-node-visual" style="fill: var(--bg2);" />
+                    <text x="500" y="135" class="tree-text-visual" font-size="10">R₃</text>
+                    
+                    <circle cx="500" cy="180" r="12" class="tree-node-visual" style="fill: var(--bg2);" />
+                    <text x="500" y="180" class="tree-text-visual" font-size="10">R₄</text>
+                    
+                    <text x="450" y="210" font-family="var(--mono)" font-size="11" fill="var(--text2)" text-anchor="middle">Non-planar (girth 4, χ = 2)</text>
+                  </svg>
+                </div>
+                <div class="svg-caption">Figure 5.1: Planar drawing of K₄ (zero crossings) and dense bipartite presentation of K₄,₄ (non-planar obstruction).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q6: Group Theory -->
+      <div class="question-card" id="pyq25-q6">
+        <div class="q-header">
+          <span class="q-number">Q6</span>
+          <div class="q-meta"><span class="co-badge">CO5</span><span class="marks-badge">5 Marks</span></div>
+        </div>
+        <div class="q-body">
+          <div class="sub-question">
+            <span class="sub-label">Modulo 12 Group Theory [5 Marks]</span>
+            <p>Consider a group $G = \{1, 5, 7, 11\}$ under multiplication modulo 12.
+              <br/><strong>(i)</strong> Find the order of each element and that of group.
+              <br/><strong>(ii)</strong> Is $G$ cyclic? If yes, find all the generators of $G$.
+              <br/><strong>(iii)</strong> Find all the subgroups of $G$.
+            </p>
+            
+            <div class="solution-box">
+              <div class="sol-title">Group Modulo 12 Derivations</div>
+              <div class="sol-part">
+                <p>First, we verify the **Cayley Multiplication Table** under multiplication modulo 12 ($\times_{12}$):</p>
+                <div class="table-wrap">
+                  <table class="dm-table">
+                    <thead>
+                      <tr>
+                        <th>$\times_{12}$</th>
+                        <th>1</th>
+                        <th>5</th>
+                        <th>7</th>
+                        <th>11</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><th>1</th><td>1</td><td>5</td><td>7</td><td>11</td></tr>
+                      <tr><th>5</th><td>5</td><td>1</td><td>11</td><td>7</td></tr>
+                      <tr><th>7</th><td>7</td><td>11</td><td>1</td><td>5</td></tr>
+                      <tr><th>11</th><td>11</td><td>7</td><td>5</td><td>1</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <p><strong>(i) Order of each element and group:</strong></p>
+                <ul>
+                  <li>The **Order of the Group** $|G|$ is the number of elements: <strong>$|G| = 4$</strong>.</li>
+                  <li>The **Order of an element** $a \in G$, denoted $o(a)$, is the smallest positive integer $k$ such that $a^k \equiv 1 \pmod{12}$.
+                    <ul>
+                      <li>$1^1 \equiv 1 \pmod{12} \implies \mathbf{o(1) = 1}$ (identity element)</li>
+                      <li>$5^1 \equiv 5 \not\equiv 1$, $5^2 \equiv 25 \equiv 1 \pmod{12} \implies \mathbf{o(5) = 2}$</li>
+                      <li>$7^1 \equiv 7 \not\equiv 1$, $7^2 \equiv 49 \equiv 1 \pmod{12} \implies \mathbf{o(7) = 2}$</li>
+                      <li>$11^1 \equiv 11 \not\equiv 1$, $11^2 \equiv 121 \equiv 1 \pmod{12} \implies \mathbf{o(11) = 2}$</li>
+                    </ul>
+                  </li>
+                </ul>
+
+                <p><strong>(ii) Is $G$ cyclic?</strong></p>
+                <div class="info-box">
+                  A finite group $G$ of order $n$ is cyclic if and only if there exists some element $a \in G$ with order $o(a) = n$.
+                  <p>Here, $|G| = 4$, but the maximum order of any element is $2$ (specifically, $o(5)=o(7)=o(11)=2$). Since no single element can generate all 4 elements of the group, <strong>$G$ is NOT cyclic</strong>. Consequently, it has <strong>no generators</strong>.</p>
+                  <p style="font-size: 12px; margin-top: 5px; color: var(--text3);">
+                    <em>Group Isomorphism:</em> G is isomorphic to the **Klein 4-Group** ($V_4$ or $\mathbb{Z}_2 \times \mathbb{Z}_2$), which is the smallest non-cyclic group.
+                  </p>
+                </div>
+
+                <p><strong>(iii) Find all subgroups of $G$:</strong></p>
+                <p>According to **Lagrange's Theorem**, the order of a subgroup must divide the order of the parent group $|G| = 4$. Thus, possible subgroup orders are 1, 2, and 4.</p>
+                <ol>
+                  <li><strong>Order 1 Subgroup:</strong>
+                    <br/>- $H_1 = \{1\}$ &nbsp;(Trivial subgroup)
+                  </li>
+                  <li style="margin-top: 5px;"><strong>Order 2 Subgroups (generated by elements of order 2):</strong>
+                    <br/>- $H_2 = \langle 5 \rangle = \{1, 5\}$
+                    <br/>- $H_3 = \langle 7 \rangle = \{1, 7\}$
+                    <br/>- $H_4 = \langle 11 \rangle = \{1, 11\}$
+                  </li>
+                  <li style="margin-top: 5px;"><strong>Order 4 Subgroup:</strong>
+                    <br/>- $H_5 = G = \{1, 5, 7, 11\}$ &nbsp;(Improper subgroup)
+                  </li>
+                </ol>
+                <p>So the list of all subgroups of $G$ is: <strong>$\{1\}$</strong>, <strong>$\{1, 5\}$</strong>, <strong>$\{1, 7\}$</strong>, <strong>$\{1, 11\}$</strong>, and <strong>$\{1, 5, 7, 11\}$</strong>.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Q3 -->
-    <div class="question-card" id="pyq-q3">
-      <div class="q-header">
-        <span class="q-number">Q3</span>
-        <div class="q-meta"><span class="co-badge">CO3</span><span class="marks-badge">3+4 Marks</span></div>
-      </div>
-      <div class="q-body">
-        <div class="sub-question">
-          <span class="sub-label">(a) [3 Marks]</span>
-          <p>Sketch the ordered rooted tree corresponding to the arithmetic expression <code class="inline-code">* / 9 3 + 2 4 − 7 6</code> written in prefix notation. Then find its infix notation. Also find its value.</p>
-          <div class="solution-steps">
-            <div class="step"><span class="step-num">1</span><span>Parse prefix: * [/93] [+2[4-76]]</span></div>
-            <div class="step"><span class="step-num">2</span><span>Root = *, left child = /, right child = +</span></div>
-            <div class="step"><span class="step-num">3</span><span>Infix: (9/3) * (2 + (4 − 7×6)) → evaluate step by step</span></div>
-            <div class="step"><span class="step-num">4</span><span>9/3=3, 7×6=42, 4−42=−38, 2+(−38)=−36, 3×(−36) = <strong>−108</strong></span></div>
-          </div>
-        </div>
-        <div class="sub-question">
-          <span class="sub-label">(b) [4 Marks]</span>
-          <p>A university is offering eight courses during its summer session. The table shows which pairs of courses have one or more students in common. Only two air-conditioned lecture halls are available at any one time. Schedule the final examination of the university.</p>
-          <div class="table-wrap">
-            <table class="dm-table">
-              <thead><tr><th>Course</th><th>F</th><th>M</th><th>H</th><th>P</th><th>E</th><th>I</th><th>S</th><th>C</th></tr></thead>
-              <tbody>
-                <tr><td>French (F)</td><td>—</td><td>x</td><td></td><td></td><td>x</td><td></td><td>x</td><td></td></tr>
-                <tr><td>Math (M)</td><td>x</td><td>—</td><td></td><td></td><td></td><td>x</td><td></td><td></td></tr>
-                <tr><td>History (H)</td><td></td><td></td><td>—</td><td>x</td><td></td><td>x</td><td>x</td><td></td></tr>
-                <tr><td>Philosophy (P)</td><td>x</td><td></td><td>x</td><td>—</td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>English (E)</td><td>x</td><td>x</td><td></td><td></td><td>—</td><td>x</td><td></td><td></td></tr>
-                <tr><td>Italian (I)</td><td></td><td>x</td><td>x</td><td></td><td>x</td><td>—</td><td></td><td></td></tr>
-                <tr><td>Spanish (S)</td><td>x</td><td></td><td>x</td><td></td><td></td><td></td><td>—</td><td>x</td></tr>
-                <tr><td>Chemistry (C)</td><td></td><td></td><td></td><td></td><td></td><td></td><td>x</td><td>—</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="info-box"><strong>Graph Coloring Approach:</strong> Model as graph, apply Welch-Powell. Slot 1: F,H,I → Slot 2: M,P,S → Slot 3: E,C → Schedule requires 3 time slots.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Q4 -->
-    <div class="question-card" id="pyq-q4">
-      <div class="q-header">
-        <span class="q-number">Q4</span>
-        <div class="q-meta"><span class="co-badge">CO3</span><span class="co-badge">CO2</span></div>
-      </div>
-      <div class="q-body">
-        <div class="sub-question">
-          <span class="sub-label">(a) [3 Marks]</span>
-          <p>Show that isomorphism of simple graphs is an equivalence relation.</p>
-          <div class="solution-steps">
-            <div class="step"><span class="step-num">R</span><span><strong>Reflexive:</strong> f: V→V (identity) is an isomorphism. G ≅ G ✓</span></div>
-            <div class="step"><span class="step-num">S</span><span><strong>Symmetric:</strong> If f: G₁→G₂ is isomorphism, then f⁻¹: G₂→G₁ is also isomorphism ✓</span></div>
-            <div class="step"><span class="step-num">T</span><span><strong>Transitive:</strong> If G₁≅G₂ via f, G₂≅G₃ via g, then g∘f: G₁→G₃ is isomorphism ✓</span></div>
-          </div>
-        </div>
-        <div class="sub-question">
-          <span class="sub-label">(b) [4 Marks]</span>
-          <p>Let V be the set of vectors defined as directed line segments. Check whether V forms a group with respect to vector (cross) product.</p>
-          <div class="info-box">
-            <strong>Analysis:</strong> Cross product is NOT a group operation — it fails <em>associativity</em>: (A×B)×C ≠ A×(B×C) in general, and lacks a proper identity element for all vectors. Therefore V under × is <em>not</em> a group.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Q5 -->
-    <div class="question-card" id="pyq-q5">
-      <div class="q-header">
-        <span class="q-number">Q5</span>
-        <div class="q-meta"><span class="co-badge">CO4</span><span class="marks-badge">3+4 Marks</span></div>
-      </div>
-      <div class="q-body">
-        <div class="sub-question">
-          <span class="sub-label">(a) [3 Marks]</span>
-          <p>Examine whether the graphs G₁ and G₂ given in the following figure are isomorphic.</p>
-          <div class="hint-box">
-            <span class="hint-icon">💡</span>
-            <strong>Check:</strong> Same number of vertices ✓, Same number of edges ✓, Same degree sequence ✓, Adjacent vertices must map to adjacent vertices. Use bijection test.
-          </div>
-        </div>
-        <div class="sub-question">
-          <span class="sub-label">(b) [4 Marks]</span>
-          <p>A company plans to build a communications network connecting its five computer centers. Any pair of these centers can be linked with a leased telephone line. Which links should be made to ensure that there is a path between any two computer centers so that the total cost of the network is minimized?</p>
-          <div class="solution-steps">
-            <div class="step"><span class="step-num">1</span><span>Model as weighted graph with cities: SF, Chicago, New York, Denver, Atlanta</span></div>
-            <div class="step"><span class="step-num">2</span><span>Apply <strong>Kruskal's Algorithm</strong>: Sort all edges by weight ascending</span></div>
-            <div class="step"><span class="step-num">3</span><span>Add edges without creating cycle until n-1 = 4 edges selected</span></div>
-            <div class="step"><span class="step-num">4</span><span>MST gives minimum cost communications network</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 

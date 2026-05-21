@@ -115,6 +115,21 @@ document.querySelectorAll(
   io.observe(el);
 });
 
+// ── PYQ Tab Switcher ──
+document.addEventListener('DOMContentLoaded', () => {
+  const tabButtons = document.querySelectorAll('.pyq-tab-btn');
+  const tabContents = document.querySelectorAll('.pyq-tab-content');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.target;
+      
+      tabButtons.forEach(b => b.classList.toggle('active', b === btn));
+      tabContents.forEach(c => c.classList.toggle('active', c.id === target));
+    });
+  });
+});
+
 // ── Keyboard shortcut ──
 document.addEventListener('keydown', e => {
   if (['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
@@ -126,3 +141,4 @@ document.addEventListener('keydown', e => {
     applyTheme(cur === 'dark' ? 'light' : 'dark');
   }
 });
+
