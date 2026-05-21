@@ -32,6 +32,7 @@
       <li><a href="#handshaking" class="nav-link" data-section="handshaking">Handshaking</a></li>
       <li><a href="#trees" class="nav-link" data-section="trees">Trees</a></li>
       <li><a href="#fsm" class="nav-link" data-section="fsm">FSM</a></li>
+      <li><a href="#donate" class="nav-link" data-section="donate">Donate</a></li>
     </ul>
     <div class="nav-controls">
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">☀</button>
@@ -54,6 +55,7 @@
   <a href="#handshaking">Handshaking Theorem</a>
   <a href="#trees">Trees</a>
   <a href="#fsm">Finite State Machines</a>
+  <a href="#donate">Donate Us</a>
 </div>
 
 <!-- ═══ HERO ═══ -->
@@ -3369,6 +3371,53 @@ v₄ [  1  0  1  0 ]
   </div>
 </section>
 
+<!-- ═══════════════════════ SECTION: DONATE US ═══════════════════════ -->
+<section id="donate" class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">06</div>
+      <div>
+        <h2 class="section-title">Support & Donate</h2>
+        <p class="section-subtitle">Keep Wistaar fast, premium, and 100% ad-free for everyone</p>
+      </div>
+    </div>
+
+    <div class="donate-container">
+      <div class="donate-card">
+        <div class="donate-icon">❤️</div>
+        <h3 class="donate-title">Support Our Work</h3>
+        <p class="donate-desc">
+          If this study reference helped you prepare for your exams and tutorials, consider making a contribution. Your donations support server hosting and content development to keep these guides free and up-to-date.
+        </p>
+        
+        <div class="upi-box">
+          <div class="upi-label">UPI Address</div>
+          <div class="upi-input-group">
+            <code class="upi-id" id="upiId">7225834789@ybl</code>
+            <button class="copy-btn" id="copyUpiBtn" aria-label="Copy UPI ID" title="Copy UPI ID">
+              <span class="copy-icon">📋</span>
+              <span class="copy-text">Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="qr-container">
+          <div class="qr-title">Scan QR Code to Pay</div>
+          <div class="qr-box">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi%3A%2F%2Fpay%3Fpa%3D7225834789%40ybl%26pn%3DWistaar%2520DM%2520Support" alt="Donation QR Code" class="qr-image" />
+          </div>
+          <div class="qr-apps">
+            <span class="app-tag">GPay</span>
+            <span class="app-tag">PhonePe</span>
+            <span class="app-tag">Paytm</span>
+            <span class="app-tag">BHIM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-line"></div>
@@ -3378,6 +3427,28 @@ v₄ [  1  0  1  0 ]
   </div>
 </footer>
 
+
+<!-- Floating Support & Donate Option -->
+<div class="floating-donate-container" id="floatingDonateContainer">
+  <button class="floating-donate-btn" id="floatingDonateBtn" aria-label="Support Wistaar" title="Support Wistaar">
+    <span class="heart-icon">❤️</span>
+    <span class="btn-text">Support</span>
+  </button>
+  <div class="floating-donate-popover" id="floatingDonatePopover">
+    <div class="popover-header">
+      <span class="popover-title">Support Wistaar</span>
+      <button class="popover-close" id="popoverCloseBtn" aria-label="Close popover">&times;</button>
+    </div>
+    <p class="popover-desc">Help keep this guide fast, updated, and 100% ad-free!</p>
+    <div class="popover-upi">
+      <code id="floatUpiId">7225834789@ybl</code>
+      <button class="popover-copy-btn" id="floatCopyBtn" title="Copy UPI ID" aria-label="Copy UPI ID">
+        <span class="float-copy-icon">📋</span>
+      </button>
+    </div>
+    <a href="#donate" class="popover-more-link" id="popoverMoreLink">Scan QR & More Options →</a>
+  </div>
+</div>
 
 <!-- Back to Top -->
 <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>

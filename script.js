@@ -109,7 +109,7 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
 
 document.querySelectorAll(
-  '.question-card, .theory-block, .type-card, .formula-card, .prop-card'
+  '.question-card, .theory-block, .type-card, .formula-card, .prop-card, .donate-card'
 ).forEach(el => {
   el.classList.add('fade-in');
   io.observe(el);
@@ -141,4 +141,104 @@ document.addEventListener('keydown', e => {
     applyTheme(cur === 'dark' ? 'light' : 'dark');
   }
 });
+
+// ── Copy UPI ID ──
+document.addEventListener('DOMContentLoaded', () => {
+  const copyUpiBtn = document.getElementById('copyUpiBtn');
+  if (copyUpiBtn) {
+    copyUpiBtn.addEventListener('click', () => {
+      const upiId = document.getElementById('upiId').textContent.trim();
+      navigator.clipboard.writeText(upiId).then(() => {
+        const copyText = copyUpiBtn.querySelector('.copy-text');
+        const copyIcon = copyUpiBtn.querySelector('.copy-icon');
+        
+        const originalText = copyText.textContent;
+        const originalIcon = copyIcon.textContent;
+        
+        copyText.textContent = 'Copied!';
+        copyIcon.textContent = '✓';
+        copyUpiBtn.classList.add('copied');
+        
+        setTimeout(() => {
+          copyText.textContent = originalText;
+          copyIcon.textContent = originalIcon;
+          copyUpiBtn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+    });
+  }
+});
+
+// ── Floating Support Option Interactivity ──
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('floatingDonateContainer');
+  const btn       = document.getElementById('floatingDonateBtn');
+  const closeBtn  = document.getElementById('popoverCloseBtn');
+  const copyBtn   = document.getElementById('floatCopyBtn');
+  const upiCode   = document.getElementById('floatUpiId');
+  const moreLink  = document.getElementById('popoverMoreLink');
+
+  if (!container || !btn) return;
+
+  // Toggle popover
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    container.classList.toggle('active');
+  });
+
+  // Close on close button click
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      container.classList.remove('active');
+    });
+  }
+
+  // Close on more link click (let anchor scroll run)
+  if (moreLink) {
+    moreLink.addEventListener('click', () => {
+      container.classList.remove('active');
+    });
+  }
+
+  // Close when clicking outside container
+  document.addEventListener('click', (e) => {
+    if (!container.contains(e.target)) {
+      container.classList.remove('active');
+    }
+  });
+
+  // Prevent closing when clicking inside popover
+  const popover = container.querySelector('.floating-donate-popover');
+  if (popover) {
+    popover.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  }
+
+  // Popover UPI Copy
+  if (copyBtn && upiCode) {
+    copyBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const upiId = upiCode.textContent.trim();
+      navigator.clipboard.writeText(upiId).then(() => {
+        const icon = copyBtn.querySelector('.float-copy-icon');
+        const originalIcon = icon.textContent;
+        
+        icon.textContent = '✓';
+        copyBtn.classList.add('copied');
+        
+        setTimeout(() => {
+          icon.textContent = originalIcon;
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy floating UPI ID: ', err);
+      });
+    });
+  }
+});
+
 
