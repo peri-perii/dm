@@ -1,0 +1,2776 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C++ OOP Reference & Interactive Quiz | @wistaar</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ── DESIGN SYSTEM & VARIABLE SYSTEM ── */
+    :root {
+      --bg: #fafaf9;
+      --bg2: #f4f4f5;
+      --ink: #09090b;
+      --ink2: #27272a;
+      --mu: #71717a;
+      --ac: #7c3aed;
+      --ac2: rgba(124, 58, 237, 0.06);
+      --ac3: rgba(124, 58, 237, 0.15);
+      --bd: #e4e4e7;
+      --card: #ffffff;
+      --cbg: #18181b;
+      --cfg: #e4e4e7;
+      
+      --sh: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.05);
+      --sh2: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+      --grad: linear-gradient(135deg, #7c3aed, #3b82f6);
+      --grad2: linear-gradient(135deg, #7c3aed, #ec4899);
+      
+      --mo: 'DM Mono', monospace;
+      --se: 'Instrument Serif', serif;
+      --sa: 'DM Sans', sans-serif;
+      --r: 12px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #09090b;
+      --bg2: #18181b;
+      --ink: #fafafa;
+      --ink2: #d4d4d8;
+      --mu: #a1a1aa;
+      --ac: #a78bfa;
+      --ac2: rgba(167, 139, 250, 0.08);
+      --ac3: rgba(167, 139, 250, 0.2);
+      --bd: #27272a;
+      --card: #18181b;
+      --cbg: #09090b;
+      --cfg: #e4e4e7;
+      
+      --sh: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.3);
+      --sh2: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ── BASE & TYPOGRAPHY ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      height: 100%;
+    }
+    
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sa);
+      font-size: 15px;
+      line-height: 1.75;
+      transition: background 0.3s, color 0.3s;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── LAYOUT SHELL ── */
+    .shell {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    /* ── SIDEBAR NAVIGATION ── */
+    aside {
+      width: 280px;
+      min-width: 280px;
+      border-right: 1px solid var(--bd);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      z-index: 100;
+    }
+
+    aside::-webkit-scrollbar {
+      width: 4px;
+    }
+    aside::-webkit-scrollbar-thumb {
+      background: var(--bd);
+      border-radius: 4px;
+    }
+
+    .logo {
+      padding: 24px 22px 18px;
+      border-bottom: 1px solid var(--bd);
+      background: linear-gradient(180deg, var(--ac2), transparent);
+    }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mo);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ac);
+      background: var(--ac2);
+      border: 1px solid var(--ac3);
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .logo strong {
+      display: block;
+      font-family: var(--se);
+      font-size: 26px;
+      color: var(--ink);
+      letter-spacing: -0.5px;
+      font-weight: 400;
+      line-height: 1.1;
+    }
+
+    .logo span {
+      font-family: var(--mo);
+      font-size: 10px;
+      color: var(--mu);
+      margin-top: 4px;
+      display: block;
+    }
+
+    /* Sidebar Search */
+    .search-box {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--bd);
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--bd);
+      background: var(--bg2);
+      color: var(--ink);
+      font-family: var(--sa);
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--ac);
+      background: var(--card);
+      box-shadow: 0 0 0 2px var(--ac3);
+    }
+
+    nav {
+      flex: 1;
+      padding: 16px 8px;
+    }
+
+    nav ul {
+      list-style: none;
+    }
+
+    nav ul li .sh {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--mu);
+      margin-top: 18px;
+      padding: 6px 14px 4px;
+      font-weight: 700;
+      font-family: var(--mo);
+      display: block;
+    }
+
+    nav ul li:first-child .sh {
+      margin-top: 0;
+    }
+
+    nav ul li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--sa);
+      font-size: 13.5px;
+      color: var(--ink2);
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: all 0.18s;
+      margin-bottom: 2px;
+      position: relative;
+      font-weight: 400;
+    }
+
+    nav ul li a::before {
+      content: '';
+      width: 3px;
+      height: 0;
+      background: var(--grad);
+      border-radius: 2px;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: height 0.18s;
+    }
+
+    nav ul li a:hover {
+      color: var(--ac);
+      background: var(--ac2);
+    }
+
+    nav ul li a:hover::before {
+      height: 50%;
+    }
+
+    nav ul li a.active {
+      color: var(--ac);
+      background: var(--ac2);
+      font-weight: 550;
+    }
+
+    nav ul li a.active::before {
+      height: 70%;
+    }
+
+    /* ── MAIN WORKSPACE ── */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      right: 0;
+      left: 0;
+      padding: 14px 40px;
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--bd);
+      background: rgba(250, 250, 249, 0.85);
+      backdrop-filter: blur(12px);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    [data-theme="dark"] .topbar {
+      background: rgba(9, 9, 11, 0.85);
+    }
+
+    .m-toggle {
+      display: none;
+      font-size: 20px;
+      background: transparent;
+      border: none;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: auto;
+    }
+
+    .tbtn {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid var(--bd);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: var(--sh);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tbtn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--ac3), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .tbtn:hover {
+      transform: translateY(-2px) scale(1.05);
+      border-color: var(--ac);
+    }
+
+    .tbtn:hover::before {
+      opacity: 1;
+    }
+
+    html[data-theme="light"] .tbtn {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+    }
+
+    html[data-theme="light"] .tbtn:hover {
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.25), inset 0 0 0 1px rgba(251, 191, 36, 0.2);
+      border-color: #fbbf24;
+      background: #fffbeb;
+    }
+
+    html[data-theme="dark"] .tbtn {
+      background: rgba(24, 24, 27, 0.7);
+      backdrop-filter: blur(8px);
+    }
+
+    html[data-theme="dark"] .tbtn:hover {
+      box-shadow: 0 8px 20px rgba(167, 139, 250, 0.25), inset 0 0 0 1px rgba(167, 139, 250, 0.2);
+      border-color: var(--ac);
+      background: #12101e;
+    }
+
+    .tbtn:active {
+      transform: scale(0.95) translateY(0);
+    }
+
+    #customQCount:focus {
+      border-color: var(--ac);
+      box-shadow: 0 0 8px var(--ac3);
+      background: var(--card);
+    }
+
+    .tbtn svg {
+      position: absolute;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s, filter 0.3s;
+    }
+
+    /* Light Theme (shows Moon icon with rotation and scale-down) */
+    html[data-theme="light"] .tbtn .sun-icon {
+      transform: translateY(24px) scale(0.5) rotate(90deg);
+      opacity: 0;
+      filter: blur(2px);
+    }
+    html[data-theme="light"] .tbtn .moon-icon {
+      transform: translateY(0) scale(1) rotate(0deg);
+      opacity: 1;
+      filter: none;
+    }
+
+    /* Dark Theme (shows Sun icon with rotation and scale-down) */
+    html[data-theme="dark"] .tbtn .sun-icon {
+      transform: translateY(0) scale(1) rotate(0deg);
+      opacity: 1;
+      filter: none;
+    }
+    html[data-theme="dark"] .tbtn .moon-icon {
+      transform: translateY(-24px) scale(0.5) rotate(-90deg);
+      opacity: 0;
+      filter: blur(2px);
+    }
+
+    /* ── MACBOOK TERMINAL QUIZ CARD ── */
+    .qcard-terminal {
+      background: #0f0f11 !important;
+      border: 1px solid #2d2d31 !important;
+      border-radius: 12px !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45) !important;
+      padding: 0 !important;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      color: #e4e4e7 !important;
+      margin-top: 20px;
+    }
+
+    .terminal-hdr {
+      background: #18181b;
+      border-bottom: 1px solid #27272a;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .terminal-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+    .terminal-dot.red { background: #ff5f56; }
+    .terminal-dot.yellow { background: #ffbd2e; }
+    .terminal-dot.green { background: #27c93f; }
+
+    .terminal-title {
+      font-family: var(--mo);
+      font-size: 11px;
+      color: #8e8e93;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-weight: 500;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .terminal-body {
+      padding: 32px;
+      font-family: var(--mo);
+    }
+
+    .terminal-prompt {
+      font-family: var(--mo);
+      font-size: 13px;
+      margin-bottom: 18px;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .terminal-prompt .user {
+      color: #34d399;
+      font-weight: 600;
+    }
+
+    .terminal-prompt .loc {
+      color: #e4e4e7;
+    }
+
+    .terminal-prompt .cmd {
+      color: #a78bfa;
+    }
+
+    .qttl-terminal {
+      font-size: 16.5px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      color: #fafafa !important;
+      font-family: var(--sa) !important;
+    }
+
+    .term-opt {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      border: 1px solid #27272a;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 14px;
+      font-family: var(--mo);
+      background: #18181b;
+      color: #d4d4d8;
+      user-select: none;
+      position: relative;
+    }
+
+    .term-opt::before {
+      content: '>';
+      font-family: var(--mo);
+      color: var(--ac);
+      position: absolute;
+      left: 14px;
+      opacity: 0;
+      transform: translateX(-5px);
+      transition: all 0.22s;
+    }
+
+    .term-opt:hover {
+      border-color: var(--ac);
+      background: #1d1b26;
+      color: #ffffff;
+      padding-left: 28px;
+    }
+
+    .term-opt:hover::before {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .term-opt-lbl {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      border: 1px solid #27272a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      flex-shrink: 0;
+      font-weight: 600;
+      background: #27272a;
+      color: #a1a1aa;
+      transition: all 0.22s;
+    }
+
+    .term-opt:hover .term-opt-lbl {
+      border-color: var(--ac);
+      background: var(--ac);
+      color: #fff;
+    }
+
+    /* Terminal Success/Error states */
+    .term-opt.correct {
+      border-color: #10b981 !important;
+      background: rgba(16, 185, 129, 0.08) !important;
+      color: #34d399 !important;
+    }
+
+    .term-opt.correct::before {
+      content: '✔';
+      color: #10b981;
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .term-opt.correct .term-opt-lbl {
+      background: #10b981 !important;
+      border-color: #10b981 !important;
+      color: #fff !important;
+    }
+
+    .term-opt.incorrect {
+      border-color: #ef4444 !important;
+      background: rgba(239, 68, 68, 0.08) !important;
+      color: #f87171 !important;
+    }
+
+    .term-opt.incorrect::before {
+      content: '✘';
+      color: #ef4444;
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .term-opt.incorrect .term-opt-lbl {
+      background: #ef4444 !important;
+      border-color: #ef4444 !important;
+      color: #fff !important;
+    }
+
+    /* Terminal code box */
+    .qcode-terminal {
+      background: #09090b !important;
+      color: #e4e4e7 !important;
+      font-family: var(--mo);
+      font-size: 13px;
+      line-height: 1.8;
+      padding: 20px 24px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 16px 0 24px;
+      white-space: pre;
+      border: 1px solid #27272a;
+    }
+
+    .th-btn {
+      font-family: var(--mo);
+      font-size: 12px;
+      padding: 8px 18px;
+      border-radius: 30px;
+      background: var(--grad);
+      color: #fff;
+      border: none;
+      text-decoration: none;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+      transition: all 0.2s;
+    }
+
+    .th-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(124, 58, 237, 0.3);
+    }
+
+    /* Chip & Input styling */
+    .chip {
+      font-family: var(--mo);
+      font-size: 11.5px;
+      padding: 8px 18px;
+      border: 1.5px solid var(--bd);
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--bg2);
+      color: var(--ink2);
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .chip:hover {
+      border-color: var(--ac);
+      color: var(--ac);
+    }
+    
+    .chip.sel {
+      background: var(--grad);
+      color: #fff !important;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+    }
+
+    /* ── PAGE VIEWPORT CONTAINER ── */
+    #app {
+      flex: 1;
+      padding: 40px 48px 80px;
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .page-fade {
+      animation: fadeInSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes fadeInSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── HOME / LANDING PAGE ── */
+    .hero {
+      margin-bottom: 48px;
+      position: relative;
+    }
+
+    .hero-pre {
+      font-family: var(--mo);
+      font-size: 11px;
+      color: var(--ac);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: block;
+      font-weight: 600;
+    }
+
+    .hero h1 {
+      font-family: var(--se);
+      font-size: 58px;
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -1.2px;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: var(--mu);
+      font-weight: 300;
+      max-width: 680px;
+      line-height: 1.6;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+
+    .stat-card {
+      border: 1px solid var(--bd);
+      background: var(--card);
+      padding: 24px;
+      border-radius: var(--r);
+      box-shadow: var(--sh);
+      text-align: center;
+      transition: all 0.25s;
+    }
+
+    .stat-card:hover {
+      box-shadow: var(--sh2);
+      transform: translateY(-2px);
+      border-color: var(--ac);
+    }
+
+    .stat-val {
+      font-family: var(--se);
+      font-size: 42px;
+      font-weight: 400;
+      line-height: 1;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      font-family: var(--mo);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--mu);
+    }
+
+    .section-title {
+      font-family: var(--se);
+      font-size: 32px;
+      font-weight: 400;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--bd);
+    }
+
+    .landing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .landing-card {
+      border: 1px solid var(--bd);
+      background: var(--card);
+      border-radius: var(--r);
+      padding: 24px;
+      box-shadow: var(--sh);
+      transition: all 0.22s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .landing-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--grad);
+      opacity: 0;
+      transition: opacity 0.22s;
+    }
+
+    .landing-card:hover {
+      box-shadow: var(--sh2);
+      transform: translateY(-3px);
+      border-color: var(--ac);
+    }
+
+    .landing-card:hover::before {
+      opacity: 1;
+    }
+
+    .card-cat {
+      font-family: var(--mo);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ac);
+      margin-bottom: 12px;
+      display: block;
+      font-weight: 600;
+    }
+
+    .landing-card h3 {
+      font-family: var(--sa);
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .landing-card p {
+      font-size: 13.5px;
+      color: var(--mu);
+      line-height: 1.5;
+      font-weight: 300;
+      flex: 1;
+    }
+
+    .card-footer {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mo);
+      font-size: 11px;
+      color: var(--ac);
+      font-weight: 500;
+    }
+
+    .card-footer span {
+      transition: transform 0.2s;
+    }
+
+    .landing-card:hover .card-footer span {
+      transform: translateX(4px);
+    }
+
+    /* ── TOPIC DETAIL PAGE ── */
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mo);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mu);
+      margin-bottom: 24px;
+    }
+
+    .breadcrumbs a {
+      color: var(--mu);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .breadcrumbs a:hover {
+      color: var(--ac);
+    }
+
+    .topic-hdr {
+      margin-bottom: 32px;
+    }
+
+    .topic-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .cat-badge {
+      font-family: var(--mo);
+      font-size: 9.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ac);
+      background: var(--ac2);
+      border: 1px solid var(--ac3);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .read-time {
+      font-family: var(--mo);
+      font-size: 10.5px;
+      color: var(--mu);
+    }
+
+    .topic-title {
+      font-family: var(--se);
+      font-size: 48px;
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+
+    .def-card {
+      border-left: 4px solid transparent;
+      border-image: var(--grad) 1;
+      background: var(--ac2);
+      padding: 20px 24px;
+      border-radius: 0 var(--r) var(--r) 0;
+      margin-bottom: 36px;
+      box-shadow: var(--sh);
+    }
+
+    .def-card strong {
+      display: block;
+      font-family: var(--mo);
+      font-size: 10.5px;
+      color: var(--ac);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .def-card p {
+      font-size: 15.5px;
+      line-height: 1.6;
+      color: var(--ink);
+      font-weight: 400;
+    }
+
+    .content-sec {
+      margin-bottom: 40px;
+    }
+
+    .sec-sub {
+      font-family: var(--sa);
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ac);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .content-sec p {
+      color: var(--ink2);
+      font-weight: 300;
+      font-size: 14.5px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    /* Key Concepts Grid */
+    .concepts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .concept-card {
+      border: 1px solid var(--bd);
+      background: var(--card);
+      padding: 18px 20px;
+      border-radius: 8px;
+      box-shadow: var(--sh);
+    }
+
+    .concept-card h4 {
+      font-family: var(--sa);
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .concept-card p {
+      font-size: 12.5px;
+      color: var(--mu);
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
+    /* macOS Code Window styling */
+    .code-window {
+      margin: 20px 0;
+      border-radius: var(--r);
+      overflow: hidden;
+      border: 1px solid #27272a;
+      box-shadow: var(--sh2);
+    }
+
+    .code-hdr {
+      display: flex;
+      align-items: center;
+      background: #27272a;
+      padding: 10px 18px;
+      justify-content: space-between;
+    }
+
+    .code-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .code-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .code-dot.red { background: #ef4444; }
+    .code-dot.yellow { background: #f59e0b; }
+    .code-dot.green { background: #10b981; }
+
+    .code-lang {
+      font-family: var(--mo);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #71717a;
+    }
+
+    .code-copy {
+      background: transparent;
+      border: none;
+      color: #a1a1aa;
+      cursor: pointer;
+      font-family: var(--mo);
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.15s;
+    }
+
+    .code-copy:hover {
+      color: #fff;
+    }
+
+    .code-window pre {
+      background: var(--cbg);
+      color: var(--cfg);
+      font-family: var(--mo);
+      font-size: 13px;
+      line-height: 1.8;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 0;
+    }
+
+    .code-window code {
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      color: inherit !important;
+    }
+
+    /* Syntax Tokens */
+    .kw { color: #c084fc; font-weight: 500; }
+    .ty { color: #67e8f9; }
+    .fn { color: #86efac; }
+    .cm { color: #52525b; font-style: italic; }
+    .st { color: #fbbf24; }
+    .nu { color: #fb923c; }
+
+    /* Pitfall card */
+    .pitfall-card {
+      border: 1px solid #fecdd3;
+      background: rgba(254, 242, 242, 0.6);
+      padding: 20px 24px;
+      border-radius: var(--r);
+      margin-top: 24px;
+      position: relative;
+    }
+
+    [data-theme="dark"] .pitfall-card {
+      border-color: #500724;
+      background: rgba(80, 7, 36, 0.15);
+    }
+
+    .pitfall-card strong {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mo);
+      font-size: 10px;
+      color: #e11d48;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .pitfall-card p {
+      font-size: 13.5px;
+      color: var(--ink2);
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+
+    /* Dynamic inline code */
+    code {
+      font-family: var(--mo);
+      font-size: 12.5px;
+      background: var(--ac2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--ac);
+      border: 1px solid var(--ac3);
+    }
+
+    /* Topic Flow Navigation */
+    .topic-flow {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 56px;
+      padding-top: 32px;
+      border-top: 1px solid var(--bd);
+    }
+
+    .flow-btn {
+      display: inline-flex;
+      flex-direction: column;
+      text-decoration: none;
+      max-width: 45%;
+    }
+
+    .flow-btn.prev {
+      align-items: flex-start;
+    }
+
+    .flow-btn.next {
+      align-items: flex-end;
+      text-align: right;
+      margin-left: auto;
+    }
+
+    .flow-lbl {
+      font-family: var(--mo);
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--mu);
+      margin-bottom: 4px;
+    }
+
+    .flow-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ac);
+      transition: color 0.15s;
+    }
+
+    .flow-btn:hover .flow-title {
+      color: var(--ink);
+    }
+
+    /* ── DYNAMIC TABLE ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13.5px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--bd);
+    }
+
+    th {
+      font-family: var(--mo);
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--mu);
+      text-align: left;
+      padding: 12px 16px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--bd);
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--bd);
+      font-weight: 300;
+      vertical-align: top;
+      color: var(--ink2);
+    }
+
+    tr:hover td {
+      background: var(--ac2);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 40px;
+      font-family: var(--mo);
+      font-size: 11.5px;
+      color: var(--mu);
+      border-top: 1px solid var(--bd);
+      margin-top: auto;
+      background: linear-gradient(0deg, var(--bg2), transparent);
+    }
+
+    footer span {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 600;
+    }
+
+    /* ── RESPONSIVE ADAPTATIONS ── */
+    @media (max-width: 900px) {
+      aside {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        transform: translateX(-100%);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+      }
+
+      aside.open {
+        transform: translateX(0);
+      }
+
+      .m-toggle {
+        display: block;
+      }
+
+      #app {
+        padding: 30px 20px 60px;
+      }
+
+      .hero h1 {
+        font-size: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="shell">
+    
+    <!-- ── LEFT NAVIGATION SIDEBAR ── -->
+    <aside id="appSidebar">
+      <div class="logo">
+        <div class="logo-badge">✦ Interactive Reference</div>
+        <strong>C++ OOP Guide</strong>
+        <span>// designed by @wistaar</span>
+      </div>
+      
+      <div class="search-box">
+        <input type="text" id="sidebarSearch" placeholder="Search topics..." onkeyup="filterSidebar()">
+      </div>
+      
+      <nav>
+        <ul id="sidebarNav">
+          <!-- Populated dynamically via JS -->
+        </ul>
+      </nav>
+    </aside>
+    
+    <!-- ── MAIN CONTENT WORKSPACE ── -->
+    <main>
+      
+      <!-- Top header bar containing dark mode / actions -->
+      <div class="topbar">
+        <button class="m-toggle" onclick="toggleSidebar()" aria-label="Toggle Navigation">☰</button>
+        <div class="topbar-actions">
+          <button class="tbtn" id="thbtn" onclick="toggleTheme()" title="Toggle dark mode">
+            <!-- Sun SVG -->
+            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #fbbf24;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            <!-- Moon SVG -->
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #6366f1;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </button>
+          <a href="#quiz" class="th-btn">▶ Quiz</a>
+        </div>
+      </div>
+      
+      <!-- The SPA dynamic rendering element -->
+      <div id="app">
+        <!-- Content gets loaded here dynamically via JavaScript router -->
+      </div>
+      
+      <!-- ── COPYRIGHT FOOTER ── -->
+      <footer>
+        &copy; 2026 <span>@wistaar</span>
+      </footer>
+      
+    </main>
+    
+  </div>
+
+  <script>
+    /* ── THEME INITIALIZATION & SHADOW STACKS ── */
+    function toggleTheme() {
+      const h = document.documentElement;
+      if (h.dataset.theme === 'dark') {
+        h.dataset.theme = 'light';
+        localStorage.setItem('theme', 'light');
+      } else {
+        h.dataset.theme = 'dark';
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.dataset.theme = savedTheme;
+    })();
+
+    /* Mobile Sidebar Trigger */
+    function toggleSidebar() {
+      const side = document.getElementById('appSidebar');
+      side.classList.toggle('open');
+    }
+
+    // Hide sidebar on nav selection
+    document.addEventListener('click', (e) => {
+      const side = document.getElementById('appSidebar');
+      if (side.classList.contains('open') && !side.contains(e.target) && !e.target.classList.contains('m-toggle')) {
+        side.classList.remove('open');
+      }
+    });
+
+    /* Search & Filter function in sidebar */
+    function filterSidebar() {
+      const val = document.getElementById('sidebarSearch').value.toLowerCase();
+      const items = document.querySelectorAll('#sidebarNav li');
+      
+      items.forEach(li => {
+        const a = li.querySelector('a');
+        if (!a) return; // skip category headers
+        
+        const title = a.textContent.toLowerCase();
+        if (title.includes(val)) {
+          li.style.display = 'block';
+        } else {
+          li.style.display = 'none';
+        }
+      });
+    }
+
+    /* ── 25 TOPICS COMPREHENSIVE TEXT & SOURCE CONTENT ── */
+    const TOPICS_DATA = {
+      intro: {
+        title: "Introduction to OOP",
+        category: "Core",
+        definition: "Object-Oriented Programming (OOP) is a programming paradigm centered around 'objects' rather than functions. Objects encapsulate both raw properties (fields) and specialized behaviors (methods), offering developers clean encapsulation and structured architectural control.",
+        theory: "<p>Historically, software was built using procedural programming, separating functions from structures. While optimal for basic math and small scripts, this paradigm degrades rapidly at scale. The lack of logical ownership on data makes code vulnerable to cross-boundary modifications, structural bugs, and global side-effects.</p><p>OOP eliminates these issues by co-locating state and behavior into self-contained <strong>objects</strong>. C++ is engineered as a highly efficient, multi-paradigm language. Rather than forcing you strictly into high-level wrappers, C++ layers class hierarchies directly over hardware primitives. This provides raw, deterministic compiler execution speed alongside powerful architecture patterns: encapsulation, inheritance, polymorphism, and abstraction.</p>",
+        keyConcepts: [
+          { name: "Object vs Class", desc: "A class represents the static compilation template. An object is a live instance allocated in stack/heap memory." },
+          { name: "The Four Pillars", desc: "Encapsulation (shielding details), Abstraction (hiding complexity), Inheritance (reusing models), Polymorphism (adapting interfaces)." },
+          { name: "Zero-Cost Abstractions", desc: "C++ objects reside directly in memory with zero overhead unless dynamic runtime dispatch (virtual tables) is invoked." }
+        ],
+        syntax: "class ClassName {\nprivate:\n  // Hidden internal data members\npublic:\n  // Exposed operations interface\n};",
+        code: `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>\n\n<span class="kw">class</span> <span class="ty">Printer</span> {\n<span class="kw">public</span>:\n    <span class="fn">void</span> display(<span class="kw">const</span> std::string&amp; text) {\n        std::cout &lt;&lt; <span class="st">"OOP active: "</span> &lt;&lt; text &lt;&lt; std::endl;\n    }\n};\n\n<span class="ty">int</span> <span class="fn">main</span>() {\n    <span class="ty">Printer</span> myObj; <span class="cm">// Stack allocated object</span>\n    myObj.display(<span class="st">"Hi from C++!"</span>);\n    <span class="kw">return</span> <span class="nu">0</span>;\n}`,
+        pitfalls: "Instantiating objects heavily on the heap (using new) for trivial operations. Modern C++ heavily favors stack allocation for automated lifetime management and CPU cache friendliness.",
+        tldr: "OOP couples data with operations. C++ yields peak speed by avoiding virtual layers unless explicitly configured."
+      },
+      classes: {
+        title: "Classes & Objects",
+        category: "Core",
+        definition: "A class acts as the user-defined logical blueprint, outlining the fields and interface of a type. An object is the actual stateful instance of that blueprint created during program runtime.",
+        theory: "<p>In C++, a class defines a clean encapsulation scope. It groups state variables (members) and standard algorithms (methods). Instantiating a class reserves physical bytes on either the stack (automatic storage) or the heap (dynamic storage).</p><p>By default, C++ classes maintain a strict private accessibility standard. Additionally, C++ maintains full backward compatibility with standard C. The <code>struct</code> keyword is identical to the <code>class</code> keyword, with the sole exception that <code>struct</code> defaults to public variables and inheritance.</p>",
+        keyConcepts: [
+          { name: "this Pointer", desc: "An implicit const pointer passed to non-static member functions pointing to the exact calling object instance." },
+          { name: "Empty Class Sizing", desc: "Empty classes carry a 1-byte overhead size to guarantee that distinct object instances hold unique memory addresses." },
+          { name: "Memory Alignment", desc: "Object sizes are padded to match the word sizes of target CPU registries for hardware speed optimizations." }
+        ],
+        syntax: "class ObjectBluePrint {\n  int privateVar; // private by default\npublic:\n  void publicMethod();\n};",
+        code: `<span class="kw">class</span> <span class="ty">Point2D</span> {\n<span class="kw">private</span>:\n    <span class="ty">int</span> x = <span class="nu">0</span>;\n    <span class="ty">int</span> y = <span class="nu">0</span>;\n<span class="kw">public</span>:\n    <span class="fn">void</span> setCoordinates(<span class="ty">int</span> px, <span class="ty">int</span> py) {\n        x = px; \n        y = py;\n    }\n};\n\n<span class="ty">int</span> <span class="fn">main</span>() {\n    <span class="ty">Point2D</span> p1; <span class="cm">// Stack allocation</span>\n    p1.setCoordinates(<span class="nu">10</span>, <span class="nu">25</span>);\n}`,
+        pitfalls: "Accessing members of uninitialized objects or mixing class and struct declarations confusingly across massive files.",
+        tldr: "Classes define logical layouts; objects occupy runtime memory. structs are public by default; classes are private."
+      },
+      ctor: {
+        title: "Constructors & Destructors",
+        category: "Core",
+        definition: "Constructors initialize an object's memory at creation time, while destructors execute automatically when the object's life cycle closes to release resources cleanly.",
+        theory: "<p>Constructors configure class members at instantiation. C++ provides diverse constructors: default, parameterized, copy, move, and delegating constructors. Modern C++ heavily favors the Member Initializer List syntax over assignments inside the constructor body, as it initializes members directly rather than constructing first and assigning second.</p><p>Destructors are single, parameterless cleanup triggers prefixed with a tilde (<code>~</code>). When an object goes out of scope, its destructor runs, guaranteeing automated resource deallocation (such as closing file pipes, releasing heap arrays, or returning system mutices).</p>",
+        keyConcepts: [
+          { name: "Initializer List Efficiency", desc: "Member initialization lists compile directly to in-place setup, skipping redundant default construction stages." },
+          { name: "Construction Sequence", desc: "Bases construct first, followed by members in order of their declaration, and finally the derived constructor runs." },
+          { name: "Destruction Sequence", desc: "Destructors execute in strict reverse declaration sequence (LIFO) to ensure safe reference lifetimes." }
+        ],
+        syntax: "class Demo {\npublic:\n  Demo() : member(0) {} // Initializer list ctor\n  ~Demo() {}            // Destructor\n};",
+        code: `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>\n\n<span class="kw">class</span> <span class="ty">DynamicArray</span> {\n<span class="kw">private</span>:\n    <span class="ty">int</span>* ptr;\n<span class="kw">public</span>:\n    <span class="cm">// Constructor</span>\n    <span class="ty">DynamicArray</span>(<span class="ty">int</span> size) : ptr(<span class="kw">new</span> <span class="ty">int</span>[size]) {\n        std::cout &lt;&lt; <span class="st">"Allocated"</span> &lt;&lt; std::endl;\n    }\n    <span class="cm">// Destructor</span>\n    ~<span class="ty">DynamicArray</span>() {\n        <span class="kw">delete</span>[] ptr;\n        std::cout &lt;&lt; <span class="st">"Deallocated"</span> &lt;&lt; std::endl;\n    }\n};`,
+        pitfalls: "Forgetting to initialize raw pointer members, leading to unpredictable crashes when destructors attempt to free raw wild addresses.",
+        tldr: "Constructors build objects; destructors clean them up. Prefer member initializers for better performance."
+      },
+      access: {
+        title: "Access Specifiers",
+        category: "Core",
+        definition: "Access specifiers partition a class into logical zones of visibility: public (accessible anywhere), private (only within the class), and protected (restricted to the class and its children).",
+        theory: "<p>Access modifiers form the core of structural scoping in C++. <code>public</code> exposes members to consumer interactions. <code>private</code> locks access strictly inside the class scope, protecting class invariants from external tampering. <code>protected</code> acts as an intermediary scope, allowing child classes in inheritance hierarchies to access the members while remaining closed to external callers.</p><p>These boundaries are compile-time validation gates. At compile time, the compiler raises immediate errors if a private variable is touched externally, but these checks carry zero runtime overhead.</p>",
+        keyConcepts: [
+          { name: "public", desc: "Exposes interface operations. Good for standard methods and API constructs." },
+          { name: "private", desc: "Locks state. Forces access through methods, safeguarding object structure." },
+          { name: "protected", desc: "Permits child visibility. Good for shared base values in tight hierarchies." }
+        ],
+        syntax: "class SecurityGate {\nprivate:\n  int accessKey;\nprotected:\n  int securityLevel;\npublic:\n  void unlock();\n};",
+        code: `<span class="kw">class</span> <span class="ty">Account</span> {\n<span class="kw">private</span>:\n    <span class="ty">double</span> balance = <span class="nu">0.0</span>; <span class="cm">// Locked state</span>\n<span class="kw">public</span>:\n    <span class="fn">void</span> deposit(<span class="ty">double</span> amt) {\n        <span class="kw">if</span> (amt &gt; <span class="nu">0</span>) balance += amt; \n    }\n    <span class="ty">double</span> getBalance() <span class="kw">const</span> { <span class="kw">return</span> balance; } \n};`,
+        pitfalls: "Making member data public for quick access, bypassing encapsulation and exposing class internals to widespread global side-effects.",
+        tldr: "Use private for variables to protect state, and public for methods to define a clean, stable interface."
+      },
+      enc: {
+        title: "Encapsulation",
+        category: "Core",
+        definition: "Encapsulation bundles data members and behavioral operations into a single logical unit while masking internal structure, allowing changes to code internals without breaking consumer contracts.",
+        theory: "<p>Encapsulation represents the principal structural shield in OOP. Its primary goal is code maintainability. By binding data and behavior inside a class and restricting raw access to fields via <code>private</code> or <code>protected</code> modifiers, developers prevent tight coupling.</p><p>Instead of direct state modification, consumers communicate with objects through clear public methods. This abstraction layer enables developers to refactor internal data structures (e.g., swapping a raw array for a <code>std::vector</code>) without altering any external client code.</p>",
+        keyConcepts: [
+          { name: "Data Hiding", desc: "Keeping member variables private to hide internal representation and state." },
+          { name: "Accessors & Mutators", desc: "Using getters and setters to read and update state while validating invariants." },
+          { name: "Low Coupling", desc: "Minimizing dependencies between classes to build flexible, modular codebases." }
+        ],
+        syntax: "class EncapsulatedType {\nprivate:\n  int rawState;\npublic:\n  int getState() const;\n  void setState(int s);\n};",
+        code: `<span class="kw">#include</span> <span class="st">&lt;stdexcept&gt;</span>\n\n<span class="kw">class</span> <span class="ty">Thermometer</span> {\n<span class="kw">private</span>:\n    <span class="ty">double</span> tempKelvin;\n<span class="kw">public</span>:\n    <span class="fn">void</span> setKelvin(<span class="ty">double</span> val) {\n        <span class="kw">if</span> (val &lt; <span class="nu">0.0</span>) \n            <span class="kw">throw</span> std::invalid_argument(<span class="st">"Below Absolute Zero"</span>);\n        tempKelvin = val;\n    }\n    <span class="ty">double</span> getCelsius() <span class="kw">const</span> { <span class="kw">return</span> tempKelvin - <span class="nu">273.15</span>; }\n};`,
+        pitfalls: "Writing generic getters and setters blindly for every private variable without implementing valid invariant checks, which defeats data hiding.",
+        tldr: "Bundle state and behavior. Encapsulation isolates changes, keeping code clean, secure, and decoupled."
+      },
+      inh: {
+        title: "Inheritance",
+        category: "Core",
+        definition: "Inheritance allows a derived class to acquire the data members and member functions of a base class, modeling specialized 'IS-A' design relationships.",
+        theory: "<p>Inheritance lets you construct hierarchical relationships. The child class (derived) extends the features of the parent (base). In C++, you can specify access modes for inheritance: <code>public</code> (preserves base specifiers), <code>protected</code> (makes base public/protected members protected in derived), and <code>private</code> (makes base members private in derived).</p><p>Multiple inheritance is fully supported but presents complications, such as the famous Diamond Problem. In a diamond hierarchy, a grandchild inherits duplicates of a grandparent class through separate paths. C++ solves this through Virtual Inheritance, ensuring a single shared grandparent instance is built in memory.</p>",
+        keyConcepts: [
+          { name: "IS-A Relationship", desc: "Models logical hierarchies: a Dog is a Mammal, a Manager is an Employee." },
+          { name: "Inheritance Access Modes", desc: "Rules controlling member accessibility as they cascade down the inheritance tree." },
+          { name: "Virtual Inheritance", desc: "A compiler trick that resolves multiple-path duplicates into a single shared base object." }
+        ],
+        syntax: "class DerivedClass : public BaseClass {\n  // Derived class extensions\n};",
+        code: `<span class="kw">class</span> <span class="ty">Animal</span> {\n<span class="kw">public</span>:\n    <span class="fn">void</span> breathe() {}\n};\n\n<span class="kw">class</span> <span class="ty">Bird</span> : <span class="kw">public</span> <span class="ty">Animal</span> {\n<span class="kw">public</span>:\n    <span class="fn">void</span> fly() {}\n};\n\n<span class="cm">// Virtual inheritance resolving diamond paths</span>\n<span class="kw">class</span> <span class="ty">Grandparent</span> { <span class="kw">public</span>: <span class="ty">int</span> id; };\n<span class="kw">class</span> <span class="ty">Parent1</span> : <span class="kw">virtual</span> <span class="kw">public</span> <span class="ty">Grandparent</span> {};\n<span class="kw">class</span> <span class="ty">Parent2</span> : <span class="kw">virtual</span> <span class="kw">public</span> <span class="ty">Grandparent</span> {};\n<span class="kw">class</span> <span class="ty">Child</span> : <span class="kw">public</span> <span class="ty">Parent1</span>, <span class="kw">public</span> <span class="ty">Parent2</span> {};`,
+        pitfalls: "Using public inheritance to share code where a 'has-a' (composition) relationship is more appropriate. Prefer composition over inheritance unless polymorphic behavior is needed.",
+        tldr: "Share behavior via IS-A models. Resolve multiple path conflicts cleanly using virtual inheritance."
+      },
+      poly: {
+        title: "Polymorphism",
+        category: "Core",
+        definition: "Polymorphism enables a single interface to execute different operations depending on the target type, supporting compile-time overloading or runtime virtual method dispatch.",
+        theory: "<p>Polymorphism operates in two distinct phases in C++. **Compile-Time Polymorphism** uses method overloading and templates. The compiler analyzes static arguments during build time, resolving which specific method signature to execute. This approach has zero runtime cost.</p><p>**Runtime Polymorphism** leverages inheritance and virtual functions. A base pointer references a derived object, and virtual dispatch resolves the actual override method at execution time. This runtime flexibility is supported by compiler vtable structures.</p>",
+        keyConcepts: [
+          { name: "Static Polymorphism", desc: "Resolving overloads and templates at compile time for zero runtime overhead." },
+          { name: "Dynamic Polymorphism", desc: "Resolving method calls at runtime using virtual functions and pointers." },
+          { name: "Function Overriding", desc: "Allowing a child class to redefine a base class method with the exact same signature." }
+        ],
+        syntax: "class Base { virtual void run(); };\nclass Child : public Base { void run() override; };",
+        code: `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>\n\n<span class="kw">class</span> <span class="ty">Logger</span> {\n<span class="kw">public</span>:\n    <span class="cm">// Static Polymorphism (Overloading)</span>\n    <span class="fn">void</span> log(<span class="ty">int</span> i) { std::cout &lt;&lt; i; }\n    <span class="fn">void</span> log(<span class="kw">const</span> std::string&amp; s) { std::cout &lt;&lt; s; }\n};\n\n<span class="ty">int</span> <span class="fn">main</span>() {\n    <span class="ty">Logger</span> l;\n    l.log(<span class="nu">100</span>); \n    l.log(<span class="st">" message"</span>);\n}`,
+        pitfalls: "Omitting the virtual keyword on base destructors, which causes memory leaks as child destructors are skipped during dynamic base deletes.",
+        tldr: "Polymorphism handles type-specific logic cleanly, resolving calls at compile-time (overloads) or runtime (virtuals)."
+      },
+      abs: {
+        title: "Abstraction",
+        category: "Core",
+        definition: "Abstraction separates interfaces from implementation details. In C++, this is achieved using abstract classes that contain pure virtual functions to act as structural interfaces.",
+        theory: "<p>Abstraction hides low-level complexity behind high-level interfaces. Abstract classes act as blueprints that cannot be instantiated directly. Instead, they define a strict contract that all derived classes must implement.</p><p>By hiding the details of derived implementations and exposing a clean base interface, you protect consumers from structural changes. Abstraction acts as the foundation of modern interface-driven API designs.</p>",
+        keyConcepts: [
+          { name: "Pure Virtual Method", desc: "A method declared with '= 0', indicating it has no implementation in the base class and must be overridden." },
+          { name: "Interface Classes", desc: "Pure abstract classes that define interfaces without holding state variables or concrete implementations." },
+          { name: "Separation of Concerns", desc: "Structuring applications around interfaces to decouple logic and simplify unit testing." }
+        ],
+        syntax: "class AbstractInterface {\npublic:\n  virtual void process() = 0; // Pure virtual\n  virtual ~AbstractInterface() = default;\n};",
+        code: `<span class="kw">class</span> <span class="ty">DBConnection</span> {\n<span class="kw">public</span>:\n    <span class="kw">virtual</span> <span class="fn">void</span> connect() = <span class="nu">0</span>; <span class="cm">// Interface contract</span>\n    <span class="kw">virtual</span> ~<span class="ty">DBConnection</span>() = <span class="kw">default</span>;\n};\n\n<span class="kw">class</span> <span class="ty">MySQLConn</span> : <span class="kw">public</span> <span class="ty">DBConnection</span> {\n<span class="kw">public</span>:\n    <span class="fn">void</span> connect() <span class="kw">override</span> { /* MySQL logic */ }\n};`,
+        pitfalls: "Failing to implement pure virtual methods in derived classes, which turns child classes into abstract types themselves and raises compile-time errors at instantiation.",
+        tldr: "Define interfaces using pure virtual functions. Abstraction simplifies designs by hiding low-level details."
+      },
+      virt: {
+        title: "Virtual Functions & vtable",
+        category: "Core",
+        definition: "Virtual functions enable dynamic runtime dispatch. This mechanism is powered by compiler-generated virtual tables (vtables) containing function pointers, accessed through active object virtual pointers (vptrs).",
+        theory: "<p>When a method is marked <code>virtual</code>, the compiler implements a dynamic lookup mechanism. Every class with virtual methods gets a hidden static <strong>vtable</strong> (Virtual Table) containing pointers to its virtual functions. Additionally, each object instance of that class gains a hidden member pointer called a <strong>vptr</strong> (Virtual Pointer) referencing the vtable.</p><p>At runtime, a virtual method call dereferences the vptr, retrieves the target function address from the vtable, and jumps to it. While this dynamic dispatch introduces a minor runtime overhead, it is highly optimized. However, note that virtual calls inside constructors and destructors do not dispatch polymorphically because the object is either not yet fully formed or is already partially destroyed.</p>",
+        keyConcepts: [
+          { name: "vtable (Virtual Table)", desc: "A compiler-generated array of function pointers created for classes with virtual methods." },
+          { name: "vptr (Virtual Pointer)", desc: "A hidden member pointer in object instances that references its class's vtable." },
+          { name: "Virtual Destructors", desc: "Crucial for base classes to ensure child object resources are cleaned up correctly during polymorphic deletes." }
+        ],
+        syntax: "class Base {\npublic:\n  virtual void show(); // dynamic dispatch link\n  virtual ~Base() = default; // critical virtual dtor\n};",
+        code: `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>\n\n<span class="kw">class</span> <span class="ty">Base</span> {\n<span class="kw">public</span>:\n    <span class="kw">virtual</span> <span class="fn">void</span> greet() { std::cout &lt;&lt; <span class="st">"Base"</span>; }\n    <span class="kw">virtual</span> ~<span class="ty">Base</span>() = <span class="kw">default</span>;\n};\n\n<span class="kw">class</span> <span class="ty">Der</span> : <span class="kw">public</span> <span class="ty">Base</span> {\n<span class="kw">public</span>:\n    <span class="fn">void</span> greet() <span class="kw">override</span> { std::cout &lt;&lt; <span class="st">"Derived"</span>; }\n};\n\n<span class="ty">int</span> <span class="fn">main</span>() {\n    <span class="ty">Base</span>* ptr = <span class="kw">new</span> <span class="ty">Der</span>();\n    ptr-&gt;greet(); <span class="cm">// Dynamic dispatch -> prints "Derived"</span>\n    <span class="kw">delete</span> ptr;   <span class="cm">// Dynamic destructor run</span>\n}`,
+        pitfalls: "Calling virtual methods inside constructors. Since the derived class is not yet constructed, the compiler will only call the base version.",
+        tldr: "Dynamic dispatch resolves calls via vtables. Always declare destructors virtual in base classes."
+      },
+      opov: {
+        title: "Operator Overloading",
+        category: "Advanced",
+        definition: "Operator overloading allows developers to redefine how standard C++ operators (+, -, *, <<) interact with custom class objects, improving readability and developer experience.",
+        theory: "<p>Operator overloading allows user-defined types to behave like built-in primitives. You can overload almost any operator in C++ by declaring a function named <code>operator</code> followed by the symbol (e.g., <code>operator+</code>).</p><p>However, you cannot overload certain operators, such as the member selector (<code>.</code>), scope resolution (<code>::</code>), ternary operator (<code>?:</code>), and <code>sizeof</code>. It is best practice to preserve the original mathematical semantics of operators (e.g., keeping addition commutative) to avoid confusing users.</p>",
+        keyConcepts: [
+          { name: "Overloadable Operators", desc: "Extending operators like +, -, ==, and << to support custom classes." },
+          { name: "Non-Overloadable Operators", desc: "Operators like ., ::, ?:, and sizeof cannot be overloaded to preserve language integrity." },
+          { name: "Friend Stream Inserters", desc: "Overloading stream insertion (<<) as a non-member friend function to format output." }
+        ],
+        syntax: "ReturnType operatorSymbol(const ClassName& operand);",
+        code: `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>\n\n<span class="kw">class</span> <span class="ty">Vector2D</span> {\n<span class="kw">public</span>:\n    <span class="ty">float</span> x, y;\n    <span class="ty">Vector2D</span>(<span class="ty">float</span> x, <span class="ty">float</span> y) : x(x), y(y) {}\n    \n    <span class="cm">// Overloaded '+'</span>\n    <span class="ty">Vector2D</span> <span class="kw">operator</span>+(<span class="kw">const</span> <span class="ty">Vector2D</span>&amp; other) <span class="kw">const</span> {\n        <span class="kw">return</span> <span class="ty">Vector2D</span>(x + other.x, y + other.y);\n    }\n};`,
+        pitfalls: "Overloading operators with unintuitive behaviors (like using '-' for multiplication), which confuses developers and ruins maintainability.",
+        tldr: "Use operator overloading to let custom classes work like primitives. Keep operations logical and mathematically intuitive."
+      },
+      friend: {
+        title: "Friend Functions & Classes",
+        category: "Advanced",
+        definition: "The friend keyword grants external functions or classes direct access to a type's private and protected members without exposing them publicly.",
+        theory: "<p>Friendship bypasses encapsulation boundaries. By using the <code>friend</code> keyword, a class explicitly designates trusted external functions or classes. This allows them to read and write private variables directly.</p><p>Friendship is neither symmetric nor transitive: if Class A is a friend of Class B, Class B does not automatically get access to Class A's private members. Friendship should be used sparingly to avoid weakening encapsulation.</p>",
+        keyConcepts: [
+          { name: "Friend Function", desc: "An external non-member function granted full access to a class's private sections." },
+          { name: "Friend Class", desc: "An entire class granted full access to another class's private members." },
+          { name: "Encapsulation Check", desc: "Use friendship only for closely coupled systems (like Iterators or Builders) to preserve clean designs." }
+        ],
+        syntax: "class Demo {\n  friend class TrustedClass;\n  friend void trustedFunc(Demo&);\n};",
+        code: `<span class="kw">class</span> <span class="ty">Vault</span> {\n<span class="kw">private</span>:\n    <span class="ty">int</span> code = <span class="nu">9988</span>;\n    <span class="kw">friend</span> <span class="fn">void</span> overrideAccess(<span class="ty">Vault</span>&amp; v); <span class="cm">// Friend declaration</span>\n};\n\n<span class="fn">void</span> overrideAccess(<span class="ty">Vault</span>&amp; v) {\n    v.code = <span class="nu">0000</span>; <span class="cm">// Direct private manipulation</span>\n}`,
+        pitfalls: "Declaring classes as friends indiscriminately. This bypasses access controls, breaking code isolation and encapsulation.",
+        tldr: "Grant trusted access using the friend keyword. Use it sparingly to protect clean encapsulation."
+      },
+      static: {
+        title: "Static Members",
+        category: "Advanced",
+        definition: "Static members belong to the class itself rather than object instances. Static variables are shared across all instances, and static functions operate without a 'this' pointer.",
+        theory: "<p>Static variables exist outside the scope of individual objects. They are declared inside the class body, but must be defined in a single source file to resolve memory allocation.</p><p>Static member functions can be called directly using the class name (e.g., <code>Class::Func()</code>). Because they are not bound to an instance, they have no implicit <code>this</code> pointer and can only access static data and other static functions.</p>",
+        keyConcepts: [
+          { name: "Shared State", desc: "Static data members are allocated once in global static memory and shared by all instances." },
+          { name: "Static Methods", desc: "Functions callable using class scope (::) without instantiating objects." },
+          { name: "this Elimination", desc: "Static methods operate without an instance scope, making them fast and memory-efficient." }
+        ],
+        syntax: "class Demo {\npublic:\n  static int count;\n  static int getCount();\n};",
+        code: `<span class="kw">class</span> <span class="ty">Unit</span> {\n<span class="kw">public</span>:\n    <span class="kw">static</span> <span class="ty">int</span> count; <span class="cm">// Declaration</span>\n    <span class="ty">Unit</span>() { count++; }\n};\n\n<span class="cm">// Definition in global scope (required)</span>\n<span class="ty">int</span> <span class="ty">Unit</span>::count = <span class="nu">0</span>;\n\n<span class="ty">int</span> <span class="fn">main</span>() {\n    <span class="ty">Unit</span> u1, u2;\n    std::cout &lt;&lt; <span class="ty">Unit</span>::count; <span class="cm">// Output: 2</span>\n}`,
+        pitfalls: "Forgetting to define static variables in a source file, which causes link-time errors (unresolved external symbol).",
+        tldr: "Static members belong to the class scope, not instances. Always define static variables outside the class body."
+      },
+      tpl: {
+        title: "Templates & Generics",
+        category: "Advanced",
+        definition: "Templates support generic programming in C++, allowing functions and classes to operate with parameterized types for type-safe code reuse at compile-time.",
+        theory: "<p>Templates enable powerful compile-time code generation. Instead of repeating logic for different types, you write a single template function or class parameterized by type tokens (e.g., <code>T</code>).</p><p>At compile time, when the template is called (e.g., <code>Stack&lt;int&gt;</code>), the compiler instantiates a concrete class matching that type. While this compile-time code generation can increase binary sizes (template bloat), it provides absolute type safety and zero runtime overhead.</p>",
+        keyConcepts: [
+          { name: "Generic Functions", desc: "Writing algorithm templates that adapt to any supporting type." },
+          { name: "Class Templates", desc: "Defining generic container patterns (like stack, queue, or array structures)." },
+          { name: "Template Specialization", desc: "Providing specialized implementations for specific types to optimize performance." }
+        ],
+        syntax: "template <typename T>\nT getMax(T a, T b) {\n  return (a > b) ? a : b;\n}",
+        code: `<span class="kw">template</span> &lt;<span class="kw">typename</span> <span class="ty">T</span>&gt;\n<span class="kw">class</span> <span class="ty">Box</span> {\n<span class="kw">private</span>:\n    <span class="ty">T</span> data;\n<span class="kw">public</span>:\n    <span class="ty">Box</span>(<span class="ty">T</span> val) : data(val) {}\n    <span class="ty">T</span> getData() <span class="kw">const</span> { <span class="kw">return</span> data; }\n};\n\n<span class="ty">int</span> <span class="fn">main</span>() {\n    <span class="ty">Box</span>&lt;<span class="ty">int</span>&gt; intBox(<span class="nu">123</span>); <span class="cm">// Instantiates an int version</span>\n}`,
+        pitfalls: "Writing all template code in standard source files (.cpp) rather than header files (.h). Templates must be visible to the compiler at the point of instantiation.",
+        tldr: "Use templates for generic, type-safe, compile-time abstractions. Write templates in headers to prevent compilation failures."
+      },
+      exc: {
+        title: "Exception Handling",
+        category: "Advanced",
+        definition: "Exception handling isolates error handling logic from main code paths. It uses try, catch, and throw blocks to propagate errors up the call stack.",
+        theory: "<p>Exception handling provides structured error propagation. When a runtime error occurs, you <code>throw</code> an exception object. This unwinds the call stack, destroying local stack variables, until a matching <code>catch</code> block is found.</p><p>C++ guarantees that all fully constructed stack objects are destroyed during stack unwinding. However, heap objects and raw resources are leaked unless managed by smart pointers or RAII wrappers.</p>",
+        keyConcepts: [
+          { name: "Stack Unwinding", desc: "The automatic destruction of stack variables as an exception propagates up the call stack." },
+          { name: "noexcept Specifier", desc: "Informing the compiler that a function will not throw, enabling compiler optimizations." },
+          { name: "Exception Safety", desc: "Ensuring applications maintain valid state under three safety levels: basic, strong, or no-throw." }
+        ],
+        syntax: "try {\n  if (fail) throw std::runtime_error(\"error\");\n} catch (const std::exception& e) {\n  std::cerr << e.what();\n}",
+        code: `<span class="kw">#include</span> <span class="st">&lt;stdexcept&gt;</span>\n\n<span class="ty">double</span> divide(<span class="ty">double</span> a, <span class="ty">double</span> b) {\n    <span class="kw">if</span> (b == <span class="nu">0.0</span>)\n        <span class="kw">throw</span> std::runtime_error(<span class="st">"Division by zero!"</span>);\n    <span class="kw">return</span> a / b;\n}\n\n<span class="ty">int</span> <span class="fn">main</span>() {\n    <span class="kw">try</span> {\n        divide(<span class="nu">10</span>, <span class="nu">0</span>);\n    } <span class="kw">catch</span> (<span class="kw">const</span> std::exception&amp; e) {\n        <span class="cm">// Catches runtime_error via exception reference</span>\n    }\n}`,
+        pitfalls: "Throwing exceptions inside destructors. If an exception is thrown during stack unwinding from another exception, the runtime terminates immediately.",
+        tldr: "Propagate runtime errors using try-catch blocks. Ensure destructors never throw exceptions to prevent immediate termination."
+      },
+      stl: {
+        title: "STL Essentials",
+        category: "Advanced",
+        definition: "The Standard Template Library (STL) provides high-performance container templates (vector, map, set), standard algorithms (sort, search), and generic iterators.",
+        theory: "<p>The STL is the backbone of modern C++. It contains three key parts: **Containers** (data structures like <code>std::vector</code> or <code>std::map</code>), **Algorithms** (reusable processes like <code>std::sort</code>), and **Iterators** (which act as generic pointers connecting algorithms to containers).</p><p>STL containers are optimized for memory layout and algorithmic complexity. For example, <code>std::vector</code> provides dynamic, contiguous memory with O(1) random access, while <code>std::unordered_map</code> implements fast hash-map lookups with O(1) average access times.</p>",
+        keyConcepts: [
+          { name: "Containers", desc: "Dynamic arrays (vector), linked nodes (list), balanced trees (map), or hash tables (unordered_map)." },
+          { name: "Algorithms", desc: "Generic algorithms like std::sort, std::find, and std::binary_search." },
+          { name: "Iterators", desc: "Abstract cursors that bridge algorithms and containers, shielding developers from internal layouts." }
+        ],
+        syntax: "#include <vector>\n#include <algorithm>\nstd::vector<int> v = {3, 1, 2};\nstd::sort(v.begin(), v.end());",
+        code: `<span class="kw">#include</span> <span class="st">&lt;vector&gt;</span>\n<span class="kw">#include</span> <span class="st">&lt;algorithm&gt;</span>\n<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>\n\n<span class="ty">int</span> <span class="fn">main</span>() {\n    std::vector&lt;<span class="ty">int</span>&gt; nums = {<span class="nu">5</span>, <span class="nu">2</span>, <span class="nu">8</span>, <span class="nu">1</span>};\n    std::sort(nums.begin(), nums.end()); <span class="cm">// Sorts ascending</span>\n    \n    <span class="kw">for</span> (<span class="ty">int</span> n : nums) {\n        std::cout &lt;&lt; n &lt;&lt; <span class="st">" "</span>; <span class="cm">// Output: 1 2 5 8</span>\n    }\n}`,
+        pitfalls: "Modifying containers while iterating over them, which invalidates active iterators and causes undefined behavior or crashes.",
+        tldr: "Leverage STL containers and algorithms for fast, secure, and highly optimized data structures."
+      },
+      fio: {
+        title: "File I/O Streams",
+        category: "Advanced",
+        definition: "C++ I/O streams support robust file stream integration, providing ifstream (reading), ofstream (writing), and fstream (bidirectional read/write) classes.",
+        theory: "<p>C++ uses streams to read and write files. <code>std::ifstream</code> and <code>std::ofstream</code> extend the standard <code>std::istream</code> and <code>std::ostream</code> classes, bringing file streaming into the generic C++ I/O system.</p><p>Streams manage resource handles automatically. However, you must handle operations carefully, using stream validation checks (like <code>is_open()</code>) and binary flags (<code>std::ios::binary</code>) when writing raw structures.</p>",
+        keyConcepts: [
+          { name: "Output Streams", desc: "Using std::ofstream to write formatted text or binary arrays to files." },
+          { name: "Input Streams", desc: "Using std::ifstream to read file contents line-by-line or byte-by-byte." },
+          { name: "Binary Transfer", desc: "Writing raw structures directly to files using ios::binary and reinterpret_cast." }
+        ],
+        syntax: "std::ofstream out(\"file.txt\");\nout << \"data\";\nout.close();",
+        code: `<span class="kw">#include</span> <span class="st">&lt;fstream&gt;</span>\n<span class="kw">#include</span> <span class="st">&lt;string&gt;</span>\n\n<span class="fn">void</span> writeAndRead() {\n    <span class="cm">// Open stream and write</span>\n    std::ofstream out(<span class="st">"test.txt"</span>);\n    out &lt;&lt; <span class="st">"Line content"</span>;\n    out.close();\n    \n    <span class="cm">// Read back</span>\n    std::ifstream in(<span class="st">"test.txt"</span>);\n    std::string line;\n    <span class="kw">if</span> (in.is_open()) {\n        std::getline(in, line);\n    }\n}`,
+        pitfalls: "Failing to check if a file stream opened successfully before performing I/O operations.",
+        tldr: "Use standard file streams for I/O operations. Always check stream status before performing read or write actions."
+      },
+      sptr: {
+        title: "Smart Pointers",
+        category: "Advanced",
+        definition: "Smart Pointers implement automated memory management in C++, using unique_ptr (exclusive ownership), shared_ptr (reference-counted sharing), and weak_ptr (non-owning reference).",
+        theory: "<p>Raw pointers are prone to leaks and dangling references. Modern C++ resolves this using Smart Pointers, which automate memory cleanup via object lifetimes.</p><p><code>std::unique_ptr</code> models exclusive ownership with zero runtime overhead. <code>std::shared_ptr</code> uses reference counting to share ownership across multiple scopes, freeing memory when the last owner is destroyed. <code>std::weak_ptr</code> references shared objects without incrementing their reference count, which is crucial to break cyclic reference memory leaks.</p>",
+        keyConcepts: [
+          { name: "std::unique_ptr", desc: "Exclusive ownership with zero runtime overhead. Cannot be copied, only moved." },
+          { name: "std::shared_ptr", desc: "Shared ownership using thread-safe reference counting." },
+          { name: "std::weak_ptr", desc: "Non-owning observer. Prevents cyclic dependency memory leaks." }
+        ],
+        syntax: "std::unique_ptr<Type> ptr = std::make_unique<Type>(args);",
+        code: `<span class="kw">#include</span> <span class="st">&lt;memory&gt;</span>\n\n<span class="kw">class</span> <span class="ty">Device</span> {};\n\n<span class="ty">int</span> <span class="fn">main</span>() {\n    <span class="cm">// Exclusive stack owner</span>\n    std::unique_ptr&lt;<span class="ty">Device</span>&gt; dev = std::make_unique&lt;<span class="ty">Device</span>&gt;();\n    \n    <span class="cm">// Shared owners</span>\n    std::shared_ptr&lt;<span class="ty">Device</span>&gt; sh1 = std::make_shared&lt;<span class="ty">Device</span>&gt;();\n    std::shared_ptr&lt;<span class="ty">Device</span>&gt; sh2 = sh1; <span class="cm">// Ref count: 2</span>\n} <span class="cm">// Automatically freed</span>`,
+        pitfalls: "Using raw pointer constructors (new) inside shared_ptrs instead of std::make_shared, which misses performance optimizations and exception safety.",
+        tldr: "Modern smart pointers automate memory management. Use unique_ptr by default, and shared_ptr/weak_ptr when shared ownership is needed."
+      },
+      raii: {
+        title: "RAII Pattern",
+        category: "Advanced",
+        definition: "Resource Acquisition Is Initialization (RAII) ties resource lifetimes to stack object scopes, ensuring automated, exception-safe cleanup.",
+        theory: "<p>RAII is the core resource management pattern in C++. It states that any resource (memory, files, database connections, locks) must be acquired inside an object's constructor and released inside its destructor.</p><p>Because stack object destructors run automatically when they go out of scope—even during exceptions—RAII guarantees exception-safe cleanup, preventing memory leaks and resource locks.</p>",
+        keyConcepts: [
+          { name: "Resource Binding", desc: "Tying resources directly to the life cycle of stack-allocated objects." },
+          { name: "Exception Safety", desc: "Stack unwinding ensures destructors execute and release resources even during crashes." },
+          { name: "Scope Locking", desc: "Using RAII wrappers (like lock_guard) to safely manage thread locks." }
+        ],
+        syntax: "class ResourceGuard {\npublic:\n  ResourceGuard() { acquire(); }\n  ~ResourceGuard() { release(); }\n};",
+        code: `<span class="kw">#include</span> <span class="st">&lt;mutex&gt;</span>\n\nstd::mutex mtx;\n\n<span class="fn">void</span> safeThreadOperation() {\n    <span class="cm">// RAII Lock: lock acquired here</span>\n    std::lock_guard&lt;std::mutex&gt; lock(mtx);\n    \n    <span class="cm">// Protected critical section</span>\n    \n} <span class="cm">// lock released automatically on exit</span>`,
+        pitfalls: "Forgetting to wrap raw system resource allocations in RAII guards, leaving code vulnerable to memory and resource leaks during exceptions.",
+        tldr: "RAII ties resource lifetimes to object scopes. Use stack-allocated guards to ensure reliable, exception-safe cleanup."
+      },
+      move: {
+        title: "Move Semantics",
+        category: "Modern C++",
+        definition: "Move Semantics transfers resource ownership from temporary objects to new destinations instead of deep-copying, using rvalue references (T&&) to improve performance.",
+        theory: "<p>Before C++11, passing large objects (like vectors) required deep-copying all elements, which degraded performance. Move semantics solves this by introducing Rvalue References (<code>T&&</code>).</p><p>Instead of deep-copying, move constructors transfer ownership of internal resource pointers (e.g., copying a heap address and nulling the source pointer). This allows temporary objects to be transferred with near-zero overhead.</p>",
+        keyConcepts: [
+          { name: "Rvalue Reference (&&)", desc: "A reference that binds to temporary values (rvalues), indicating resources can be safely moved." },
+          { name: "std::move Cast", desc: "A cast that converts an lvalue to an rvalue, signaling that its resources are available to be moved." },
+          { name: "Resource Stealing", desc: "Copying pointer addresses and nulling out the original source pointers." }
+        ],
+        syntax: "ClassName(ClassName&& other) noexcept; // Move constructor",
+        code: `<span class="kw">#include</span> <span class="st">&lt;utility&gt;</span>\n\n<span class="kw">class</span> <span class="ty">BigBuffer</span> {\n<span class="kw">private</span>:\n    <span class="ty">int</span>* data = <span class="kw">nullptr</span>;\n<span class="kw">public</span>:\n    <span class="cm">// Move Constructor</span>\n    <span class="ty">BigBuffer</span>(<span class="ty">BigBuffer</span>&amp;&amp; other) <span class="kw">noexcept</span> : data(other.data) {\n        other.data = <span class="kw">nullptr</span>; <span class="cm">// Steals ownership</span>\n    }\n    ~<span class="ty">BigBuffer</span>() { <span class="kw">delete</span>[] data; }\n};`,
+        pitfalls: "Accessing an object after casting it with std::move. The object is left in a valid but unspecified state, and accessing it can cause crashes.",
+        tldr: "Move semantics replaces expensive deep copies with fast resource transfers. Mark move constructors noexcept."
+      },
+      lam: {
+        title: "Lambda Expressions",
+        category: "Modern C++",
+        definition: "Lambda expressions declare inline, anonymous closures directly inside local code blocks, simplifying functional APIs and STL algorithms.",
+        theory: "<p>Lambdas provide inline closures in C++. They simplify code by replacing formal function objects with inline anonymous expressions.</p><p>A lambda consists of a **Capture List** (specifying variables to capture by value or reference), a **Parameter List**, and a **Function Body**. Modern C++ supports generic lambdas (using <code>auto</code> parameters) and capture-initialized expressions.</p>",
+        keyConcepts: [
+          { name: "Capture Clauses", desc: "Capturing local variables by value [=] or by reference [&]." },
+          { name: "Closure Objects", desc: "The compiler compiles lambdas to unique, anonymous class objects with overloaded calling operators." },
+          { name: "Generic Lambdas", desc: "Using auto parameters to let lambdas handle multiple types (C++14)." }
+        ],
+        syntax: "[capture_vars](parameters) -> return_type { body };",
+        code: `<span class="kw">#include</span> <span class="st">&lt;vector&gt;</span>\n<span class="kw">#include</span> <span class="st">&lt;algorithm&gt;</span>\n<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>\n\n<span class="ty">int</span> <span class="fn">main</span>() {\n    std::vector&lt;<span class="ty">int</span>&gt; v = {<span class="nu">1</span>, <span class="nu">2</span>, <span class="nu">3</span>};\n    <span class="ty">int</span> multiplier = <span class="nu">10</span>;\n    \n    <span class="cm">// Lambda capturing by value</span>\n    std::for_each(v.begin(), v.end(), [multiplier](<span class="ty">int</span> n) {\n        std::cout &lt;&lt; n * multiplier &lt;&lt; <span class="st">" "</span>;\n    });\n}`,
+        pitfalls: "Capturing local variables by reference inside lambdas that outlive the caller scope, which leads to dangling references and undefined behavior.",
+        tldr: "Use lambdas to write clean, inline anonymous closures. Watch out for reference lifetimes when capturing variables."
+      },
+      ns: {
+        title: "Namespaces",
+        category: "Modern C++",
+        definition: "Namespaces organize code into logical scopes to prevent naming collisions in large applications and libraries.",
+        theory: "<p>Namespaces group classes, functions, and variables under a common prefix. This isolates code and prevents global naming collisions.</p><p>C++ fully supports nested namespaces, namespace aliases, and inline namespaces (used for API versioning). Avoid placing <code>using namespace std;</code> in header files, as it pollutes the global scope for every file that includes them.</p>",
+        keyConcepts: [
+          { name: "Scope Resolution (::)", desc: "Explicitly resolving paths to items nested inside namespaces." },
+          { name: "using Directive", desc: "Importing names into a scope, which should be used carefully in headers to avoid collision issues." },
+          { name: "Inline Namespaces", desc: "Automatically exporting members to the outer scope, which is useful for library versioning." }
+        ],
+        syntax: "namespace Math {\n  const double Pi = 3.14159;\n}",
+        code: `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>\n\n<span class="kw">namespace</span> <span class="ty">App</span> {\n    <span class="kw">namespace</span> <span class="ty">Core</span> {\n        <span class="fn">void</span> start() { std::cout &lt;&lt; <span class="st">"App Running"</span>; }\n    }\n}\n\n<span class="ty">int</span> <span class="fn">main</span>() {\n    <span class="cm">// Explicit namespace resolution</span>\n    <span class="ty">App</span>::<span class="ty">Core</span>::<span class="fn">start</span>();\n}`,
+        pitfalls: "Using wide imports like using namespace std; in headers, which pollutes namespaces and causes silent naming collisions.",
+        tldr: "Use namespaces to organize code and prevent global naming collisions. Avoid using directives in headers."
+      },
+      cast: {
+        title: "Type Casting",
+        category: "Modern C++",
+        definition: "C++ type casting replaces unsafe C-style conversions with explicit, type-safe compile-time and runtime operators (static_cast, dynamic_cast, const_cast, reinterpret_cast).",
+        theory: "<p>C-style casts are dangerous because they perform conversions silently without compile-time validation. C++ replaces them with four explicit casting operators:</p><p><code>static_cast</code> handles safe, related conversions (like numeric casts). <code>dynamic_cast</code> safely downcasts polymorphic pointers at runtime, verifying types using RTTI (Runtime Type Information). <code>const_cast</code> adds or removes constness, and <code>reinterpret_cast</code> performs raw bit pattern conversions.</p>",
+        keyConcepts: [
+          { name: "static_cast", desc: "Type-safe compile-time cast for related types, like conversion from float to int." },
+          { name: "dynamic_cast", desc: "Safe downcast for polymorphic hierarchies. Checks types at runtime, returning nullptr on failure." },
+          { name: "const_cast / reinterpret_cast", desc: "const_cast removes const restrictions. reinterpret_cast performs unsafe raw bit casts." }
+        ],
+        syntax: "TargetType val = static_cast<TargetType>(sourceVal);",
+        code: `<span class="kw">class</span> <span class="ty">Base</span> { <span class="kw">public</span>: <span class="kw">virtual</span> ~<span class="ty">Base</span>() = <span class="kw">default</span>; };\n<span class="kw">class</span> <span class="ty">Derived</span> : <span class="kw">public</span> <span class="ty">Base</span> {};\n\n<span class="fn">void</span> process(<span class="ty">Base</span>* b) {\n    <span class="cm">// Dynamic downcast with runtime verification</span>\n    <span class="ty">Derived</span>* d = <span class="kw">dynamic_cast</span>&lt;<span class="ty">Derived</span>*&gt;(b);\n    <span class="kw">if</span> (d != <span class="kw">nullptr</span>) {\n        <span class="cm">// Cast succeeded</span>\n    }\n}`,
+        pitfalls: "Using reinterpret_cast indiscriminately. It bypasses compile-time type checks, which can easily cause memory corruption.",
+        tldr: "Use explicit C++ casts instead of unsafe C-style conversions to ensure compiler verification and runtime safety."
+      },
+      cexp: {
+        title: "const & constexpr",
+        category: "Modern C++",
+        definition: "const marks variables as runtime read-only, while constexpr forces compile-time evaluation, enabling zero-overhead execution.",
+        theory: "<p>In C++, <code>const</code> and <code>constexpr</code> serve different purposes. <code>const</code> locks values at runtime, preventing mutation after initialization.</p><p><code>constexpr</code> guarantees compile-time evaluation. Functions marked constexpr execute during compilation if their arguments are constants, embedding the result directly in the binary. This enables zero-cost compile-time computation.</p>",
+        keyConcepts: [
+          { name: "Logical const", desc: "const prevents variables from being mutated during runtime execution." },
+          { name: "Compile-Time constexpr", desc: "Forces evaluations during compilation, producing zero runtime overhead constants." },
+          { name: "static_assert", desc: "Validating conditions at compile-time using constexpr functions." }
+        ],
+        syntax: "constexpr int val = getCompileTimeConstant();\nstatic_assert(val == 5);",
+        code: `<span class="kw">constexpr</span> <span class="ty">int</span> computeFactorial(<span class="ty">int</span> n) {\n    <span class="kw">return</span> (n &lt;= <span class="nu">1</span>) ? <span class="nu">1</span> : n * computeFactorial(n - <span class="nu">1</span>);\n}\n\n<span class="ty">int</span> <span class="fn">main</span>() {\n    <span class="cm">// Evaluated entirely at compile-time</span>\n    <span class="kw">constexpr</span> <span class="ty">int</span> val = computeFactorial(<span class="nu">5</span>);\n    <span class="kw">static_assert</span>(val == <span class="nu">120</span>, <span class="st">"Check failed"</span>);\n}`,
+        pitfalls: "Confusing const and constexpr. const variables cannot be used as template bounds because they are not compile-time constants.",
+        tldr: "const locks runtime mutation. constexpr forces compile-time evaluation, producing zero-cost constants."
+      },
+      ro5: {
+        title: "Rule of Five",
+        category: "Modern C++",
+        definition: "The Rule of Five states that if you define a custom destructor, copy constructor, copy assignment operator, move constructor, or move assignment operator, you likely need all five to manage resources safely.",
+        theory: "<p>Before C++11, the Rule of Three governed custom resource management (destructor, copy constructor, and copy assignment). With C++11 and move semantics, this was expanded to the **Rule of Five** to include the move constructor and move assignment operator.</p><p>If a class manages raw resources (like heap memory or system handles), default compiler-generated copies can copy raw pointers instead of values, causing double-free bugs. Defining all five guarantees safe copy and move semantics. Modern C++ also promotes the **Rule of Zero**, which advises delegating resource management to STL containers and smart pointers so you don't have to write custom resource logic.</p>",
+        keyConcepts: [
+          { name: "Deep Copy", desc: "Duplicating resources dynamically so instances do not share and conflict over raw pointer structures." },
+          { name: "Move Transfer", desc: "Moving pointer addresses and nulling source pointers to prevent double-free crashes." },
+          { name: "Rule of Zero", desc: "Leverage smart pointers and containers so the compiler can safely generate all standard copy/move operations." }
+        ],
+        syntax: "class RuleOfFive {\npublic:\n  ~RuleOfFive();\n  RuleOfFive(const RuleOfFive&);\n  RuleOfFive& operator=(const RuleOfFive&);\n  RuleOfFive(RuleOfFive&&) noexcept;\n  RuleOfFive& operator=(RuleOfFive&&) noexcept;\n};",
+        code: `<span class="kw">#include</span> <span class="st">&lt;utility&gt;</span>\n\n<span class="kw">class</span> <span class="ty">ResourceHandler</span> {\n<span class="kw">private</span>:\n    <span class="ty">int</span>* data;\n<span class="kw">public</span>:\n    <span class="cm">// 1. Destructor</span>\n    ~<span class="ty">ResourceHandler</span>() { <span class="kw">delete</span> data; }\n    <span class="cm">// 2. Copy Constructor</span>\n    <span class="ty">ResourceHandler</span>(<span class="kw">const</span> <span class="ty">ResourceHandler</span>&amp; o) : data(<span class="kw">new</span> <span class="ty">int</span>(*o.data)) {}\n    <span class="cm">// 3. Copy Assignment</span>\n    <span class="ty">ResourceHandler</span>&amp; <span class="kw">operator</span>=(<span class="kw">const</span> <span class="ty">ResourceHandler</span>&amp; o) {\n        <span class="kw">if</span> (<span class="kw">this</span> != &amp;o) { *data = *o.data; }\n        <span class="kw">return</span> *<span class="kw">this</span>;\n    }\n    <span class="cm">// 4. Move Constructor</span>\n    <span class="ty">ResourceHandler</span>(<span class="ty">ResourceHandler</span>&amp;&amp; o) <span class="kw">noexcept</span> : data(o.data) { o.data = <span class="kw">nullptr</span>; }\n    <span class="cm">// 5. Move Assignment</span>\n    <span class="ty">ResourceHandler</span>&amp; <span class="kw">operator</span>=(<span class="ty">ResourceHandler</span>&amp;&amp; o) <span class="kw">noexcept</span> {\n        <span class="kw">if</span> (<span class="kw">this</span> != &amp;o) { <span class="kw">delete</span> data; data = o.data; o.data = <span class="kw">nullptr</span>; }\n        <span class="kw">return</span> *<span class="kw">this</span>;\n    }\n};`,
+        pitfalls: "Writing custom destructors without defining copy/move constructors, causing shared pointers to double-delete memory.",
+        tldr: "If you declare one custom lifetime manager, define all five. Better yet, follow the Rule of Zero and use smart pointers."
+      },
+      inl: {
+        title: "Inline Functions",
+        category: "Modern C++",
+        definition: "Inline functions hint to the compiler to substitute function calls with their actual body, reducing function call overhead.",
+        theory: "<p>Function calls introduce minor execution overhead (pushing parameters onto the stack and jumping to target addresses). The <code>inline</code> keyword suggests that the compiler substitute the function call directly with its code body.</p><p>Modern compilers optimize code aggressively and can inline functions automatically regardless of the keyword. In modern C++, <code>inline</code> is primarily used in headers to prevent duplicate definition linking errors when functions are included across multiple translation units.</p>",
+        keyConcepts: [
+          { name: "Call Overhead Reduction", desc: "Substituting function bodies directly at the call site to eliminate stack jumps." },
+          { name: "Header Definitions", desc: "Using inline to define non-member utility functions in headers safely." },
+          { name: "Implicit Class Inlines", desc: "Methods declared directly inside class declarations are implicitly inlined by the compiler." }
+        ],
+        syntax: "inline int calculateSquare(int x) {\n  return x * x;\n}",
+        code: `<span class="kw">class</span> <span class="ty">Calculator</span> {\n<span class="kw">public</span>:\n    <span class="cm">// Implicitly inlined by definition inside the class body</span>\n    <span class="ty">int</span> doubleVal(<span class="ty">int</span> n) {\n        <span class="kw">return</span> n * <span class="nu">2</span>;\n    }\n};\n\n<span class="cm">// Explicit inline declaration in header</span>\n<span class="kw">inline</span> <span class="ty">int</span> addNumbers(<span class="ty">int</span> a, <span class="ty">int</span> b) {\n    <span class="kw">return</span> a + b;\n}`,
+        pitfalls: "Inlining large, complex functions. This increases binary sizes (code bloat) and hurts CPU instruction cache efficiency.",
+        tldr: "Inline functions substitute call sites with their code body. Use inline primarily in headers to prevent linkage conflicts."
+      }
+    };
+
+    /* ── 147 QUESTIONS VERBATIM MATRIX ARRAY ── */
+    const QS = [
+      // EASY
+      {d:'easy',q:'What is the output?',c:`class A{public:\n  A(){cout<<"Hi";}\n};\nint main(){A a;}`,o:['Hi','A','Error','Nothing'],a:0,e:'Default constructor A() runs when object is created, printing Hi.'},
+      {d:'easy',q:'What is printed?',c:`struct P{int x=5,y=10;};\nint main(){P p;cout<<p.x+p.y;}`,o:['15','5','10','Error'],a:0,e:'struct members are public by default. 5+10=15.'},
+      {d:'easy',q:'What is the output?',c:`class A{public:~A(){cout<<"Bye";}};\nint main(){A a;}`,o:['Bye','~A','A','Error'],a:0,e:'Destructor runs when a goes out of scope at end of main.'},
+      {d:'easy',q:'What does this print?',c:`class Calc{public:\n  int add(int a,int b){return a+b;}\n};\nint main(){Calc c;cout<<c.add(3,4);}`,o:['7','34','3','Error'],a:0,e:'add(3,4) returns 3+4=7.'},
+      {d:'easy',q:'What is the output?',c:`class Box{public:int val;\n  Box(int v):val(v){}\n};\nint main(){Box b(10);cout<<b.val;}`,o:['10','0','v','Error'],a:0,e:'Parameterized constructor sets val=10 via initializer list.'},
+      {d:'easy',q:'What is printed?',c:`class A{public:static int x;};\nint A::x=42;\nint main(){cout<<A::x;}`,o:['42','0','x','Error'],a:0,e:'Static member x is defined as 42 outside the class. A::x accesses it.'},
+      {d:'easy',q:'What is the output?',c:`class Rect{int w,h;public:\n  Rect(int a,int b):w(a),h(b){}\n  int area(){return w*h;}\n};\nint main(){Rect r(3,4);cout<<r.area();}`,o:['12','7','34','Error'],a:0,e:'area() returns w*h=3*4=12.'},
+      {d:'easy',q:'What is printed?',c:`class Base{public:void greet(){cout<<"Hi";}};\nclass Der:public Base{};\nint main(){Der d;d.greet();}`,o:['Hi','Base','Der','Error'],a:0,e:'Der inherits greet() from Base. d.greet() calls Base::greet().'},
+      {d:'easy',q:'What is the output?',c:`void f(int x){cout<<"int:"<<x;}\nvoid f(double x){cout<<"dbl:"<<x;}\nint main(){f(5);}`,o:['int:5','dbl:5','5','Error'],a:0,e:'f(5): int literal. The int overload is exact match.'},
+      {d:'easy',q:'What does this print?',c:`class A{int x=99;public:int get(){return x;}};\nint main(){A a;cout<<a.get();}`,o:['99','x','0','Error'],a:0,e:'x is private but get() is public and returns x=99.'},
+      {d:'easy',q:'What is the output?',c:`class A{int x=10;public:int getX()const{return x;}};\nint main(){A a;cout<<a.getX();}`,o:['10','0','x','Error'],a:0,e:'Const member function returns x=10.'},
+      {d:'easy',q:'What is printed?',c:`namespace ns{int val=7;}\nint main(){cout<<ns::val;}`,o:['7','ns','val','Error'],a:0,e:'ns::val accesses the variable val in namespace ns.'},
+      {d:'easy',q:'What is the output?',c:`class A{public:int x=5;};\nint main(){A a;A& r=a;r.x=9;cout<<a.x;}`,o:['9','5','r.x','Error'],a:0,e:'r is a reference to a. r.x=9 modifies a.x.'},
+      {d:'easy',q:'What is printed?',c:`class A{public:int x=3;};\nint main(){A a;A* p=&a;cout<<p->x;}`,o:['3','&a','p','Error'],a:0,e:'p->x dereferences pointer p and accesses member x=3.'},
+      {d:'easy',q:'What is the output?',c:`template<typename T>\nT add(T a,T b){return a+b;}\nint main(){cout<<add(3,4);}`,o:['7','T','3+4','Error'],a:0,e:'Template deduces T=int. add(3,4)=7.'},
+      {d:'easy',q:'What is printed?',c:`int main(){\n  try{throw 42;}\n  catch(int e){cout<<e;}\n}`,o:['42','Error','e','exception'],a:0,e:'throw 42 throws int. catch(int e) catches it and prints 42.'},
+      {d:'easy',q:'What is the output?',c:`class A{public:int x;\n  A(int x){this->x=x;}\n};\nint main(){A a(5);cout<<a.x;}`,o:['5','x','this','Error'],a:0,e:'this->x refers to member x (not parameter). Constructor sets member x=5.'},
+      {d:'easy',q:'What is printed?',c:`class P{int a,b;public:\n  P(int x,int y):a(x),b(y){}\n  int sum(){return a+b;}\n};\nint main(){P p(2,3);cout<<p.sum();}`,o:['5','23','2+3','Error'],a:0,e:'a=2, b=3. sum()=2+3=5.'},
+      {d:'easy',q:'What is the output?',c:`class A{\n  static int c;\npublic:\n  A(){c++;}\n  static int get(){return c;}\n};\nint A::c=0;\nint main(){A a,b,c_obj;cout<<A::get();}`,o:['3','0','1','Error'],a:0,e:'Three A objects increment static c. get() returns 3.'},
+      {d:'easy',q:'What does this print?',c:`class A{public:\n  A(){cout<<"default";}\n  A(int){cout<<"param";}\n};\nint main(){A a(5);}`,o:['param','default','5','Error'],a:0,e:'A(5) calls the parameterized A(int), printing param.'},
+      {d:'easy',q:'What is the output?',c:`template<typename T>\nT myMax(T a,T b){return(a>b)?a:b;}\nint main(){cout<<myMax(3,7);}`,o:['7','3','73','Error'],a:0,e:'myMax(3,7): 3>7 is false, return 7.'},
+      {d:'easy',q:'What is printed?',c:`int main(){\n  auto f=[](int x){return x*2;};\n  cout<<f(5);\n}`,o:['10','5','x*2','Error'],a:0,e:'Lambda doubles its arg. f(5)=5*2=10.'},
+      {d:'easy',q:'What is the output?',c:`constexpr int square(int x){return x*x;}\nint main(){cout<<square(4);}`,o:['16','4','x*x','Error'],a:0,e:'constexpr: square(4)=4*4=16, computed at compile time.'},
+      {d:'easy',q:'What is printed?',c:`class Base{public:int x=10;};\nclass Der:public Base{};\nint main(){Der d;cout<<d.x;}`,o:['10','0','Base','Error'],a:0,e:'Der inherits public member x=10 from Base.'},
+      {d:'easy',q:'What is the output?',c:`class Num{public:int v;\n  Num(int x):v(x){}\n  Num operator+(const Num& o){return Num(v+o.v);}\n};\nint main(){Num a(3),b(4);Num c=a+b;cout<<c.v;}`,o:['7','34','3','Error'],a:0,e:'operator+ returns Num(3+4)=Num(7). c.v=7.'},
+      {d:'easy',q:'What is printed?',c:`class A{public:int x;\n  A(int v):x(v){}\n  A(const A& o):x(o.x+1){}\n};\nint main(){A a(5);A b=a;cout<<b.x;}`,o:['6','5','b.x','Error'],a:0,e:'Copy constructor sets x=o.x+1=5+1=6.'},
+      {d:'easy',q:'What is the output?',c:`class A{public:~A(){cout<<"D";}};\nint main(){A a,b;}`,o:['DD','D','2','Error'],a:0,e:'Two objects, two destructors run in reverse order (b then a). Output: DD.'},
+      {d:'easy',q:'What does this print?',c:`#include<vector>\nint main(){\n  vector<int> v={1,2,3};\n  cout<<v.size();\n}`,o:['3','1','0','Error'],a:0,e:'Vector has 3 elements. v.size()=3.'},
+      {d:'easy',q:'What is the output?',c:`#include<vector>\nint main(){\n  vector<int> v={10,20,30};\n  cout<<v[1];\n}`,o:['20','10','30','1'],a:0,e:'v[1] is the second element = 20.'},
+      {d:'easy',q:'What is printed?',c:`int main(){double d=3.7;int x=(int)d;cout<<x;}`,o:['3','4','3.7','Error'],a:0,e:'C-style cast from double to int truncates: 3.7 becomes 3.'},
+      {d:'easy',q:'What is the output?',c:`class Math{public:\n  static int square(int x){return x*x;}\n};\nint main(){cout<<Math::square(6);}`,o:['36','6','12','Error'],a:0,e:'Static function: Math::square(6)=6*6=36.'},
+      {d:'easy',q:'What is printed?',c:`class A{int x;public:\n  A(int v=10):x(v){}\n  int get(){return x;}\n};\nint main(){A a;cout<<a.get();}`,o:['10','0','v','Error'],a:0,e:'Default argument v=10 is used. get() returns 10.'},
+      {d:'easy',q:'What is the output?',c:`class A{int x=10;friend void show(A&);};\nvoid show(A& a){cout<<a.x;}\nint main(){A a;show(a);}`,o:['10','x','A','Error'],a:0,e:'show() is a friend of A, accessing private x=10.'},
+      {d:'easy',q:'What is printed?',c:`int main(){\n  int x=10;\n  auto f=[x](){cout<<x;};\n  x=20;\n  f();\n}`,o:['10','20','x','Error'],a:0,e:'[x] captures by value at lambda creation. x=10 at that time, later x=20 doesnt affect it.'},
+      {d:'easy',q:'What is the output?',c:`#include<set>\nint main(){\n  set<int> s={3,1,4,1,5};\n  cout<<s.size();\n}`,o:['4','5','3','Error'],a:0,e:'set stores unique elements: {1,3,4,5}. size=4.'},
+      {d:'easy',q:'What is printed?',c:`int main(){\n  try{throw runtime_error("err");}\n  catch(const exception& e){cout<<e.what();}\n}`,o:['err','Error','exception','runtime'],a:0,e:'runtime_error derives from exception. e.what() returns the message "err".'},
+      {d:'easy',q:'What is the output?',c:`#include<memory>\nint main(){\n  auto p=make_unique<int>(42);\n  cout<<*p;\n}`,o:['42','p','0','Error'],a:0,e:'make_unique<int>(42) creates a unique_ptr to int with value 42. *p dereferences it.'},
+      {d:'easy',q:'What is printed?',c:`class A{public:\n  A(){cout<<"C";}\n  A(const A&){cout<<"P";}\n};\nint main(){A a;A b(a);}`,o:['CP','CC','PP','Error'],a:0,e:'A a: default ctor (C). A b(a): copy ctor (P). Output: CP.'},
+      {d:'easy',q:'What is the output?',c:`void f(){static int x=0;x++;cout<<x;}\nint main(){f();f();f();}`,o:['123','111','000','Error'],a:0,e:'Static local persists across calls. Increments to 1, 2, 3.'},
+      {d:'easy',q:'What does this print?',c:`class A{int x=5;public:\n  int get()const{return x;}\n};\nint main(){const A a;cout<<a.get();}`,o:['5','const','x','Error'],a:0,e:'const object can only call const methods. get() returns x=5.'},
+      {d:'easy',q:'What is the output?',c:`#include<set>\nint main(){\n  set<int> s={3,1,4,1,5};\n  cout<<*s.begin();\n}`,o:['1','3','4','Error'],a:0,e:'set is sorted. begin() points to the smallest element = 1.'},
+      {d:'easy',q:'What is printed?',c:`#include<map>\nint main(){\n  map<string,int> m;\n  m["a"]=1;m["b"]=2;\n  cout<<m["a"]+m["b"];\n}`,o:['3','12','ab','Error'],a:0,e:'m["a"]=1, m["b"]=2. Sum=3.'},
+      {d:'easy',q:'What is the output?',c:`class A{public:void show(){cout<<"A";}};\nclass B:public A{public:void show(){cout<<"B";}};\nint main(){B b;b.show();}`,o:['B','A','AB','Error'],a:0,e:'b.show() calls B::show() (name hiding). Output: B.'},
+      {d:'easy',q:'What is printed?',c:`class Inner{public:int x=5;};\nclass Outer{public:Inner i;};\nint main(){Outer o;cout<<o.i.x;}`,o:['5','0','i.x','Error'],a:0,e:'Outer has Inner member i. i.x is default-initialized to 5.'},
+      {d:'easy',q:'What is the output?',c:`int main(){\n  int x=10;\n  auto f=[&x](){x++;};\n  f();f();\n  cout<<x;\n}`,o:['12','10','11','Error'],a:0,e:'[&x] captures by reference. Two increments: x becomes 12.'},
+      {d:'easy',q:'What does this print?',c:`class A{int x;public:\n  A(int v):x(v){}\n  operator int(){return x;}\n};\nint main(){A a(5);int n=a;cout<<n;}`,o:['5','a','x','Error'],a:0,e:'operator int() converts A to int. n=a calls it. n=5.'},
+      {d:'easy',q:'What is the output?',c:`constexpr int cube(int x){return x*x*x;}\nint main(){cout<<cube(3);}`,o:['27','9','3','Error'],a:0,e:'cube(3)=3*3*3=27, computed at compile time.'},
+      {d:'easy',q:'What is printed?',c:`#include<memory>\nint main(){\n  auto p1=make_unique<int>(10);\n  auto p2=move(p1);\n  cout<<(p1==nullptr)<<*p2;\n}`,o:['110','010','1','Error'],a:0,e:'After move, p1=nullptr (prints 1). p2 owns int 10 (prints 10). Output: 110.'},
+      {d:'easy',q:'What is the output?',c:`class A{public:int x=1;};\nclass B:public A{public:int y=2;};\nint main(){B b;cout<<b.x<<b.y;}`,o:['12','21','1','Error'],a:0,e:'B inherits x=1 from A, has y=2. Prints 12.'},
+      {d:'easy',q:'What does this print?',c:`#include<memory>\nint main(){\n  auto s=make_shared<int>(5);\n  cout<<s.use_count();\n  auto s2=s;\n  cout<<s.use_count();\n}`,o:['12','11','21','Error'],a:0,e:'Initially use_count=1. After s2=s both share ownership: use_count=2. Output: 12.'},
+      {d:'easy',q:'What is the output?',c:`void f(int){cout<<"I";}\nvoid f(double){cout<<"D";}\nvoid f(string){cout<<"S";}\nint main(){f(3.14);f("hi");f(1);}`,o:['DSI','DIS','IDS','SDI'],a:0,e:'3.14=double(D), "hi"=string(S), 1=int(I). Output: DSI.'},
+      {d:'easy',q:'What is printed?',c:`namespace A{namespace B{int x=5;}}\nint main(){cout<<A::B::x;}`,o:['5','AB','x','Error'],a:0,e:'Nested namespace A::B contains x=5.'},
+      {d:'easy',q:'What is the output?',c:`class A{public:int x;\n  A(int v):x(v){}\n};\nint main(){A arr[]={A(1),A(2),A(3)};cout<<arr[2].x;}`,o:['3','1','2','Error'],a:0,e:'arr[2] is A(3). Its x=3.'},
+      
+      // MEDIUM
+      {d:'medium',q:'What is the output?',c:`class A{public:A(){cout<<"A";}~A(){cout<<"a";}};\nclass B{public:B(){cout<<"B";}~B(){cout<<"b";}};\nint main(){A a;B b;}`,o:['ABba','ABab','BAab','ABBA'],a:0,e:'Constructed A then B. Destroyed LIFO: b then a. Output: ABba.'},
+      {d:'medium',q:'What is printed?',c:`class B{public:B(){cout<<"B";}};\nclass D:public B{public:D(){cout<<"D";}};\nint main(){D d;}`,o:['BD','DB','B','D'],a:0,e:'Base constructor runs before derived. B() then D(). Output: BD.'},
+      {d:'medium',q:'What is the output?',c:`class B{public:~B(){cout<<"~B";}};\nclass D:public B{public:~D(){cout<<"~D";}};\nint main(){D d;}`,o:['~D~B','~B~D','~D','~B'],a:0,e:'Destructor order: derived first, then base. ~D~B.'},
+      {d:'medium',q:'What does this print?',c:`class B{public:\n  void f(){cout<<"B";}\n  virtual void g(){cout<<"B";}\n};\nclass D:public B{public:\n  void f(){cout<<"D";}\n  void g()override{cout<<"D";}\n};\nint main(){B* p=new D();p->f();p->g();delete p;}`,o:['BD','DB','BB','DD'],a:0,e:'p->f(): non-virtual, resolved by pointer type B. p->g(): virtual, resolved by object D. Output: BD.'},
+      {d:'medium',q:'What is the output?',c:`class A{static int n;public:\n  A(){n++;} ~A(){n--;}\n  static int get(){return n;}\n};\nint A::n=0;\nint main(){A a,b;{A c;cout<<A::get();}cout<<A::get();}`,o:['32','33','23','31'],a:0,e:'After a,b,c: n=3. Print 3. c destroyed: n=2. Print 2. Output: 32.'},
+      {d:'medium',q:'What is printed?',c:`void f(int){cout<<"int";}\nvoid f(double){cout<<"double";}\nint main(){f(3.14);}`,o:['double','int','3.14','Error'],a:0,e:'3.14 is a double literal. f(double) is exact match.'},
+      {d:'medium',q:'What is the output?',c:`class A{public:int x=1;void show(){cout<<x;}};\nclass B:public A{public:int x=2;void show(){cout<<x;}};\nint main(){B b;b.show();b.A::show();}`,o:['21','12','11','22'],a:0,e:'b.show() calls B::show() -> x=2. b.A::show() calls A::show() -> A::x=1. Output: 21.'},
+      {d:'medium',q:'What is printed?',c:`class B{\npublic:\n  virtual void f(){cout<<"B";}\n  virtual void g(){cout<<"GB";}\n};\nclass D:public B{\npublic:\n  void f()override{cout<<"D";}\n};\nint main(){B* p=new D();p->f();p->g();delete p;}`,o:['DGB','DGD','BGB','Error'],a:0,e:'p->f(): virtual, D overrides it -> D. p->g(): virtual, D does NOT override it -> B::g() -> GB. Output: DGB.'},
+      {d:'medium',q:'What is the output?',c:`class A{public:\n  A(){cout<<"D";}\n  A(int){cout<<"I";}\n  A(const A&){cout<<"C";}\n};\nint main(){A a;A b(1);A c=a;}`,o:['DIC','DCI','IDC','Error'],a:0,e:'A a: default(D). A b(1): int param(I). A c=a: copy(C). Output: DIC.'},
+      {d:'medium',q:'What is printed?',c:`int main(){\n  int x=10;\n  auto f=[&x](){cout<<x;};\n  x=20;\n  f();\n}`,o:['20','10','x','Error'],a:0,e:'[&x] captures by reference. By call time x=20. Prints 20.'},
+      {d:'medium',q:'What is the output?',c:`void f(){try{throw 1;}catch(int){cout<<"A";throw;}}\nint main(){try{f();}catch(int){cout<<"B";}}`,o:['AB','A','B','Error'],a:0,e:'f() catches, prints A, rethrows. main catches, prints B. Output: AB.'},
+      {d:'medium',q:'What is printed?',c:`class A{int x=7;friend class B;};\nclass B{public:void show(A& a){cout<<a.x;}};\nint main(){A a;B b;b.show(a);}`,o:['7','x','A','Error'],a:0,e:'B is a friend of A, accessing private x=7.'},
+      {d:'medium',q:'What is the output?',c:`int x=1;\nclass A{public:int x=2;void show(){cout<<x<<::x;}};\nint main(){A a;a.show();}`,o:['21','12','11','22'],a:0,e:'x refers to member x=2. ::x refers to global x=1. Output: 21.'},
+      {d:'medium',q:'What is printed?',c:`class Shape{public:\n  virtual double area()=0;\n  void show(){cout<<"A="<<(int)area();}\n};\nclass Sq:public Shape{double s;\npublic:\n  Sq(double x):s(x){}\n  double area()override{return s*s;}\n};\nint main(){Sq q(3);q.show();}`,o:['A=9','A=3','9','Error'],a:0,e:'Virtual dispatch calls Sq::area()=9. show() prints A=9.'},
+      {d:'medium',q:'What is the output?',c:`class A{public:\n  A(){cout<<"C";}\n  A(const A&){cout<<"P";}\n  A(A&&){cout<<"M";}\n};\nint main(){A a;A b=move(a);}`,o:['CM','CP','CC','Error'],a:0,e:'A a: default ctor(C). A b=move(a): move ctor(M). Output: CM.'},
+      {d:'medium',q:'What is printed?',c:`#include<map>\nint main(){\n  map<int,char> m={{3,'c'},{1,'a'},{2,'b'}};\n  for(auto& p:m)cout<<p.second;\n}`,o:['abc','cba','bca','Error'],a:0,e:'std::map sorts by key: 1,2,3 -> a,b,c. Output: abc.'},
+      {d:'medium',q:'What is the output?',c:`#include<memory>\nint main(){\n  auto s=make_shared<int>(5);\n  cout<<s.use_count();\n  {auto s2=s;cout<<s.use_count();}\n  cout<<s.use_count();\n}`,o:['121','122','111','Error'],a:0,e:'Count: 1 initially, 2 after s2 copies, 1 after s2 destroyed. Output: 121.'},
+      {d:'medium',q:'What is printed?',c:`class A{public:A(){throw runtime_error("err");}};\nint main(){\n  try{A a;}\n  catch(const exception& e){cout<<e.what();}\n}`,o:['err','Error','A','Nothing'],a:0,e:"A's constructor throws. Caught by exception ref. what()='err'."},
+      {d:'medium',q:'What is the output?',c:`class Animal{public:virtual void speak(){cout<<"?";}};  \nclass Cat:public Animal{public:void speak()override{cout<<"M";}};\nclass Dog:public Animal{public:void speak()override{cout<<"W";}};\nint main(){\n  Animal* a[]={new Cat(),new Dog(),new Cat()};\n  for(auto p:a)p->speak();\n}`,o:['MWM','WMW','MMW','Error'],a:0,e:'Virtual dispatch: Cat->M, Dog->W, Cat->M. Output: MWM.'},
+      {d:'medium',q:'What is printed?',c:`class A{protected:int x=5;};\nclass B:public A{public:void show(){x*=2;cout<<x;}};\nint main(){B b;b.show();}`,o:['10','5','x','Error'],a:0,e:'Protected x is accessible in B. x*=2 -> x=10.'},
+      {d:'medium',q:'What is the output?',c:`class Cnt{int n;public:\n  Cnt(int x):n(x){}\n  Cnt& operator++(){++n;return *this;}\n  Cnt operator++(int){Cnt t=*this;++n;return t;}\n  int get(){return n;}\n};\nint main(){Cnt c(0);cout<<(++c).get()<<(c++).get()<<c.get();}`,o:['112','012','123','111'],a:0,e:'++c: n=1, returns 1. c++: returns old n=1, then n=2. c.get()=2. Output: 112.'},
+      {d:'medium',q:'What is printed?',c:`class A{int x,y;public:\n  A(int a,int b):x(a),y(b){cout<<x<<y;}\n  A(int a):A(a,a){}\n};\nint main(){A a(3);}`,o:['33','3','6','Error'],a:0,e:'A(3) delegates to A(3,3). Prints x=3 y=3 -> 33.'},
+      {d:'medium',q:'What is the output?',c:`class Guard{public:\n  Guard(){cout<<"open";}\n  ~Guard(){cout<<"close";}\n};\nvoid work(){Guard g;cout<<"work";}\nint main(){work();}`,o:['openworkclose','workopenclose','openclose','Error'],a:0,e:'Guard ctor(open), work body(work), Guard dtor(close). Output: openworkclose.'},
+      {d:'medium',q:'What is printed?',c:`class A{public:A(){cout<<"A";}};\nclass B{public:B(){cout<<"B";}};\nclass C:public A,public B{public:C(){cout<<"C";}};\nint main(){C c;}`,o:['ABC','BAC','CAB','Error'],a:0,e:'Bases constructed in declaration order (A then B), then C. Output: ABC.'},
+      {d:'medium',q:'What is the output?',c:`class B{public:virtual int val(){return 0;}};\nclass D:public B{int x;public:\n  D(int v):x(v){}\n  int val()override{return x;}\n};\nint main(){B* p=new D(42);cout<<p->val();delete p;}`,o:['42','0','D','Error'],a:0,e:'Virtual dispatch: p->val() calls D::val() -> 42.'},
+      {d:'medium',q:'What is printed?',c:`class A{static int x;public:\n  static void inc(){x++;}\n  static int get(){return x;}\n};\nint A::x=0;\nint main(){A::inc();A::inc();cout<<A::get();}`,o:['2','1','0','Error'],a:0,e:'Two inc() calls increment static x to 2. get() returns 2.'},
+      {d:'medium',q:'What is the output?',c:`class B{public:virtual ~B(){cout<<"~B";}};\nclass D:public B{public:~D(){cout<<"~D";}};\nint main(){B* p=new D();delete p;}`,o:['~D~B','~B~D','~D','~B'],a:0,e:'Virtual destructor: delete p calls ~D() then ~B(). Output: ~D~B.'},
+      {d:'medium',q:'What is printed?',c:`class A{public:A(){cout<<"A";}~A(){cout<<"a";}};\nclass B{A a;public:B(){cout<<"B";}~B(){cout<<"b";}};\nint main(){B b;}`,o:['ABba','BAab','ABab','Error'],a:0,e:'Member a constructed before B body: A, B. Destroyed: B body(b), then member a. Output: ABba.'},
+      {d:'medium',q:'What is the output?',c:`#include<vector>\ntemplate<typename T>\nclass Stack{\n  vector<T> v;\npublic:\n  void push(T x){v.push_back(x);}\n  T top(){return v.back();}\n  int size(){return v.size();}\n};\nint main(){Stack<int> s;s.push(1);s.push(2);s.push(3);cout<<s.top()<<s.size();}`,o:['33','31','13','Error'],a:0,e:'After 3 pushes, top()=3, size()=3. Output: 33.'},
+      {d:'medium',q:'What is printed?',c:`class MyEx:public runtime_error{public:\n  MyEx():runtime_error("mine"){}\n};\nint main(){\n  try{throw MyEx();}\n  catch(const exception& e){cout<<e.what();}\n}`,o:['mine','MyEx','Error','runtime'],a:0,e:'MyEx inherits runtime_error. Caught by base ref. what()=mine.'},
+      {d:'medium',q:'What is the output?',c:`class A{mutable int x=0;public:\n  void inc()const{x++;}\n  int get()const{return x;}\n};\nint main(){const A a;a.inc();a.inc();cout<<a.get();}`,o:['2','0','1','Error'],a:0,e:'mutable allows modification in const functions. Two inc() -> x=2.'},
+      {d:'medium',q:'What is printed?',c:`class Base{public:virtual void f(int x){cout<<"B"<<x;}};\nclass Der:public Base{public:void f(int x)override{cout<<"D"<<x;}};\nint main(){Base* p=new Der();p->f(5);delete p;}`,o:['D5','B5','5','Error'],a:0,e:'Virtual dispatch: p->f(5) calls Der::f(5) -> D5.'},
+      {d:'medium',q:'What is the output?',c:`class Adder{int n;public:\n  Adder(int x):n(x){}\n  int operator()(int x){return x+n;}\n};\nint main(){Adder add5(5);cout<<add5(3)<<add5(10);}`,o:['815','53','35','Error'],a:0,e:'Functor: add5(3)=3+5=8, add5(10)=10+5=15. Output: 815.'},
+      {d:'medium',q:'What is printed?',c:`#include<vector>\n#include<algorithm>\nint main(){\n  vector<int> v={3,1,4,1,5,9};\n  sort(v.begin(),v.end());\n  cout<<v[0]<<v.back();\n}`,o:['19','39','91','Error'],a:0,e:'Sorted: {1,1,3,4,5,9}. v[0]=1, v.back()=9. Output: 19.'},
+      {d:'medium',q:'What is the output?',c:`#include<queue>\nint main(){\n  priority_queue<int> pq;\n  pq.push(3);pq.push(1);pq.push(4);\n  cout<<pq.top();\n}`,o:['4','1','3','Error'],a:0,e:'priority_queue is a max-heap. top() returns largest = 4.'},
+      {d:'medium',q:'What is printed?',c:`#include<initializer_list>\nclass Sum{int t=0;public:\n  Sum(initializer_list<int> l){for(auto x:l)t+=x;}\n  int get(){return t;}\n};\nint main(){Sum s{1,2,3,4,5};cout<<s.get();}`,o:['15','12345','0','Error'],a:0,e:'Sums 1+2+3+4+5=15.'},
+      {d:'medium',q:'What is the output?',c:`class Builder{string s;public:\n  Builder& add(const string& x){s+=x;return *this;}\n  void show(){cout<<s;}\n};\nint main(){Builder b;b.add("Hi").add(" ").add("OOP").show();}`,o:['Hi OOP','HiOOP','Hi','Error'],a:0,e:'Method chaining concatenates strings. Result: Hi OOP.'},
+      {d:'medium',q:'What is printed?',c:`class A{public:virtual ~A(){}};\nclass B:public A{};\nint main(){\n  A* a=new B();\n  B* b=dynamic_cast<B*>(a);\n  cout<<(b!=nullptr?"ok":"fail");\n  delete a;\n}`,o:['ok','fail','Error','nullptr'],a:0,e:'dynamic_cast<B*>(a) succeeds since a actually points to a B object.'},
+      {d:'medium',q:'What is the output?',c:`#include<memory>\nint main(){\n  shared_ptr<int> sp=make_shared<int>(5);\n  weak_ptr<int> wp=sp;\n  cout<<wp.expired();\n  sp.reset();\n  cout<<wp.expired();\n}`,o:['01','10','00','11'],a:0,e:'wp is valid(0) initially. After sp.reset(), no owner remains, wp expires(1). Output: 01.'},
+      {d:'medium',q:'What is printed?',c:`class B{public:B(){f();}virtual void f(){cout<<"B";}};\nclass D:public B{public:D(){f();}void f()override{cout<<"D";}};\nint main(){D d;}`,o:['BD','DD','BB','DB'],a:0,e:'During B(): vtable is B, no polymorphism yet -> B::f() -> B. During D(): vtable is D -> D::f() -> D. Output: BD.'},
+      {d:'medium',q:'What is the output?',c:`template<int N>\nstruct Fact{static const int val=N*Fact<N-1>::val;};\ntemplate<>struct Fact<0>{static const int val=1;};\nint main(){cout<<Fact<5>::val;}`,o:['120','24','5','Error'],a:0,e:'Compile-time factorial: 5*4*3*2*1=120.'},
+      {d:'medium',q:'What is printed?',c:`#include<vector>\n#include<algorithm>\nint main(){\n  vector<int> v={1,2,3};\n  int s=0;\n  for_each(v.begin(),v.end(),[&s](int x){s+=x;});\n  cout<<s;\n}`,o:['6','123','0','Error'],a:0,e:'for_each with lambda sums elements: 1+2+3=6.'},
+      {d:'medium',q:'What is the output?',c:`class Base{public:int x=1;virtual int get(){return x;}};\nclass Der:public Base{public:int y=2;int get()override{return x+y;}};\nint main(){Der d;Base b=d;cout<<b.get();}`,o:['1','3','2','Error'],a:0,e:'Base b=d: object slicing. b is a Base value copy. b.get() calls Base::get() (no vtable on values) -> x=1.'},
+      {d:'medium',q:'What is printed?',c:`class A{public:A(int x){cout<<"A"<<x;}};\nvoid f(A a){cout<<"f";}\nint main(){f(42);}`,o:['A42f','f42','42f','Error'],a:0,e:'f(42): implicit conversion int->A via A(int). Prints A42, then f. Output: A42f.'},
+      {d:'medium',q:'What is the output?',c:`template<typename T>class TypeId{public:static string name(){return "unknown";}};\ntemplate<>class TypeId<int>{public:static string name(){return "int";}};\nint main(){cout<<TypeId<int>::name()<<" "<<TypeId<char>::name();}`,o:['int unknown','int char','unknown int','Error'],a:0,e:'TypeId<int> uses specialization -> int. TypeId<char> uses general template -> unknown.'},
+      {d:'medium',q:'What is printed?',c:`class A{static int x;public:\n  static int get(){return x;}\n  static void set(int v){x=v;}\n};\nint A::x=10;\nint main(){A::set(20);cout<<A::get();}`,o:['20','10','x','Error'],a:0,e:'Static x initialized to 10, set(20) changes it, get() returns 20.'},
+      {d:'medium',q:'What is the output?',c:`class Base{public:void f(int x){cout<<"B"<<x;}};\nclass Der:public Base{public:void f(double x){cout<<"D"<<(int)x;}};\nint main(){Der d;d.f(5);}`,o:['D5','B5','5','Error'],a:0,e:'D::f(double) hides Base::f(int). d.f(5): 5 converts to double, calls D::f -> D5.'},
+      {d:'medium',q:'What is printed?',c:`template<typename T>\nT sum(T x){return x;}\ntemplate<typename T,typename... Args>\nT sum(T x,Args... args){return x+sum(args...);}\nint main(){cout<<sum(1,2,3,4,5);}`,o:['15','12345','5','Error'],a:0,e:'Variadic template sums all args: 1+2+3+4+5=15.'},
+      {d:'medium',q:'What is the output?',c:`void safe()noexcept{cout<<"safe";}\nint main(){\n  safe();\n  cout<<(noexcept(safe())?"T":"F");\n}`,o:['safeT','safeF','safe','Error'],a:0,e:'safe() prints safe. noexcept(safe()) is true -> T. Output: safeT.'},
+      {d:'medium',q:'What is printed?',c:`#include<tuple>\nint main(){\n  auto [a,b,c]=make_tuple(1,2.5,string("hi"));\n  cout<<a<<b<<c;\n}`,o:['12.5hi','12hi','1hi','Error'],a:0,e:'Structured bindings: a=1, b=2.5, c=hi. Prints 12.5hi.'},
+      {d:'medium',q:'What is the output?',c:`#include<utility>\nvoid f(int&){cout<<"L";}\nvoid f(int&&){cout<<"R";}\ntemplate<typename T>void fwd(T&& x){f(forward<T>(x));}\nint main(){int n=5;fwd(n);fwd(5);}`,o:['LR','RL','LL','RR'],a:0,e:'fwd(n): n is lvalue -> L. fwd(5): 5 is rvalue -> R. Output: LR.'},
+      {d:'medium',q:'What is printed?',c:`#include<type_traits>\nint main(){\n  cout<<is_integral<int>::value;\n  cout<<is_floating_point<double>::value;\n  cout<<is_pointer<int*>::value;\n}`,o:['111','100','010','Error'],a:0,e:'int is integral(1), double is floating_point(1), int* is pointer(1). Output: 111.'},
+      {d:'medium',q:'What is the output?',c:`enum class Color{Red=1,Green=2,Blue=4};\nint main(){Color c=Color::Green;cout<<static_cast<int>(c);}`,o:['2','Green','1','Error'],a:0,e:'Color::Green has value 2. static_cast<int> converts enum class to int.'},
+      {d:'medium',q:'What is printed?',c:`class I{public:virtual void run()=0;virtual ~I(){}};\nclass A:public I{public:void run()override{cout<<"A";}};\nclass B:public A{public:void run()override{cout<<"B";A::run();}};\nint main(){I* p=new B();p->run();delete p;}`,o:['BA','AB','B','A'],a:0,e:'p->run() dispatched to B::run(): prints B, then calls A::run() -> A. Output: BA.'},
+      
+      // HARD
+      {d:'hard',q:'What is the output?',c:`class A{public:A(){cout<<"A";}~A(){cout<<"a";}};\nclass B:virtual public A{public:B(){cout<<"B";}~B(){cout<<"b";}};\nclass C:virtual public A{public:C(){cout<<"C";}~C(){cout<<"c";}};\nclass D:public B,public C{public:D(){cout<<"D";}~D(){cout<<"d";}};\nint main(){D d;}`,o:['ABCDdcba','ABCDdcab','ABCDdbca','ABCDdabc'],a:0,e:'Virtual base A constructed first (once). Then B, C, D. Destruction reverses: d,c,b,a. Output: ABCDdcba.'},
+      {d:'hard',q:'What is printed?',c:`class A{\npublic:\n  virtual void f(){cout<<"A";}\n  void g(){f();}\n};\nclass B:public A{public:void f()override{cout<<"B";}};\nclass C:public B{public:void f()override{cout<<"C";}};\nint main(){A* p=new C();p->g();delete p;}`,o:['C','A','B','Error'],a:0,e:'p->g() is non-virtual, calls A::g(). Inside g(), f() dispatches via this (C) -> C::f() -> C.'},
+      {d:'hard',q:'What is the output?',c:`class A{public:int x;A(int v):x(v){cout<<"A"<<v;}~A(){cout<<"~A"<<x;}};\nclass B{A a1,a2;public:B():a1(1),a2(2){cout<<"B";}~B(){cout<<"~B";}};\nint main(){B b;}`,o:['A1A2B~B~A2~A1','A1A2B~A1~A2~B','BA1A2~B~A2~A1','Error'],a:0,e:'Members a1,a2 before B body: A1,A2,B. Destruction: ~B body, then members reversed: ~A2,~A1. Output: A1A2B~B~A2~A1.'},
+      {d:'hard',q:'What is printed?',c:`class A{string n;public:\n  A(string x):n(x){cout<<"+"<<n;}\n  ~A(){cout<<"-"<<n;}\n};\nvoid risky(){A g("G");throw runtime_error("oops");}\nint main(){try{A m("M");risky();}catch(...){cout<<"E";}}`,o:['+M+G-G-ME','+M+G-M-GE','+M+GE','+M+G-GE-M'],a:0,e:'Create M(+M), create G(+G), throw: unwind risky(-G), then try block(-M), catch(E). Output: +M+G-G-ME.'},
+      {d:'hard',q:'What is the output?',c:`template<typename T>class Base{public:\n  void iface(){static_cast<T*>(this)->impl();}\n};\nclass Der:public Base<Der>{public:void impl(){cout<<"CRTP";}};\nint main(){Der d;d.iface();}`,o:['CRTP','Base','Der','Error'],a:0,e:'CRTP: Base<Der> casts this to Der* and calls impl(). Prints CRTP.'},
+      {d:'hard',q:'What is printed?',c:`class A{public:\n  A(){cout<<"A";}\n  ~A(){cout<<"~A";}\n};\nclass B{A a;public:\n  B(){cout<<"B";throw 1;}\n  ~B(){cout<<"~B";}\n};\nint main(){try{B b;}catch(int){cout<<"E";}}`,o:['AB~AE','AB~B~AE','ABE','Error'],a:0,e:"Member a constructed(A). B body starts(B). Throws: B's dtor NOT called(incomplete ctor). a's dtor IS called(~A). Catch(E). Output: AB~AE."},
+      {d:'hard',q:'What is the output?',c:`template<typename T,typename U>\nclass Pair{public:void show(){cout<<"general";}};\ntemplate<typename T>\nclass Pair<T,T>{public:void show(){cout<<"same";}};\nint main(){Pair<int,double>p1;Pair<int,int>p2;p1.show();p2.show();}`,o:['generalsame','samegeneral','samesame','Error'],a:0,e:'Pair<int,double>: general template. Pair<int,int>: partial specialization T=T. Output: generalsame.'},
+      {d:'hard',q:'What is printed?',c:`template<typename T>void f(T x){cout<<"T";}\nvoid f(int x){cout<<"I";}\nvoid f(double x){cout<<"D";}\nint main(){f(1);f(1.0);f('a');}`,o:['IDT','DIT','TDI','ITD'],a:0,e:"f(1): int exact match -> I. f(1.0): double exact match -> D. f('a'): char, template is exact match with T=char -> T. Output: IDT."},
+      {d:'hard',q:'What is the output?',c:`class A{string n;public:\n  A(string x):n(x){cout<<"+"<<n;}\n  ~A(){cout<<"-"<<n;}\n};\nvoid work(){A a("A");A b("B");throw runtime_error("fail");}\nint main(){try{work();}catch(...){cout<<"E";}}`,o:['+A+B-B-AE','+A+B-A-BE','+A+B-ABE','Error'],a:0,e:'Create a,b. Throw: unwind b(-B) then a(-A). Catch(E). Output: +A+B-B-AE.'},
+      {d:'hard',q:'What is printed?',c:`class V{public:int x=0;};\nclass A:virtual public V{public:A(){x+=1;}};\nclass B:virtual public V{public:B(){x+=2;}};\nclass C:public A,public B{public:C(){x+=3;}};\nint main(){C c;cout<<c.x;}`,o:['6','1','3','Error'],a:0,e:'Virtual inheritance: one V. A adds 1, B adds 2, C adds 3. Total x=6.'},
+      {d:'hard',q:'What is the output?',c:`class A{public:A(){cout<<"A";}virtual~A(){cout<<"~A";}};\nclass B:public A{public:B(){cout<<"B";}~B(){cout<<"~B";}};\nclass C:public B{public:C(){cout<<"C";}~C(){cout<<"~C";}};\nint main(){A* p=new C();delete p;}`,o:['ABC~C~B~A','ABC~A~B~C','ABC~C~A','Error'],a:0,e:'Constructed A,B,C. delete p: virtual dtor chain ~C,~B,~A. Output: ABC~C~B~A.'},
+      {d:'hard',q:'What is printed?',c:`constexpr int fib(int n){return n<=1?n:fib(n-1)+fib(n-2);}\nint main(){cout<<fib(7);}`,o:['13','8','21','Error'],a:0,e:'Fibonacci: fib(7)=fib(6)+fib(5)=8+5=13.'},
+      {d:'hard',q:'What is the output?',c:`class A{public:virtual void f(){cout<<"A";}virtual void g(){cout<<"a";f();}};\nclass B:public A{public:void f()override{cout<<"B";}void g()override{cout<<"b";f();}};\nint main(){A* p=new B();p->g();delete p;}`,o:['bB','bA','aB','Error'],a:0,e:'p->g(): virtual -> B::g(). Prints b. Calls f() via this(B) -> B::f() -> B. Output: bB.'},
+      {d:'hard',q:'What is printed?',c:`class A{public:A(){cout<<"C";}A(const A&){cout<<"P";}A(A&&){cout<<"M";}~A(){cout<<"D";}};\nA make(){return A();}\nint main(){A a=make();}`,o:['CD','CMD','CPD','CPMD'],a:0,e:'With mandatory copy elision (C++17), A() in make() constructs directly in a. No copy/move. Output: CD.'},
+      {d:'hard',q:'What is the output?',c:`template<int N>class Arr{int data[N];public:int size(){return N;}};\nint main(){Arr<5>a;Arr<10>b;cout<<a.size()<<b.size();}`,o:['510','55','1010','Error'],a:0,e:'Non-type template param. Arr<5>::size()=5, Arr<10>::size()=10. Output: 510.'},
+      {d:'hard',q:'What is printed?',c:`class Node{string n;public:Node(string x):n(x){cout<<"+"<<n;}~Node(){cout<<"-"<<n;}};\nclass Graph{Node a,b;public:Graph():a("A"),b("B"){cout<<"G";}~Graph(){cout<<"~G";}};\nint main(){Graph g;}`,o:['+A+BG~G-B-A','+A+BG-A-B~G','G+A+B~G-B-A','Error'],a:0,e:'Members a,b constructed (+A,+B). Graph body (G). Dtor: body(~G), then members reversed(-B,-A). Output: +A+BG~G-B-A.'},
+      {d:'hard',q:'What is the output?',c:`template<typename T>class Counter{static int c;public:Counter(){c++;}static int get(){return c;}};\ntemplate<typename T>int Counter<T>::c=0;\nclass A:public Counter<A>{};\nclass B:public Counter<B>{};\nint main(){A a1,a2,a3;B b1,b2;cout<<Counter<A>::get()<<Counter<B>::get();}`,o:['32','23','33','Error'],a:0,e:'CRTP Counter: each instantiation has its own static. A created 3 times, B 2 times. Output: 32.'},
+      {d:'hard',q:'What is printed?',c:`class Base{public:int x=1;};\nclass Der:public Base{public:int y=2;};\nint main(){Der d;Base* b=&d;Der* dd=static_cast<Der*>(b);cout<<dd->x<<dd->y;}`,o:['12','21','1','Error'],a:0,e:'b points to Der. static_cast<Der*> is safe here (downcast). dd->x=1, dd->y=2. Output: 12.'},
+      {d:'hard',q:'What is the output?',c:`class A{public:virtual void f(){cout<<"A";}};class B{public:virtual void g(){cout<<"B";}};\nclass C:public A,public B{public:void f()override{cout<<"C";}void g()override{cout<<"C";}};\nint main(){A* a=new C();B* b=new C();a->f();b->g();delete a;delete b;}`,o:['CC','AC','CA','Error'],a:0,e:'Both vtables dispatch to C. a->f()->C::f(), b->g()->C::g(). Output: CC.'},
+      {d:'hard',q:'What is printed?',c:`class A{int* p;public:\n  A(int v):p(new int(v)){cout<<"C"<<v;}\n  A(A&& o):p(o.p){o.p=nullptr;cout<<"M";}\n  ~A(){if(p)cout<<"D"<<*p;else cout<<"d";}\n};\nint main(){A a(5);A b=move(a);b.~A();}`,o:['C5MD5d','C5MdD5','C5MD','Error'],a:0,e:'A a(5)->C5. move: M, a.p=null. b.~A() explicit: *p=5->D5. Then a.~A(): p null->d. Output: C5MD5d.'},
+      {d:'hard',q:'What is the output?',c:`class A{public:\n  static void* operator new(size_t sz){cout<<"new";return ::operator new(sz);}\n  static void operator delete(void* p){cout<<"del";::operator delete(p);}\n};\nint main(){A* p=new A();delete p;}`,o:['newdel','delnew','new','Error'],a:0,e:'new A() calls overloaded operator new(new). delete p calls operator delete(del). Output: newdel.'},
+      {d:'hard',q:'What is printed?',c:`struct Ex{int code;};\nvoid proc(int x){if(x==1)throw Ex{1};if(x==2)throw Ex{2};}\nint main(){\n  for(int i=1;i<=3;i++){\n    try{proc(i);cout<<"ok";}\n    catch(Ex& e){cout<<e.code;}\n  }\n}`,o:['12ok','ok12','12','Error'],a:0,e:'i=1: throws Ex{1}->1. i=2: throws Ex{2}->2. i=3: no throw->ok. Output: 12ok.'},
+      {d:'hard',q:'What is the output?',c:`class A{int id;public:\n  A(int i):id(i){cout<<"["<<id;}\n  ~A(){cout<<id<<"]";}\n};\nvoid f(){A a(1),b(2);throw 0;}\nint main(){try{f();}catch(...){}}`,o:['[1[22]1]','[1[21]2]','[1[2','Error'],a:0,e:'Create a([1), create b([2). Throw: unwind b(2]) then a(1]). Output: [1[22]1].'},
+      {d:'hard',q:'What is printed?',c:`template<typename T>void f(T x){cout<<"T";}\ntemplate<typename T>void f(T* x){cout<<"P";}\nint main(){int n=5;f(n);f(&n);}`,o:['TP','PT','TT','Error'],a:0,e:'f(n): int matches T template. f(&n): int* matches T* specialization (more specific). Output: TP.'},
+      {d:'hard',q:'What is the output?',c:`constexpr int fib2(int n){return n<=1?n:fib2(n-1)+fib2(n-2);}\ntemplate<int N>struct Fib{static const int v=Fib<N-1>::v+Fib<N-2>::v;};\ntemplate<>struct Fib<1>{static const int v=1;};\ntemplate<>struct Fib<0>{static const int v=0;};\nint main(){cout<<Fib<6>::v;}`,o:['8','13','5','Error'],a:0,e:'Template metaprogramming Fibonacci: Fib(6)=8.'},
+      {d:'hard',q:'What is printed?',c:`#include<vector>\n#include<memory>\nclass B{public:virtual void f()=0;virtual ~B(){}};\nclass D1:public B{public:void f()override{cout<<"1";}};\nclass D2:public B{public:void f()override{cout<<"2";}};\nint main(){\n  vector<shared_ptr<B>> v;\n  v.push_back(make_shared<D1>());\n  v.push_back(make_shared<D2>());\n  for(auto& p:v)p->f();\n}`,o:['12','21','11','Error'],a:0,e:'Virtual dispatch through shared_ptr: D1->1, D2->2. Output: 12.'},
+      {d:'hard',q:'What is the output?',c:`class A{int x;public:\n  A(int v):x(v){cout<<"C";}\n  A& operator=(const A& o){x=o.x;cout<<"=";return *this;}\n  int get(){return x;}\n};\nint main(){A a(1);A b(2);a=b;cout<<a.get();}`,o:['CC=2','CC2','C=2','Error'],a:0,e:'A a(1)->C. A b(2)->C. a=b calls operator=(=), sets a.x=2. a.get()->2. Output: CC=2.'},
+      {d:'hard',q:'What is printed?',c:`class A{public:\n  virtual void f(){cout<<"A::f";}\n  void g(){cout<<"A::g ";f();}\n};\nclass B:public A{public:\n  void f()override{cout<<"B::f";}\n  void g(){cout<<"B::g ";A::g();}\n};\nint main(){A* p=new B();p->g();delete p;}`,o:['A::g B::f','B::g A::g B::f','A::g A::f','B::g B::f'],a:0,e:'p->g() non-virtual, calls A::g(). Prints A::g , then f() virtually -> B::f. Output: A::g B::f.'},
+      {d:'hard',q:'What is the output?',c:`struct A{A(){cout<<"init";}};\nA global_a;\nint main(){cout<<"main";}`,o:['initmain','maininit','init','Error'],a:0,e:'Global objects initialized before main. A global_a: ctor -> init. Then main -> main. Output: initmain.'},
+      {d:'hard',q:'What is printed?',c:`class Str{string s;public:\n  Str(string x):s(x){}\n  Str operator+(const Str& o)const{return Str(s+o.s);}\n  void show()const{cout<<s;}\n};\nint main(){Str a("H"),b("e"),c("y");(a+b+c).show();}`,o:['Hey','HeyHey','H','Error'],a:0,e:'a+b -> He. (He)+c -> Hey. show() prints Hey.'},
+      {d:'hard',q:'What is the output?',c:`class A{public:\n  explicit A(int x){cout<<x;}\n};\nvoid f(A a){cout<<"f";}\nint main(){A a(5);f(a);}`,o:['5f','f5','5','Error'],a:0,e:'A a(5): explicit ctor -> 5. f(a): passes existing A -> f. Output: 5f.'},
+      {d:'hard',q:'What is printed?',c:`class A{public:virtual void f(){cout<<"A";}A(){f();}};\nclass B:public A{public:void f()override{cout<<"B";}B(){f();}};\nint main(){B b;}`,o:['AB','BB','AA','BA'],a:0,e:'During A(): vtable is A, calls A::f() -> A. During B(): vtable updated to B, calls B::f() -> B. Output: AB.'},
+      {d:'hard',q:'What is the output?',c:`#include<vector>\nclass A{int n;public:\n  A(int x):n(x){cout<<"C"<<n;}\n  ~A(){cout<<"D"<<n;}\n};\nint main(){\n  vector<A> v;\n  v.reserve(3);\n  v.emplace_back(1);\n  v.emplace_back(2);\n}`,o:['C1C2D2D1','C1C2D1D2','C1D1C2D2','Error'],a:0,e:'emplace_back constructs in place: C1, C2. Vector destroyed at end: elements in reverse D2, D1. Output: C1C2D2D1.'},
+      {d:'hard',q:'What is printed?',c:`class A{public:void f(){cout<<"A";}};\nclass B:private A{public:\n  void use(){f();}\n  void expose(){A::f();}\n};\nint main(){B b;b.use();b.expose();}`,o:['AA','AB','A','Error'],a:0,e:'Private inheritance makes A::f inaccessible from outside but B can call it internally. Both use() and expose() call A::f -> A. Output: AA.'},
+      {d:'hard',q:'What is the output?',c:`class Base{protected:static int count;public:\n  Base(){count++;}\n  virtual~Base(){count--;}\n  static int get(){return count;}\n};\nint Base::count=0;\nclass Der:public Base{public:\n  Der():Base(){cout<<"D";}\n  ~Der(){cout<<"~D";}\n};\nint main(){Der* p=new Der();cout<<Base::get();delete p;cout<<Base::get();}`,o:['D1~D0','D1~D1','D~D10','Error'],a:0,e:'new Der(): Base ctor(count=1), Der ctor(D). Print get()=1. delete p: ~Der(~D), ~Base(count=0). Print get()=0. Output: D1~D0.'},
+      {d:'hard',q:'What is printed?',c:`#include<functional>\nint apply(function<int(int)> f,int x){return f(x);}\nint main(){\n  auto dbl=[](int x){return x*2;};\n  auto add10=[](int x){return x+10;};\n  cout<<apply(dbl,5)<<" "<<apply(add10,5);\n}`,o:['10 15','5 15','15 10','Error'],a:0,e:'apply(dbl,5)=5*2=10. apply(add10,5)=5+10=15. Output: 10 15.'},
+      {d:'hard',q:'What is the output?',c:`class Vec{int x,y;public:\n  constexpr Vec(int a,int b):x(a),y(b){}\n  constexpr int dot(const Vec& o)const{return x*o.x+y*o.y;}\n};\nint main(){constexpr Vec a(3,4),b(1,2);constexpr int d=a.dot(b);cout<<d;}`,o:['11','7','25','Error'],a:0,e:'dot product: 3*1+4*2=3+8=11. Computed at compile time (constexpr).'},
+      {d:'hard',q:'What is printed?',c:`class A{public:A(){cout<<"A";}~A(){cout<<"a";}};\nclass B:virtual public A{public:B(){cout<<"B";}~B(){cout<<"b";}};\nclass C:public B{public:C(){cout<<"C";}~C(){cout<<"c";}};\nint main(){C c;}`,o:['ABCcba','ABCcab','CBAabc','Error'],a:0,e:'Virtual base A first: A. Then B: B. Then C: C. Destruction reversed: c,b,a. Output: ABCcba.'},
+      {d:'hard',q:'What is the output?',c:`#include<utility>\nclass A{public:A(){cout<<"C";}A(const A&){cout<<"P";}A(A&&){cout<<"M";}};\nint main(){\n  vector<A> v;\n  v.reserve(2);\n  v.push_back(A());\n  v.push_back(A());\n}`,o:['CMDMD','CPCPDD','CMCM','Error'],a:0,e:'Each push_back: create temp(C), move into vector(M), destroy temp. Two calls: CMDMD. (Temp destroyed after move D each time).'},
+      {d:'hard',q:'What is printed?',c:`template<int N>\nstruct Fib3{static const int v=Fib3<N-1>::v+Fib3<N-2>::v;};\ntemplate<>struct Fib3<1>{static const int v=1;};\ntemplate<>struct Fib3<0>{static const int v=0;};\nint main(){cout<<Fib3<8>::v;}`,o:['21','13','34','Error'],a:0,e:'Fibonacci(8): 0,1,1,2,3,5,8,13,21. Fib(8)=21.'},
+      {d:'easy',q:'What is printed?',c:`class A{public:\n  int x = 5;\n  A() = default;\n  A(int val):x(val){}\n};\nint main(){A a; A b(10); cout<<a.x<<b.x;}`,o:['510','55','1010','Error'],a:0,e:'A a uses the default compiler constructor which preserves default initializer x=5. A b(10) uses parameterized ctor setting x=10. Output: 510.'},
+      {d:'easy',q:'What is the output?',c:`class Base{public:virtual void f(){cout<<"B";}};\nclass Der:public Base{public:void f()final{cout<<"D";}};\nint main(){Der d; d.f();}`,o:['D','B','Error','BD'],a:0,e:'The final specifier prevents further overriding in derived classes but does not prevent calling the method. Prints D.'},
+      {d:'medium',q:'What is printed?',c:`class A{public:\n  void f()const{cout<<"const ";}\n  void f(){cout<<"mutable ";}\n};\nint main(){const A a; A b; a.f(); b.f();}`,o:['const mutable ','mutable const ','const const ','Error'],a:0,e:'Overloading on constness: const object calling const method prints const , mutable object calling non-const method prints mutable . Output: const mutable .'},
+      {d:'medium',q:'What is the output?',c:`class A{public:\n  virtual void f(){cout<<"A";}\n};\nclass B:public A{\n  void f()override{cout<<"B";}\n};\nint main(){B b; A& a=b; a.f();}`,o:['B','A','Error','AB'],a:0,e:'Even though B::f is private in B, it is called polymorphically through base reference A& where it is public. Prints B.'},
+      {d:'medium',q:'What is printed?',c:`#include<memory>\nint main(){\n  std::shared_ptr<int> p1 = std::make_shared<int>(10);\n  std::weak_ptr<int> w = p1;\n  if(auto p2 = w.lock()){\n    cout<<*p2<<" "<<w.use_count();\n  }\n}`,o:['10 2','10 1','10 0','Error'],a:0,e:'w.lock() returns a shared_ptr, incrementing ref count to 2 inside the if scope, but w.use_count() observes the original shared state (ref count = 1 before lock? No! lock returns a shared_ptr, so use_count is 2! Wait. Let us check: w.use_count() returns the number of shared_ptr instances sharing ownership, which is p1 AND the temporary returned by lock(). So ref count is indeed 2!). Let us double check: Yes! w.use_count() is 2.'},
+      {d:'medium',q:'What is the output?',c:`class B{public:virtual void f(){cout<<"B";}};\nclass D:public B{public:void f()override{cout<<"D";}};\nint main(){D d; B b = d; b.f();}`,o:['B','D','BD','Error'],a:0,e:'Object slicing: assignment copies only the Base slice of d into b. Since b is a value of type B, no virtual dispatch occurs. Prints B.'},
+      {d:'hard',q:'What is the output?',c:`class A{public:A(){cout<<"A";}};\nclass B:public A{public:B(){cout<<"B";}};\nclass C:public A{public:C(){cout<<"C";}};\nclass D:public B,public C{public:D(){cout<<"D";}};\nint main(){D d;}`,o:['ABACD','ABCD','AABCD','Error'],a:0,e:'D inherits from B and C, which both inherit non-virtually from A. Thus, A is constructed twice: once for B, once for C. Order: A, B, A, C, D. Output: ABACD.'},
+      {d:'hard',q:'What is printed?',c:`#include<utility>\nclass A{public:\n  A(){cout<<"C";}\n  A(const A&){cout<<"K";}\n  A(A&&){cout<<"M";}\n};\nvoid f(A a){}\nint main(){A a; f(std::move(a));}`,o:['CM','CK','C','Error'],a:0,e:'A a is constructed (C). f(std::move(a)) passes an rvalue, invoking the move constructor (M) to construct the parameter. Output: CM.'},
+      {d:'hard',q:'What is the output?',c:`class A{public:\n  virtual void f(int x=10){cout<<"A"<<x;}\n};\nclass B:public A{public:\n  void f(int x=20)override{cout<<"B"<<x;}\n};\nint main(){A* p = new B(); p->f(); delete p;}`,o:['B10','B20','A10','Error'],a:0,e:'Virtual dispatch resolves the method to B::f at runtime, but default arguments are bound statically at compile-time based on the pointer type A*. Prints B10.'},
+      {d:'hard',q:'What is printed?',c:`class A{public:\n  virtual ~A(){cout<<"~A";}\n};\nclass B:public A{public:\n  virtual ~B(){cout<<"~B";}\n};\nint main(){A* p = new B(); delete p;}`,o:['~B~A','~A~B','~B','Error'],a:0,e:'Virtual destructor ensures that deleting p triggers the full destructor chain: first ~B(), then ~A(). Output: ~B~A.'}
+    ];
+
+    /* ── RUNTIME CLASSIFICATION OF QUESTIONS ── */
+    function tagQuestions() {
+      QS.forEach(q => {
+        const text = ((q.q || '') + ' ' + (q.c || '') + ' ' + (q.e || '')).toLowerCase();
+        let cat = "Core";
+        if (
+          text.includes('move(') || text.includes('move semantics') || text.includes('&&') || 
+          text.includes('lambda') || text.includes('constexpr') || 
+          text.includes('cast') || text.includes('namespace') || text.includes('rule of five') || 
+          text.includes('rule of 5') || text.includes('inline') || text.includes('decltype') ||
+          text.includes('structured binding') || text.includes('noexcept') || text.includes('smart pointer') ||
+          text.includes('unique_ptr') || text.includes('shared_ptr') || text.includes('weak_ptr')
+        ) {
+          cat = "Modern C++";
+        } else if (
+          text.includes('operator') || text.includes('friend') || text.includes('static') || 
+          text.includes('template') || text.includes('typename') || text.includes('throw') || 
+          text.includes('catch') || text.includes('try') || text.includes('stl') || 
+          text.includes('vector') || text.includes('map') || text.includes('set') || 
+          text.includes('stream') || text.includes('fstream') || text.includes('file') || 
+          text.includes('raii')
+        ) {
+          cat = "Advanced";
+        }
+        q.category = cat;
+
+        // Dynamic topic detection based on keywords
+        let topicKey = "intro"; // default fallback
+        if (text.includes('destructor') || text.includes('constructor') || text.includes('ctor') || text.includes('~')) {
+          topicKey = "ctor";
+        } else if (text.includes('rule of five') || text.includes('rule of 5') || text.includes('rule of three') || text.includes('rule of 3') || text.includes('rule of zero') || text.includes('rule of 0')) {
+          topicKey = "ro5";
+        } else if (text.includes('move(') || text.includes('move semantics') || text.includes('rvalue reference') || text.includes('&&')) {
+          topicKey = "move";
+        } else if (text.includes('lambda') || text.includes('closure')) {
+          topicKey = "lam";
+        } else if (text.includes('constexpr') || text.includes('compile-time') || text.includes('static_assert')) {
+          topicKey = "cexp";
+        } else if (text.includes('smart pointer') || text.includes('unique_ptr') || text.includes('shared_ptr') || text.includes('weak_ptr') || text.includes('make_unique') || text.includes('make_shared')) {
+          topicKey = "sptr";
+        } else if (text.includes('raii') || text.includes('lock_guard') || text.includes('mutex') || text.includes('scoped_lock')) {
+          topicKey = "raii";
+        } else if (text.includes('cast') || text.includes('static_cast') || text.includes('dynamic_cast') || text.includes('reinterpret_cast') || text.includes('const_cast')) {
+          topicKey = "cast";
+        } else if (text.includes('namespace') || text.includes('using namespace')) {
+          topicKey = "ns";
+        } else if (text.includes('inline')) {
+          topicKey = "inl";
+        } else if (text.includes('exception') || text.includes('throw') || text.includes('catch') || text.includes('try') || text.includes('noexcept')) {
+          topicKey = "exc";
+        } else if (text.includes('operator') || text.includes('operator+') || text.includes('operator-') || text.includes('operator<<') || text.includes('operator=')) {
+          topicKey = "opov";
+        } else if (text.includes('friend')) {
+          topicKey = "friend";
+        } else if (text.includes('static ') || text.includes('static_') || text.includes('::')) {
+          topicKey = "static";
+        } else if (text.includes('template') || text.includes('typename') || text.includes('template<')) {
+          topicKey = "tpl";
+        } else if (text.includes('vector') || text.includes('map') || text.includes('set') || text.includes('unordered_') || text.includes('list') || text.includes('stl')) {
+          topicKey = "stl";
+        } else if (text.includes('stream') || text.includes('fstream') || text.includes('ifstream') || text.includes('ofstream') || text.includes('file')) {
+          topicKey = "fio";
+        } else if (text.includes('virtual') || text.includes('vtable') || text.includes('vptr') || text.includes('dynamic dispatch')) {
+          topicKey = "virt";
+        } else if (text.includes('pure virtual') || text.includes('abstract class') || text.includes('interface')) {
+          topicKey = "abs";
+        } else if (text.includes('polymorphism') || text.includes('override') || text.includes('overload')) {
+          topicKey = "poly";
+        } else if (text.includes('inheritance') || text.includes('derived') || text.includes('base class') || text.includes('diamond')) {
+          topicKey = "inh";
+        } else if (text.includes('encapsulation') || text.includes('data hiding') || text.includes('getter') || text.includes('setter')) {
+          topicKey = "enc";
+        } else if (text.includes('access specifier') || text.includes('public') || text.includes('private') || text.includes('protected')) {
+          topicKey = "access";
+        } else if (text.includes('class') || text.includes('object') || text.includes('struct') || text.includes('this pointer')) {
+          topicKey = "classes";
+        } else {
+          topicKey = "intro";
+        }
+        q.topic = topicKey;
+      });
+    }
+    tagQuestions();
+
+    /* ── DYNAMIC GENERATION OF SIDEBAR NAVIGATION ── */
+    const TOPIC_KEYS = Object.keys(TOPICS_DATA);
+    
+    function buildSidebar() {
+      const navList = document.getElementById('sidebarNav');
+      let html = `<li><a href="#home" class="active">🏠 Dashboard</a></li>`;
+      
+      const categories = ["Core", "Advanced", "Modern C++"];
+      categories.forEach(cat => {
+        html += `<li><span class="sh">${cat}</span></li>`;
+        TOPIC_KEYS.forEach(key => {
+          const t = TOPICS_DATA[key];
+          if (t.category === cat) {
+            html += `<li><a href="#topic/${key}" id="nav-${key}">✦ ${t.title}</a></li>`;
+          }
+        });
+      });
+      
+      html += `<li><span class="sh">Quiz</span></li>`;
+      html += `<li><a href="#quiz" id="nav-quiz">🎯 Quiz</a></li>`;
+      
+      navList.innerHTML = html;
+    }
+    
+    buildSidebar();
+
+    /* ── ROUTING MATRIX ── */
+    function router() {
+      const hash = location.hash || '#home';
+      const app = document.getElementById('app');
+      
+      // Clear styling active flags
+      document.querySelectorAll('aside nav a').forEach(el => el.classList.remove('active'));
+      
+      app.innerHTML = `<div class="page-fade" id="pageContainer"></div>`;
+      const container = document.getElementById('pageContainer');
+      
+      if (hash === '#home' || hash === '#') {
+        document.querySelector('aside nav a[href="#home"]').classList.add('active');
+        renderHome(container);
+      } else if (hash === '#quiz') {
+        const quizNav = document.getElementById('nav-quiz');
+        if (quizNav) quizNav.classList.add('active');
+        renderQuiz(container);
+      } else if (hash.startsWith('#topic/')) {
+        const slug = hash.split('/')[1];
+        const topic = TOPICS_DATA[slug];
+        if (topic) {
+          const navEl = document.getElementById(`nav-${slug}`);
+          if (navEl) navEl.classList.add('active');
+          renderTopic(container, slug, topic);
+        } else {
+          location.hash = '#home';
+        }
+      } else {
+        location.hash = '#home';
+      }
+      
+      window.scrollTo(0,0);
+    }
+    
+    window.addEventListener('hashchange', router);
+    window.addEventListener('load', router);
+
+    /* ── RENDER COMPONENT: HOME PAGE ── */
+    function renderHome(container) {
+      let cardsHtml = '';
+      TOPIC_KEYS.forEach(key => {
+        const t = TOPICS_DATA[key];
+        cardsHtml += `
+          <a href="#topic/${key}" class="landing-card">
+            <span class="card-cat">${t.category}</span>
+            <h3>${t.title}</h3>
+            <p>${t.definition.slice(0, 110)}...</p>
+            <div class="card-footer">Explore Topic <span>&rarr;</span></div>
+          </a>
+        `;
+      });
+      
+      container.innerHTML = `
+        <div class="hero">
+          <span class="hero-pre">C++ Core Reference Manual</span>
+          <h1>Master Object-Oriented<br>Programming in <em>C++</em></h1>
+          <p>An elite, interactive handbook dedicated to modern, high-performance object-oriented programming. Explore 25 detailed topics with exhaustive theory and take the dynamic timed quiz.</p>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-val">25</div>
+            <div class="stat-label">Detailed Topics</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">158</div>
+            <div class="stat-label">Verbatim Questions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">100%</div>
+            <div class="stat-label">Free &amp; Offline</div>
+          </div>
+        </div>
+        
+        <h2 class="section-title">Reference Modules</h2>
+        <div class="landing-grid">
+          ${cardsHtml}
+        </div>
+      `;
+    }
+
+    /* ── RENDER COMPONENT: TOPIC DETAILS ── */
+    function renderTopic(container, slug, topic) {
+      const idx = TOPIC_KEYS.indexOf(slug);
+      const prevSlug = idx > 0 ? TOPIC_KEYS[idx - 1] : null;
+      const nextSlug = idx < TOPIC_KEYS.length - 1 ? TOPIC_KEYS[idx + 1] : null;
+      
+      let conceptsHtml = '';
+      topic.keyConcepts.forEach(c => {
+        conceptsHtml += `
+          <div class="concept-card">
+            <h4>${c.name}</h4>
+            <p>${c.desc}</p>
+          </div>
+        `;
+      });
+      
+      container.innerHTML = `
+        <div class="breadcrumbs">
+          <a href="#home">Home</a> &nbsp;&raquo;&nbsp; 
+          <span>${topic.category}</span> &nbsp;&raquo;&nbsp; 
+          <span style="color:var(--ac)">${topic.title}</span>
+        </div>
+        
+        <div class="topic-hdr">
+          <div class="topic-meta">
+            <span class="cat-badge">${topic.category}</span>
+            <span class="read-time">&#9202; 4 min read</span>
+          </div>
+          <h1 class="topic-title">${topic.title}</h1>
+        </div>
+        
+        <div class="def-card">
+          <strong>Authority Definition</strong>
+          <p>${topic.definition}</p>
+        </div>
+        
+        <div class="content-sec">
+          <span class="sec-sub">1. Theory &amp; Architecture Details</span>
+          ${topic.theory}
+        </div>
+        
+        <div class="content-sec">
+          <span class="sec-sub">2. Architectural Concepts</span>
+          <div class="concepts-grid">
+            ${conceptsHtml}
+          </div>
+        </div>
+        
+        <div class="content-sec">
+          <span class="sec-sub">3. Syntax Reference</span>
+          <div class="code-window">
+            <div class="code-hdr">
+              <div class="code-dots">
+                <div class="code-dot red"></div>
+                <div class="code-dot yellow"></div>
+                <div class="code-dot green"></div>
+              </div>
+              <span class="code-lang">C++ Code Format</span>
+              <button class="code-copy" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>${topic.syntax}</code></pre>
+          </div>
+        </div>
+        
+        <div class="content-sec">
+          <span class="sec-sub">4. Production Implementation</span>
+          <div class="code-window">
+            <div class="code-hdr">
+              <div class="code-dots">
+                <div class="code-dot red"></div>
+                <div class="code-dot yellow"></div>
+                <div class="code-dot green"></div>
+              </div>
+              <span class="code-lang">Modern C++ Code</span>
+              <button class="code-copy" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>${topic.code}</code></pre>
+          </div>
+        </div>
+        
+        <div class="pitfall-card">
+          <strong>⚠️ Critical Gotchas &amp; Common Pitfalls</strong>
+          <p>${topic.pitfalls}</p>
+        </div>
+        
+        <div class="def-card" style="margin-top: 32px; background: var(--bg2); border-image: none; border-left: 4px solid var(--mu)">
+          <strong>TL;DR Guidelines Summary</strong>
+          <p style="font-size: 13.5px; font-weight: 300;">${topic.tldr}</p>
+        </div>
+        
+        <div class="topic-flow">
+          ${prevSlug ? `
+            <a href="#topic/${prevSlug}" class="flow-btn prev">
+              <span class="flow-lbl">&larr; Previous</span>
+              <span class="flow-title">${TOPICS_DATA[prevSlug].title}</span>
+            </a>
+          ` : '<div></div>'}
+          
+          ${nextSlug ? `
+            <a href="#topic/${nextSlug}" class="flow-btn next">
+              <span class="flow-lbl">Next &rarr;</span>
+              <span class="flow-title">${TOPICS_DATA[nextSlug].title}</span>
+            </a>
+          ` : '<div></div>'}
+        </div>
+      `;
+    }
+
+    function copyCode(btn) {
+      const code = btn.closest('.code-window').querySelector('pre code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+      });
+    }
+
+    /* ── RENDER COMPONENT: QUIZ INTERFACE & GAME ENGINE ── */
+    function renderQuiz(container) {
+      container.innerHTML = `
+        <svg style="position:absolute;width:0;height:0" aria-hidden="true">
+          <defs>
+            <linearGradient id="tgrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7c3aed"/>
+              <stop offset="100%" stop-color="#3b82f6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        
+        <!-- Start screen -->
+        <div id="qs" class="qstart" style="border: 1px solid var(--bd); background: var(--card); border-radius: var(--r); padding: 40px; box-shadow: var(--sh2); position: relative; overflow: hidden; margin-top: 20px;">
+          <div style="position: absolute; top: -80px; right: -80px; width: 280px; height: 280px; background: radial-gradient(circle, var(--ac2) 0%, transparent 70%); pointer-events: none;"></div>
+          <div class="qtitle" style="font-family: var(--se); font-size: 36px; margin-bottom: 8px; font-weight: 400; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block;">C++ OOP Quiz</div>
+          <div class="qsub" style="font-family: var(--mo); font-size: 11px; color: var(--mu); margin-bottom: 32px;">// <span id="poolCountLabel">158</span> questions matching settings &middot; output prediction &middot; interactive console</div>
+          
+          <div class="og" style="margin-bottom: 24px;">
+            <div class="ol" style="font-family: var(--mo); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mu); margin-bottom: 10px; font-weight: 600;">Select Categories</div>
+            <div class="cr" id="cchips" style="display:flex; gap: 8px; flex-wrap: wrap;">
+              <div class="chip sel" data-v="Core" onclick="toggleMultiChip(this)">Core</div>
+              <div class="chip sel" data-v="Advanced" onclick="toggleMultiChip(this)">Advanced</div>
+              <div class="chip sel" data-v="Modern C++" onclick="toggleMultiChip(this)">Modern C++</div>
+            </div>
+          </div>
+
+          <div class="og" style="margin-bottom: 24px;">
+            <div class="ol" style="font-family: var(--mo); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mu); margin-bottom: 10px; font-weight: 600;">Select Difficulty</div>
+            <div class="cr" id="dchips" style="display:flex; gap: 8px; flex-wrap: wrap;">
+              <div class="chip sel" data-v="all" onclick="toggleChip(this, 'dchips')">All</div>
+              <div class="chip" data-v="easy" onclick="toggleChip(this, 'dchips')">Easy</div>
+              <div class="chip" data-v="medium" onclick="toggleChip(this, 'dchips')">Medium</div>
+              <div class="chip" data-v="hard" onclick="toggleChip(this, 'dchips')">Hard</div>
+            </div>
+          </div>
+          
+          <div class="og" style="margin-bottom: 24px;">
+            <div class="ol" style="font-family: var(--mo); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mu); margin-bottom: 10px; font-weight: 600;">Number of Questions</div>
+            <div class="cr" id="nchips" style="display:flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+              <div class="chip sel" data-v="10" onclick="selectQCount(this, 10)">10</div>
+              <div class="chip" data-v="20" onclick="selectQCount(this, 20)">20</div>
+              <div class="chip" data-v="30" onclick="selectQCount(this, 30)">30</div>
+              <div class="chip" data-v="50" onclick="selectQCount(this, 50)">50</div>
+              <div class="chip" data-v="all" onclick="selectQCount(this, 'all')">All</div>
+              <div style="display: inline-flex; align-items: center; gap: 8px; margin-left: auto; position: relative;">
+                <span style="font-family: var(--mo); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mu);">Custom:</span>
+                <input type="number" id="customQCount" min="1" placeholder="1-158" oninput="onCustomQCountInput(this)" style="width: 80px; padding: 6px 12px; border-radius: 20px; border: 1.5px solid var(--bd); background: var(--bg2); color: var(--ink); font-family: var(--mo); font-size: 12px; outline: none; transition: all 0.2s;" />
+              </div>
+            </div>
+          </div>
+
+          <div class="og" style="margin-bottom: 24px;">
+            <div class="ol" style="font-family: var(--mo); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mu); margin-bottom: 10px; font-weight: 600;">Timer Duration</div>
+            <div class="cr" id="tlimitChips" style="display:flex; gap: 8px; flex-wrap: wrap;">
+              <div class="chip" data-v="15" onclick="toggleTimerChip(this)">15 Seconds</div>
+              <div class="chip sel" data-v="30" onclick="toggleTimerChip(this)">30 Seconds</div>
+              <div class="chip" data-v="45" onclick="toggleTimerChip(this)">45 Seconds</div>
+              <div class="chip" data-v="60" onclick="toggleTimerChip(this)">60 Seconds</div>
+              <div class="chip" data-v="0" onclick="toggleTimerChip(this)">Practice Mode (No Timer)</div>
+            </div>
+          </div>
+
+          <div class="og" style="margin-bottom: 24px;">
+            <div class="ol" style="font-family: var(--mo); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mu); margin-bottom: 10px; font-weight: 600;">Question Ordering</div>
+            <div class="cr" id="orderChips" style="display:flex; gap: 8px; flex-wrap: wrap;">
+              <div class="chip sel" data-v="shuffled" onclick="toggleOrderChip(this)">Shuffled (Random)</div>
+              <div class="chip" data-v="sequential" onclick="toggleOrderChip(this)">Sequential (Topic Order)</div>
+            </div>
+          </div>
+
+          <div class="og" style="margin-bottom: 36px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+              <div class="ol" style="font-family: var(--mo); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mu); font-weight: 600; margin-bottom: 0;">Filter by Specific Topics (Optional)</div>
+              <button type="button" onclick="toggleTopicsDrawer()" id="topicsDrawerBtn" style="background: transparent; border: none; color: var(--ac); font-family: var(--mo); font-size: 11.5px; cursor: pointer; display: flex; align-items: center; gap: 4px; outline: none; font-weight: 500;">
+                <span>Expand</span> ▾
+              </button>
+            </div>
+            <div id="topicsDrawer" style="display: none; border: 1px solid var(--bd); background: var(--bg2); border-radius: 8px; padding: 16px; margin-top: 8px;">
+              <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+                <button type="button" onclick="selectAllTopics(true)" style="background: var(--card); border: 1.5px solid var(--bd); padding: 4px 10px; border-radius: 12px; font-family: var(--mo); font-size: 9.5px; color: var(--ink2); cursor: pointer; transition: all 0.2s;">Select All</button>
+                <button type="button" onclick="selectAllTopics(false)" style="background: var(--card); border: 1.5px solid var(--bd); padding: 4px 10px; border-radius: 12px; font-family: var(--mo); font-size: 9.5px; color: var(--ink2); cursor: pointer; transition: all 0.2s;">Deselect All</button>
+              </div>
+              <div id="topicChipsContainer" style="display: flex; gap: 6px; flex-wrap: wrap; max-height: 200px; overflow-y: auto; padding-right: 4px;">
+                <!-- Topic chips populated dynamically -->
+              </div>
+            </div>
+          </div>
+          
+          <button class="sbtn" onclick="startQuiz()" style="display: inline-flex; align-items: center; gap: 8px; font-family: var(--mo); font-size: 13px; padding: 14px 38px; background: var(--grad); color: #fff; border: none; border-radius: 30px; cursor: pointer; transition: all 0.2s; font-weight: 500; letter-spacing: 0.04em; box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);">&#9654; Start Quiz</button>
+        </div>
+        
+        <!-- Game Play screen (MacBook Terminal UI Card) -->
+        <div id="qg" class="qgame" style="display:none; margin-top: 20px;">
+          <div class="ghdr" style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div class="gmeta" style="font-family: var(--mo); font-size: 11px; color: var(--mu);"><span id="qnl">Q1</span> <span style="color:var(--bd)">|</span> <span id="qtl">of 10</span> &nbsp;<span id="qdl" style="color:var(--ac); font-weight:600"></span></div>
+            <div style="display:flex; align-items:center; gap:12px">
+              <div style="font-family: var(--mo); font-size: 11px; color: var(--mu);"><span id="slive" style="color:var(--ac); font-weight:600">0</span> correct</div>
+              <div class="tring" id="tringContainer" style="width:46px; height:46px; position:relative;">
+                <svg viewBox="0 0 44 44" width="46" height="46" style="transform: rotate(-90deg);">
+                  <circle class="tbg" cx="22" cy="22" r="19" style="stroke:var(--bd); fill:none; stroke-width:3.5;" />
+                  <circle class="tfg" id="tcirc" cx="22" cy="22" r="19" stroke-dasharray="119.4" stroke-dashoffset="0" style="stroke:url(#tgrad); fill:none; stroke-width:3.5; stroke-linecap:round; transition:stroke-dashoffset 1s linear;" />
+                </svg>
+                <div class="tnum" id="tnum" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:var(--mo); font-size:11px; font-weight:600;">30</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="pbar" style="height:5px; background:var(--bd); border-radius:3px; margin-bottom:24px; overflow:hidden;">
+            <div class="pfill" id="pf" style="width:0%; height:100%; border-radius:3px; background:var(--grad); transition:width 0.3s ease;"></div>
+          </div>
+          
+          <div class="qcard-terminal" id="qcard">
+            <!-- MacBook Terminal Window Header -->
+            <div class="terminal-hdr">
+              <div class="terminal-dots">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+              </div>
+              <div class="terminal-title">wistaar@macbook: ~/cpp_quiz.sh</div>
+            </div>
+            
+            <!-- MacBook Terminal Window Body -->
+            <div class="terminal-body">
+              <div class="terminal-prompt">
+                <span class="user">wistaar@macbook</span> <span class="loc">~ %</span> <span class="cmd">./run_quiz --question</span>
+              </div>
+              
+              <div class="qtag easy" id="qtag" style="display:inline-flex; align-items:center; gap:5px; font-family:var(--mo); font-size:8.5px; letter-spacing:0.12em; text-transform:uppercase; padding:4px 12px; border-radius:20px; margin-bottom:14px; font-weight:600;">EASY</div>
+              <div class="qttl-terminal" id="qttl"></div>
+              
+              <div class="qcode-terminal" id="qcode" style="display:none;"></div>
+              
+              <div class="og2" id="qopts" style="display:flex; flex-direction:column; gap:9px; margin-bottom:22px;">
+                <!-- Options Populated dynamically -->
+              </div>
+              
+              <div class="exp" id="qexp" style="display:none; margin-top:16px; padding:16px 20px; background:#18181b; border-radius:10px; border:1px solid #27272a; font-size:13.5px; font-weight:300; line-height:1.65; font-family: var(--mo); color: #d4d4d8;"></div>
+              <button class="nxtbtn" id="nxtb" onclick="nextQ()" style="display:none; margin-top:14px; font-family:var(--mo); font-size:12px; padding:12px 32px; background:var(--grad); color:#fff; border:none; border-radius:30px; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 14px rgba(124, 58, 237, 0.3);">Next &rarr;</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Results screen -->
+        <div id="qr" class="qres" style="display:none; margin-top: 20px;">
+          <div class="rcard" style="background: var(--card); border: 1px solid var(--bd); border-radius: 20px; padding: 48px; text-align: center; box-shadow: var(--sh2); position: relative; overflow: hidden;">
+            <div class="remoji" id="remoji" style="font-size:64px; margin-bottom:16px; display:block;">🏆</div>
+            <div class="rscore" id="rscore" style="font-family: var(--se); font-size: 64px; font-weight: 400; margin-bottom: 6px; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block;">0/0</div>
+            <div class="rlbl" id="rpct" style="font-family: var(--mo); font-size: 12px; color: var(--mu); margin-bottom: 24px;">0% correct</div>
+            <div class="rgrade" id="rgrade" style="display:inline-block; font-family: var(--mo); font-size: 13px; padding: 8px 24px; border-radius: 24px; margin-bottom: 32px; font-weight: 600;">Grade A</div>
+            
+            <div class="rbd" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 32px;">
+              <div class="rbi" style="padding:16px 12px; background:var(--bg2); border-radius:12px; border:1px solid var(--bd);"><div class="rbn" id="bdc" style="color:#10b981; font-family:var(--se); font-size:32px; font-weight:400;">0</div><div class="rbnl" style="font-family:var(--mo); font-size:9px; text-transform:uppercase; letter-spacing:0.12em; color:var(--mu); margin-top:4px;">Correct</div></div>
+              <div class="rbi" style="padding:16px 12px; background:var(--bg2); border-radius:12px; border:1px solid var(--bd);"><div class="rbn" id="bdw" style="color:#ef4444; font-family:var(--se); font-size:32px; font-weight:400;">0</div><div class="rbnl" style="font-family:var(--mo); font-size:9px; text-transform:uppercase; letter-spacing:0.12em; color:var(--mu); margin-top:4px;">Wrong</div></div>
+              <div class="rbi" style="padding:16px 12px; background:var(--bg2); border-radius:12px; border:1px solid var(--bd);"><div class="rbn" id="bds" style="color:#f59e0b; font-family:var(--se); font-size:32px; font-weight:400;">0</div><div class="rbnl" style="font-family:var(--mo); font-size:9px; text-transform:uppercase; letter-spacing:0.12em; color:var(--mu); margin-top:4px;">Skipped</div></div>
+            </div>
+            
+            <button class="rbtn" onclick="resetQuiz()" style="font-family: var(--mo); font-size: 12px; padding: 12px 32px; background: var(--grad); color: #fff; border: none; border-radius: 30px; cursor: pointer; transition: all 0.2s; margin: 5px; box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);">Play Again</button>
+            <button class="rbtn out" onclick="resetQuiz()" style="font-family: var(--mo); font-size: 12px; padding: 12px 32px; background: transparent; border: 1.5px solid var(--bd); color: var(--ink); border-radius: 30px; cursor: pointer; transition: all 0.2s; margin: 5px;" onmouseover="this.style.borderColor='var(--ac)'; this.style.color='var(--ac)'; this.style.background='var(--ac2)';" onmouseout="this.style.borderColor='var(--bd)'; this.style.color='var(--ink)'; this.style.background='transparent';">Change Settings</button>
+          </div>
+        </div>
+      `;
+      populateTopicFilterChips();
+      updatePoolCountInfo();
+    }
+
+    function toggleChip(chip, gid) {
+      document.querySelectorAll('#' + gid + ' .chip').forEach(c => c.classList.remove('sel'));
+      chip.classList.add('sel');
+      updatePoolCountInfo();
+    }
+
+    function toggleMultiChip(chip) {
+      const parent = chip.parentElement;
+      const selected = parent.querySelectorAll('.chip.sel');
+      if (chip.classList.contains('sel') && selected.length <= 1) {
+        return; // Prevent deselecting the last category
+      }
+      chip.classList.toggle('sel');
+      updatePoolCountInfo();
+    }
+
+    function selectQCount(chip, val) {
+      document.querySelectorAll('#nchips .chip').forEach(c => c.classList.remove('sel'));
+      chip.classList.add('sel');
+      const customInput = document.getElementById('customQCount');
+      if (customInput) {
+        customInput.value = '';
+      }
+    }
+
+    function onCustomQCountInput(input) {
+      document.querySelectorAll('#nchips .chip').forEach(c => c.classList.remove('sel'));
+      const pool = calculatePool();
+      let val = parseInt(input.value);
+      if (isNaN(val)) return;
+      if (val < 1) input.value = 1;
+      if (val > pool.length) input.value = pool.length;
+    }
+
+    function getSelectedCategories() {
+      const chips = document.querySelectorAll('#cchips .chip.sel');
+      return Array.from(chips).map(c => c.dataset.v);
+    }
+
+    function getSelectedDifficulty() {
+      const sel = document.querySelector('#dchips .chip.sel');
+      return sel ? sel.dataset.v : 'all';
+    }
+
+    function getSelectedTopics() {
+      const container = document.getElementById('topicChipsContainer');
+      if (!container) return TOPIC_KEYS; // default if not rendered yet
+      const chips = container.querySelectorAll('.chip.sel');
+      return Array.from(chips).map(c => c.dataset.v);
+    }
+
+    function calculatePool() {
+      const diff = getSelectedDifficulty();
+      const cats = getSelectedCategories();
+      const topics = getSelectedTopics();
+      return QS.filter(q => {
+        const dMatch = (diff === 'all' || q.d === diff);
+        const cMatch = cats.includes(q.category);
+        const tMatch = topics.includes(q.topic);
+        return dMatch && cMatch && tMatch;
+      });
+    }
+
+    function updatePoolCountInfo() {
+      const pool = calculatePool();
+      const countLabel = document.getElementById('poolCountLabel');
+      if (countLabel) {
+        countLabel.textContent = pool.length;
+      }
+      const customInput = document.getElementById('customQCount');
+      if (customInput) {
+        customInput.max = pool.length;
+        customInput.placeholder = `1-${pool.length}`;
+      }
+    }
+
+    function toggleTimerChip(chip) {
+      document.querySelectorAll('#tlimitChips .chip').forEach(c => c.classList.remove('sel'));
+      chip.classList.add('sel');
+    }
+
+    function toggleOrderChip(chip) {
+      document.querySelectorAll('#orderChips .chip').forEach(c => c.classList.remove('sel'));
+      chip.classList.add('sel');
+    }
+
+    function toggleTopicsDrawer() {
+      const drawer = document.getElementById('topicsDrawer');
+      const btn = document.getElementById('topicsDrawerBtn');
+      if (!drawer || !btn) return;
+      
+      if (drawer.style.display === 'none') {
+        drawer.style.display = 'block';
+        btn.innerHTML = `<span>Collapse</span> ▴`;
+      } else {
+        drawer.style.display = 'none';
+        btn.innerHTML = `<span>Expand</span> ▾`;
+      }
+    }
+
+    function populateTopicFilterChips() {
+      const container = document.getElementById('topicChipsContainer');
+      if (!container) return;
+      
+      let html = '';
+      TOPIC_KEYS.forEach(key => {
+        const t = TOPICS_DATA[key];
+        html += `
+          <div class="chip sel" data-v="${key}" onclick="toggleTopicChip(this)" style="font-size: 10px; padding: 6px 12px; margin: 2px;">
+            ✦ ${t.title}
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    function toggleTopicChip(chip) {
+      const container = document.getElementById('topicChipsContainer');
+      const selected = container.querySelectorAll('.chip.sel');
+      if (chip.classList.contains('sel') && selected.length <= 1) {
+        return; // lock at least 1 topic selected
+      }
+      chip.classList.toggle('sel');
+      updatePoolCountInfo();
+    }
+
+    function selectAllTopics(select) {
+      const container = document.getElementById('topicChipsContainer');
+      if (!container) return;
+      container.querySelectorAll('.chip').forEach(c => {
+        if (select) {
+          c.classList.add('sel');
+        } else {
+          c.classList.remove('sel');
+        }
+      });
+      
+      if (!select) {
+        const first = container.querySelector('.chip');
+        if (first) first.classList.add('sel');
+      }
+      
+      updatePoolCountInfo();
+    }
+
+    /* ── GAME PLAY SYSTEM ENGINE ── */
+    let gameQs = [], curIdx = 0, score = 0, skipped = 0, timerInt = null, timeLeft = 30, timerDuration = 30, hasAnswered = false;
+
+    function getChipVal(gid) {
+      const sel = document.querySelector('#' + gid + ' .chip.sel');
+      return sel ? sel.dataset.v : null;
+    }
+
+    function startQuiz() {
+      let pool = calculatePool();
+      
+      if (pool.length === 0) {
+        alert("No questions match your selected criteria!");
+        return;
+      }
+      
+      const orderChip = document.querySelector('#orderChips .chip.sel');
+      const ordering = orderChip ? orderChip.dataset.v : 'shuffled';
+      
+      if (ordering === 'sequential') {
+        pool.sort((a, b) => TOPIC_KEYS.indexOf(a.topic) - TOPIC_KEYS.indexOf(b.topic));
+      } else {
+        pool.sort(() => Math.random() - 0.5);
+      }
+      
+      let count = pool.length;
+      const customInput = document.getElementById('customQCount');
+      const customVal = customInput ? parseInt(customInput.value) : NaN;
+      
+      if (!isNaN(customVal) && customVal > 0) {
+        count = Math.min(customVal, pool.length);
+      } else {
+        const range = getChipVal('nchips') || '10';
+        count = range === 'all' ? pool.length : Math.min(parseInt(range), pool.length);
+      }
+      
+      const timerChip = document.querySelector('#tlimitChips .chip.sel');
+      timerDuration = timerChip ? parseInt(timerChip.dataset.v) : 30;
+      
+      gameQs = pool.slice(0, count);
+      curIdx = 0;
+      score = 0;
+      skipped = 0;
+      hasAnswered = false;
+      
+      document.getElementById('qs').style.display = 'none';
+      document.getElementById('qg').style.display = 'block';
+      document.getElementById('qr').style.display = 'none';
+      showQuestion();
+    }
+
+    function showQuestion() {
+      if (curIdx >= gameQs.length) {
+        showResults();
+        return;
+      }
+      
+      hasAnswered = false;
+      const q = gameQs[curIdx];
+      const tot = gameQs.length;
+      
+      document.getElementById('qnl').textContent = 'Q' + (curIdx + 1);
+      document.getElementById('qtl').textContent = 'of ' + tot;
+      document.getElementById('qdl').textContent = q.d.toUpperCase();
+      document.getElementById('slive').textContent = score;
+      document.getElementById('pf').style.width = (curIdx / tot * 100) + '%';
+      
+      const tag = document.getElementById('qtag');
+      tag.textContent = q.d.toUpperCase();
+      tag.className = 'qtag ' + q.d;
+      
+      document.getElementById('qttl').textContent = q.q;
+      const cd = document.getElementById('qcode');
+      if (q.c) {
+        cd.style.display = 'block';
+        cd.textContent = q.c;
+      } else {
+        cd.style.display = 'none';
+      }
+      
+      const opts = document.getElementById('qopts');
+      const labels = ['A', 'B', 'C', 'D'];
+      
+      opts.innerHTML = q.o.map((opt, i) => `
+        <div class="term-opt" id="op${i}" onclick="submitAnswer(${i})">
+          <div class="term-opt-lbl">${labels[i]}</div>
+          <span>${opt}</span>
+        </div>
+      `).join('');
+      
+      const exp = document.getElementById('qexp');
+      exp.style.display = 'none';
+      exp.textContent = '';
+      
+      document.getElementById('nxtb').style.display = 'none';
+      startTimer();
+    }
+
+    function startTimer() {
+      clearInterval(timerInt);
+      
+      const tring = document.getElementById('tringContainer');
+      if (timerDuration === 0) {
+        if (tring) {
+          tring.style.display = 'block';
+        }
+        const circ = document.getElementById('tcirc');
+        if (circ) {
+          circ.style.strokeDashoffset = 0;
+          circ.style.stroke = '#10b981';
+        }
+        const tnum = document.getElementById('tnum');
+        if (tnum) {
+          tnum.textContent = '∞';
+        }
+        return;
+      }
+      
+      if (tring) {
+        tring.style.display = 'block';
+      }
+      timeLeft = timerDuration;
+      updateTimerUI();
+      timerInt = setInterval(() => {
+        timeLeft--;
+        updateTimerUI();
+        if (timeLeft <= 0) {
+          clearInterval(timerInt);
+          if (!hasAnswered) {
+            skipped++;
+            revealSolution(-1);
+          }
+        }
+      }, 1000);
+    }
+
+    function updateTimerUI() {
+      if (timerDuration === 0) return;
+      const C = 119.4;
+      const offset = C * (1 - timeLeft / timerDuration);
+      const circ = document.getElementById('tcirc');
+      if (circ) {
+        circ.style.strokeDashoffset = offset;
+        circ.style.stroke = timeLeft <= (timerDuration * 0.3) ? '#ef4444' : 'var(--ac)';
+      }
+      const tnum = document.getElementById('tnum');
+      if (tnum) {
+        tnum.textContent = timeLeft;
+      }
+    }
+
+    function submitAnswer(idx) {
+      if (hasAnswered) return;
+      hasAnswered = true;
+      clearInterval(timerInt);
+      
+      if (idx === gameQs[curIdx].a) score++;
+      revealSolution(idx);
+    }
+
+    function revealSolution(chosen) {
+      const q = gameQs[curIdx];
+      
+      for (let i = 0; i < q.o.length; i++) {
+        const el = document.getElementById('op' + i);
+        if (!el) continue;
+        
+        if (i === q.a) {
+          el.classList.add('correct');
+        } else if (i === chosen) {
+          el.classList.add('incorrect');
+        }
+        
+        el.style.pointerEvents = 'none';
+      }
+      
+      const exp = document.getElementById('qexp');
+      exp.innerHTML = `<strong style="font-family:var(--mo); font-size:10px; color:#a78bfa; letter-spacing:0.12em;">[wistaar@macbook] stdout: // EXPLANATION</strong><br><br>${q.e}`;
+      exp.style.display = 'block';
+      
+      document.getElementById('nxtb').style.display = 'inline-flex';
+      document.getElementById('slive').textContent = score;
+    }
+
+    function nextQ() {
+      curIdx++;
+      const card = document.getElementById('qcard');
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(10px)';
+      setTimeout(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+        showQuestion();
+      }, 200);
+    }
+
+    function showResults() {
+      clearInterval(timerInt);
+      document.getElementById('qg').style.display = 'none';
+      document.getElementById('qr').style.display = 'block';
+      
+      const tot = gameQs.length;
+      const wrong = tot - score - skipped;
+      const pct = Math.round(score / tot * 100);
+      
+      document.getElementById('rscore').textContent = score + '/' + tot;
+      document.getElementById('rpct').textContent = pct + '% correct';
+      document.getElementById('bdc').textContent = score;
+      document.getElementById('bdw').textContent = wrong;
+      document.getElementById('bds').textContent = skipped;
+      
+      const grade = document.getElementById('rgrade');
+      const remoji = document.getElementById('remoji');
+      
+      if (pct >= 85) {
+        grade.textContent = 'Grade A — Master Standard';
+        grade.style.background = 'linear-gradient(135deg, #d1fae5, #a7f3d0)';
+        grade.style.color = '#065f46';
+        grade.style.border = '1px solid #34d399';
+        remoji.textContent = '🏆';
+      } else if (pct >= 60) {
+        grade.textContent = 'Grade B — Safe Competency';
+        grade.style.background = 'linear-gradient(135deg, #fef3c7, #fde68a)';
+        grade.style.color = '#92400e';
+        grade.style.border = '1px solid #fb923c';
+        remoji.textContent = '🎯';
+      } else {
+        grade.textContent = 'Grade C — Keep Practicing';
+        grade.style.background = 'linear-gradient(135deg, #fee2e2, #fecaca)';
+        grade.style.color = '#991b1b';
+        grade.style.border = '1px solid #f87171';
+        remoji.textContent = '📚';
+      }
+    }
+
+    function resetQuiz() {
+      clearInterval(timerInt);
+      document.getElementById('qg').style.display = 'none';
+      document.getElementById('qr').style.display = 'none';
+      document.getElementById('qs').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
