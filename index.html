@@ -2515,6 +2515,15 @@
           </div>
           
           <div class="og" style="margin-bottom: 24px;">
+            <div class="ol" style="font-family: var(--mo); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mu); margin-bottom: 10px; font-weight: 600;">Question Type</div>
+            <div class="cr" id="qtypeChips" style="display:flex; gap: 8px; flex-wrap: wrap;">
+              <div class="chip sel" data-v="all" onclick="toggleChip(this, 'qtypeChips')">All Questions</div>
+              <div class="chip" data-v="code" onclick="toggleChip(this, 'qtypeChips')">Code / Output Only</div>
+              <div class="chip" data-v="theory" onclick="toggleChip(this, 'qtypeChips')">Theory Only</div>
+            </div>
+          </div>
+          
+          <div class="og" style="margin-bottom: 24px;">
             <div class="ol" style="font-family: var(--mo); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mu); margin-bottom: 10px; font-weight: 600;">Number of Questions</div>
             <div class="cr" id="nchips" style="display:flex; gap: 8px; flex-wrap: wrap; align-items: center;">
               <div class="chip sel" data-v="10" onclick="selectQCount(this, 10)">10</div>
@@ -2616,7 +2625,13 @@
               </div>
               
               <div class="exp" id="qexp" style="display:none; margin-top:16px; padding:16px 20px; background:#18181b; border-radius:10px; border:1px solid #27272a; font-size:13.5px; font-weight:300; line-height:1.65; font-family: var(--mo); color: #d4d4d8;"></div>
-              <button class="nxtbtn" id="nxtb" onclick="nextQ()" style="display:none; margin-top:14px; font-family:var(--mo); font-size:12px; padding:12px 32px; background:var(--grad); color:#fff; border:none; border-radius:30px; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 14px rgba(124, 58, 237, 0.3);">Next &rarr;</button>
+              <div id="qnav" style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; gap:12px; flex-wrap:wrap; width:100%;">
+                <button class="nav-btn" id="prevBtn" onclick="prevQ()" onmouseover="this.style.borderColor='var(--ac)'; this.style.color='var(--ac)'; this.style.background='var(--ac2)';" onmouseout="this.style.borderColor='var(--bd)'; this.style.color='var(--ink)'; this.style.background='var(--bg2)';" style="display:none; font-family:var(--mo); font-size:12.5px; padding:10px 24px; background:var(--bg2); border:1.5px solid var(--bd); color:var(--ink); border-radius:30px; cursor:pointer; transition:all 0.2s; align-items:center; gap:6px; outline:none; font-weight:500;">&larr; Prev</button>
+                
+                <button class="nav-btn" id="skipBtn" onclick="skipQ()" onmouseover="this.style.borderColor='var(--ac)'; this.style.color='var(--ac)'; this.style.background='var(--ac2)';" onmouseout="this.style.borderColor='var(--bd)'; this.style.color='var(--mu)'; this.style.background='var(--bg2)';" style="display:none; font-family:var(--mo); font-size:12.5px; padding:10px 24px; background:var(--bg2); border:1.5px solid var(--bd); color:var(--mu); border-radius:30px; cursor:pointer; transition:all 0.2s; align-items:center; gap:6px; outline:none; font-weight:500;">Skip</button>
+
+                <button class="nav-btn" id="nxtb" onclick="nextQ()" style="display:none; font-family:var(--mo); font-size:12.5px; padding:10px 28px; background:var(--grad); color:#fff; border:none; border-radius:30px; cursor:pointer; transition:all 0.2s; align-items:center; gap:6px; outline:none; font-weight:500; margin-left:auto; box-shadow:0 4px 14px rgba(124, 58, 237, 0.3);">Next &rarr;</button>
+              </div>
             </div>
           </div>
         </div>
@@ -2688,6 +2703,11 @@
       return sel ? sel.dataset.v : 'all';
     }
 
+    function getSelectedQType() {
+      const sel = document.querySelector('#qtypeChips .chip.sel');
+      return sel ? sel.dataset.v : 'all';
+    }
+
     function getSelectedTopics() {
       const container = document.getElementById('topicChipsContainer');
       if (!container) return TOPIC_KEYS; // default if not rendered yet
@@ -2699,11 +2719,20 @@
       const diff = getSelectedDifficulty();
       const cats = getSelectedCategories();
       const topics = getSelectedTopics();
+      const qtype = getSelectedQType();
       return QS.filter(q => {
         const dMatch = (diff === 'all' || q.d === diff);
         const cMatch = cats.includes(q.category);
         const tMatch = topics.includes(q.topic);
-        return dMatch && cMatch && tMatch;
+        
+        let typeMatch = true;
+        if (qtype === 'code') {
+          typeMatch = !!(q.c && q.c.trim());
+        } else if (qtype === 'theory') {
+          typeMatch = !(q.c && q.c.trim());
+        }
+        
+        return dMatch && cMatch && tMatch && typeMatch;
       });
     }
 
@@ -2829,6 +2858,12 @@
       timerDuration = timerChip ? parseInt(timerChip.dataset.v) : 30;
       
       gameQs = pool.slice(0, count);
+      
+      // Initialize userAnswer states
+      gameQs.forEach(q => {
+        q.userAnswer = undefined;
+      });
+      
       curIdx = 0;
       score = 0;
       skipped = 0;
@@ -2840,20 +2875,35 @@
       showQuestion();
     }
 
+    function recalculateScore() {
+      score = 0;
+      skipped = 0;
+      gameQs.forEach(q => {
+        if (q.userAnswer !== undefined) {
+          if (q.userAnswer === q.a) {
+            score++;
+          } else if (q.userAnswer === -1) {
+            skipped++;
+          }
+        }
+      });
+      const slive = document.getElementById('slive');
+      if (slive) slive.textContent = score;
+    }
+
     function showQuestion() {
       if (curIdx >= gameQs.length) {
         showResults();
         return;
       }
       
-      hasAnswered = false;
       const q = gameQs[curIdx];
       const tot = gameQs.length;
       
       document.getElementById('qnl').textContent = 'Q' + (curIdx + 1);
       document.getElementById('qtl').textContent = 'of ' + tot;
       document.getElementById('qdl').textContent = q.d.toUpperCase();
-      document.getElementById('slive').textContent = score;
+      recalculateScore();
       document.getElementById('pf').style.width = (curIdx / tot * 100) + '%';
       
       const tag = document.getElementById('qtag');
@@ -2883,8 +2933,34 @@
       exp.style.display = 'none';
       exp.textContent = '';
       
-      document.getElementById('nxtb').style.display = 'none';
-      startTimer();
+      if (q.userAnswer !== undefined) {
+        hasAnswered = true;
+        clearInterval(timerInt);
+        
+        const tring = document.getElementById('tringContainer');
+        if (tring) {
+          tring.style.display = 'none';
+        }
+        
+        revealSolution(q.userAnswer);
+      } else {
+        hasAnswered = false;
+        
+        const tring = document.getElementById('tringContainer');
+        if (tring) {
+          tring.style.display = 'block';
+        }
+        
+        const prevBtn = document.getElementById('prevBtn');
+        const skipBtn = document.getElementById('skipBtn');
+        const nxtBtn = document.getElementById('nxtb');
+        
+        if (prevBtn) prevBtn.style.display = curIdx > 0 ? 'inline-flex' : 'none';
+        if (skipBtn) skipBtn.style.display = 'inline-flex';
+        if (nxtBtn) nxtBtn.style.display = 'none';
+        
+        startTimer();
+      }
     }
 
     function startTimer() {
@@ -2918,7 +2994,9 @@
         if (timeLeft <= 0) {
           clearInterval(timerInt);
           if (!hasAnswered) {
-            skipped++;
+            const q = gameQs[curIdx];
+            q.userAnswer = -1;
+            recalculateScore();
             revealSolution(-1);
           }
         }
@@ -2945,8 +3023,21 @@
       hasAnswered = true;
       clearInterval(timerInt);
       
-      if (idx === gameQs[curIdx].a) score++;
+      const q = gameQs[curIdx];
+      q.userAnswer = idx;
+      recalculateScore();
       revealSolution(idx);
+    }
+
+    function skipQ() {
+      if (hasAnswered) return;
+      hasAnswered = true;
+      clearInterval(timerInt);
+      
+      const q = gameQs[curIdx];
+      q.userAnswer = -1;
+      recalculateScore();
+      revealSolution(-1);
     }
 
     function revealSolution(chosen) {
@@ -2969,20 +3060,52 @@
       exp.innerHTML = `<strong style="font-family:var(--mo); font-size:10px; color:#a78bfa; letter-spacing:0.12em;">[wistaar@macbook] stdout: // EXPLANATION</strong><br><br>${q.e}`;
       exp.style.display = 'block';
       
-      document.getElementById('nxtb').style.display = 'inline-flex';
-      document.getElementById('slive').textContent = score;
+      const prevBtn = document.getElementById('prevBtn');
+      const skipBtn = document.getElementById('skipBtn');
+      const nxtBtn = document.getElementById('nxtb');
+      
+      if (prevBtn) prevBtn.style.display = curIdx > 0 ? 'inline-flex' : 'none';
+      if (skipBtn) skipBtn.style.display = 'none';
+      if (nxtBtn) {
+        nxtBtn.style.display = 'inline-flex';
+        if (curIdx === gameQs.length - 1) {
+          nxtBtn.innerHTML = `<span>Finish</span> ⚑`;
+        } else {
+          nxtBtn.innerHTML = `<span>Next</span> &rarr;`;
+        }
+      }
+    }
+
+    function prevQ() {
+      if (curIdx > 0) {
+        curIdx--;
+        animateTransition();
+      }
     }
 
     function nextQ() {
-      curIdx++;
+      if (curIdx < gameQs.length - 1) {
+        curIdx++;
+        animateTransition();
+      } else {
+        showResults();
+      }
+    }
+
+    function animateTransition() {
+      clearInterval(timerInt);
       const card = document.getElementById('qcard');
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(10px)';
-      setTimeout(() => {
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
+      if (card) {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(10px)';
+        setTimeout(() => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+          showQuestion();
+        }, 200);
+      } else {
         showQuestion();
-      }, 200);
+      }
     }
 
     function showResults() {
