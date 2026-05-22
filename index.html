@@ -1365,7 +1365,7 @@
       });
     }
 
-    /* ── 25 TOPICS COMPREHENSIVE TEXT & SOURCE CONTENT ── */
+    /* ── 26 TOPICS COMPREHENSIVE TEXT & SOURCE CONTENT ── */
     const TOPICS_DATA = {
       intro: {
         title: "Introduction to OOP",
@@ -1606,6 +1606,21 @@
         code: `<span class="kw">#include</span> <span class="st">&lt;fstream&gt;</span>\n<span class="kw">#include</span> <span class="st">&lt;string&gt;</span>\n\n<span class="fn">void</span> writeAndRead() {\n    <span class="cm">// Open stream and write</span>\n    std::ofstream out(<span class="st">"test.txt"</span>);\n    out &lt;&lt; <span class="st">"Line content"</span>;\n    out.close();\n    \n    <span class="cm">// Read back</span>\n    std::ifstream in(<span class="st">"test.txt"</span>);\n    std::string line;\n    <span class="kw">if</span> (in.is_open()) {\n        std::getline(in, line);\n    }\n}`,
         pitfalls: "Failing to check if a file stream opened successfully before performing I/O operations.",
         tldr: "Use standard file streams for I/O operations. Always check stream status before performing read or write actions."
+      },
+      dma: {
+        title: "Dynamic Memory Allocation",
+        category: "Advanced",
+        definition: "Dynamic Memory Allocation is the mechanism of reserving heap memory at runtime using allocation operators (new/delete in C++ or malloc/free in C), giving programs size flexibility at the cost of manual lifecycle management.",
+        theory: "<p>Unlike stack memory, which is automatically managed via scopes, <strong>dynamic memory allocation</strong> uses the heap. In C++, this is handled via <code>new</code> (which allocates bytes and runs constructors) and <code>delete</code> (which runs destructors and releases memory). These differ from C's <code>malloc</code> and <code>free</code>, which only allocate raw bytes without object initialization.</p><p>Dynamic allocation is crucial when resource sizes are unknown at compile-time. However, it requires absolute discipline: every allocated object must be paired with exactly one deallocation to avoid <strong>memory leaks</strong> or <strong>double frees</strong>. Modern OOP designs use RAII and smart pointers to wrap these operations, but understanding raw heap allocations remains fundamental.</p><p>C++ also lets classes overload <code>operator new</code> and <code>operator delete</code>, enabling custom memory pooling and tracking. Furthermore, <strong>Placement New</strong> allows constructors to run in pre-allocated buffers, avoiding heap overhead entirely.</p>",
+        keyConcepts: [
+          { name: "Heap vs Stack", desc: "Stack memory is scoped and fast; heap memory is manual, dynamic, and persists until explicitly freed." },
+          { name: "Custom Allocation Overrides", desc: "Overloading operator new/delete globally or per-class to optimize memory pools." },
+          { name: "Placement New", desc: "Constructing objects in-place within a pre-allocated memory buffer using static memory." }
+        ],
+        syntax: "void* buffer = malloc(sizeof(Type));\nType* p = new (buffer) Type(args);\np->~Type(); // Manual destructor call\nfree(buffer);",
+        code: `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>\n<span class="kw">#include</span> <span class="st">&lt;new&gt;</span>\n\n<span class="kw">class</span> <span class="ty">CustomPool</span> {\n<span class="kw">public</span>:\n    <span class="ty">int</span> data;\n    <span class="cm">// Overload operator new</span>\n    <span class="fn">void</span>* <span class="kw">operator</span> <span class="fn">new</span>(size_t size) {\n        std::cout &lt;&lt; <span class="st">"Allocating "</span> &lt;&lt; size &lt;&lt; <span class="st">" bytes\\n"</span>;\n        <span class="kw">return</span> ::<span class="fn">operator new</span>(size);\n    }\n    <span class="cm">// Overload operator delete</span>\n    <span class="fn">void</span> <span class="kw">operator</span> <span class="fn">delete</span>(<span class="fn">void</span>* ptr) {\n        std::cout &lt;&lt; <span class="st">"Deallocating memory\\n"</span>;\n        ::<span class="fn">operator delete</span>(ptr);\n    }\n};\n\n<span class="ty">int</span> <span class="fn">main</span>() {\n    <span class="ty">CustomPool</span>* obj = <span class="kw">new</span> <span class="ty">CustomPool</span>();\n    obj-&gt;data = <span class="nu">42</span>;\n    <span class="kw">delete</span> obj; // Overloaded delete called\n    <span class="kw">return</span> <span class="nu">0</span>;\n}`,
+        pitfalls: "Mismatching allocators (allocating with new[] and freeing with delete or free), failing to release memory (memory leaks), or using pointers after deallocation (dangling pointers/double frees).",
+        tldr: "Dynamic memory uses the heap. C++ operator new/delete initialize objects automatically. class-level operator overloading allows customized allocation."
       },
       sptr: {
         title: "Smart Pointers",
@@ -1907,7 +1922,10 @@
       {d:'hard',q:'What is the output?',c:`class A{public:A(){cout<<"A";}};\nclass B:public A{public:B(){cout<<"B";}};\nclass C:public A{public:C(){cout<<"C";}};\nclass D:public B,public C{public:D(){cout<<"D";}};\nint main(){D d;}`,o:['ABACD','ABCD','AABCD','Error'],a:0,e:'D inherits from B and C, which both inherit non-virtually from A. Thus, A is constructed twice: once for B, once for C. Order: A, B, A, C, D. Output: ABACD.'},
       {d:'hard',q:'What is printed?',c:`#include<utility>\nclass A{public:\n  A(){cout<<"C";}\n  A(const A&){cout<<"K";}\n  A(A&&){cout<<"M";}\n};\nvoid f(A a){}\nint main(){A a; f(std::move(a));}`,o:['CM','CK','C','Error'],a:0,e:'A a is constructed (C). f(std::move(a)) passes an rvalue, invoking the move constructor (M) to construct the parameter. Output: CM.'},
       {d:'hard',q:'What is the output?',c:`class A{public:\n  virtual void f(int x=10){cout<<"A"<<x;}\n};\nclass B:public A{public:\n  void f(int x=20)override{cout<<"B"<<x;}\n};\nint main(){A* p = new B(); p->f(); delete p;}`,o:['B10','B20','A10','Error'],a:0,e:'Virtual dispatch resolves the method to B::f at runtime, but default arguments are bound statically at compile-time based on the pointer type A*. Prints B10.'},
-      {d:'hard',q:'What is printed?',c:`class A{public:\n  virtual ~A(){cout<<"~A";}\n};\nclass B:public A{public:\n  virtual ~B(){cout<<"~B";}\n};\nint main(){A* p = new B(); delete p;}`,o:['~B~A','~A~B','~B','Error'],a:0,e:'Virtual destructor ensures that deleting p triggers the full destructor chain: first ~B(), then ~A(). Output: ~B~A.'}
+      {d:'hard',q:'What is printed?',c:`class A{public:\n  virtual ~A(){cout<<"~A";}\n};\nclass B:public A{public:\n  virtual ~B(){cout<<"~B";}\n};\nint main(){A* p = new B(); delete p;}`,o:['~B~A','~A~B','~B','Error'],a:0,e:'Virtual destructor ensures that deleting p triggers the full destructor chain: first ~B(), then ~A(). Output: ~B~A.'},
+      {d:'hard',q:'What is printed by this traits check?',c:`#include<iostream>\n#include<type_traits>\nclass A{ void f(); };\nclass B{ virtual void f(); };\nint main(){\n  std::cout << std::is_polymorphic<A>::value << std::is_polymorphic<B>::value;\n}`,o:['01','10','11','00'],a:0,e:'std::is_polymorphic checks if a type contains at least one virtual function. A has a non-virtual private method (value=0). B has a virtual method (value=1). Output: 01.'},
+      {d:'medium',q:'What is the output of this custom allocation tracker?',c:`class Memo {\npublic:\n  static int count;\n  void* operator new(size_t sz) {\n    count++;\n    return ::operator new(sz);\n  }\n};\nint Memo::count = 0;\nint main() {\n  Memo* p1 = new Memo();\n  Memo* p2 = new Memo();\n  std::cout << Memo::count;\n  delete p1; delete p2;\n}`,o:['2','0','1','Error'],a:0,e:'The class-level operator new is overloaded to increment static count. Since new Memo is invoked twice, the overloaded operator runs twice, setting Memo::count to 2.'},
+      {d:'hard',q:'What is printed by this placement new operation?',c:`#include <iostream>\n#include <new>\nusing namespace std;\nclass Tracker {\npublic:\n  Tracker() { cout << "C"; }\n  ~Tracker() { cout << "D"; }\n};\nint main() {\n  char buf[sizeof(Tracker)];\n  Tracker* p = new (buf) Tracker();\n  p->~Tracker();\n}`,o:['CD','C','CDD','Error'],a:0,e:'Placement new constructs the Tracker object inbuf (printing C). Because the memory buffer buf resides on the stack, calling delete is illegal. The destructor must be called manually (printing D) for correct cleanup. Output: CD.'}
     ];
 
     /* ── RUNTIME CLASSIFICATION OF QUESTIONS ── */
@@ -1930,7 +1948,9 @@
           text.includes('catch') || text.includes('try') || text.includes('stl') || 
           text.includes('vector') || text.includes('map') || text.includes('set') || 
           text.includes('stream') || text.includes('fstream') || text.includes('file') || 
-          text.includes('raii')
+          text.includes('raii') || text.includes('new') || text.includes('delete') ||
+          text.includes('malloc') || text.includes('free') || text.includes('heap') ||
+          text.includes('allocation')
         ) {
           cat = "Advanced";
         }
@@ -1938,7 +1958,9 @@
 
         // Dynamic topic detection based on keywords
         let topicKey = "intro"; // default fallback
-        if (text.includes('destructor') || text.includes('constructor') || text.includes('ctor') || text.includes('~')) {
+        if (text.includes('placement new') || text.includes('custom allocation') || text.includes('operator new') || text.includes('operator delete') || text.includes('malloc') || text.includes('free(') || text.includes('dynamic memory')) {
+          topicKey = "dma";
+        } else if (text.includes('destructor') || text.includes('constructor') || text.includes('ctor') || text.includes('~')) {
           topicKey = "ctor";
         } else if (text.includes('rule of five') || text.includes('rule of 5') || text.includes('rule of three') || text.includes('rule of 3') || text.includes('rule of zero') || text.includes('rule of 0')) {
           topicKey = "ro5";
@@ -1968,7 +1990,7 @@
           topicKey = "static";
         } else if (text.includes('template') || text.includes('typename') || text.includes('template<')) {
           topicKey = "tpl";
-        } else if (text.includes('vector') || text.includes('map') || text.includes('set') || text.includes('unordered_') || text.includes('list') || text.includes('stl')) {
+        } else if (text.includes('vector') || text.includes('map') || text.includes('set') || text.includes('unordered_') || text.includes('list') || text.includes('stl') || text.includes('queue') || text.includes('deque') || text.includes('stack')) {
           topicKey = "stl";
         } else if (text.includes('stream') || text.includes('fstream') || text.includes('ifstream') || text.includes('ofstream') || text.includes('file')) {
           topicKey = "fio";
@@ -1984,6 +2006,8 @@
           topicKey = "enc";
         } else if (text.includes('access specifier') || text.includes('public') || text.includes('private') || text.includes('protected')) {
           topicKey = "access";
+        } else if (text.includes('new') || text.includes('delete') || text.includes('malloc') || text.includes('free') || text.includes('placement new') || text.includes('dynamic memory') || text.includes('heap') || text.includes('allocation')) {
+          topicKey = "dma";
         } else if (text.includes('class') || text.includes('object') || text.includes('struct') || text.includes('this pointer')) {
           topicKey = "classes";
         } else {
@@ -2077,16 +2101,16 @@
         <div class="hero">
           <span class="hero-pre">C++ Core Reference Manual</span>
           <h1>Master Object-Oriented<br>Programming in <em>C++</em></h1>
-          <p>An elite, interactive handbook dedicated to modern, high-performance object-oriented programming. Explore 25 detailed topics with exhaustive theory and take the dynamic timed quiz.</p>
+          <p>An elite, interactive handbook dedicated to modern, high-performance object-oriented programming. Explore 26 detailed topics with exhaustive theory and take the dynamic timed quiz.</p>
         </div>
         
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-val">25</div>
+            <div class="stat-val">26</div>
             <div class="stat-label">Detailed Topics</div>
           </div>
           <div class="stat-card">
-            <div class="stat-val">158</div>
+            <div class="stat-val">160</div>
             <div class="stat-label">Verbatim Questions</div>
           </div>
           <div class="stat-card">
@@ -2234,7 +2258,7 @@
         <div id="qs" class="qstart" style="border: 1px solid var(--bd); background: var(--card); border-radius: var(--r); padding: 40px; box-shadow: var(--sh2); position: relative; overflow: hidden; margin-top: 20px;">
           <div style="position: absolute; top: -80px; right: -80px; width: 280px; height: 280px; background: radial-gradient(circle, var(--ac2) 0%, transparent 70%); pointer-events: none;"></div>
           <div class="qtitle" style="font-family: var(--se); font-size: 36px; margin-bottom: 8px; font-weight: 400; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block;">C++ OOP Quiz</div>
-          <div class="qsub" style="font-family: var(--mo); font-size: 11px; color: var(--mu); margin-bottom: 32px;">// <span id="poolCountLabel">158</span> questions matching settings &middot; output prediction &middot; interactive console</div>
+          <div class="qsub" style="font-family: var(--mo); font-size: 11px; color: var(--mu); margin-bottom: 32px;">// <span id="poolCountLabel">160</span> questions matching settings &middot; output prediction &middot; interactive console</div>
           
           <div class="og" style="margin-bottom: 24px;">
             <div class="ol" style="font-family: var(--mo); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mu); margin-bottom: 10px; font-weight: 600;">Select Categories</div>
@@ -2265,7 +2289,7 @@
               <div class="chip" data-v="all" onclick="selectQCount(this, 'all')">All</div>
               <div style="display: inline-flex; align-items: center; gap: 8px; margin-left: auto; position: relative;">
                 <span style="font-family: var(--mo); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mu);">Custom:</span>
-                <input type="number" id="customQCount" min="1" placeholder="1-158" oninput="onCustomQCountInput(this)" style="width: 80px; padding: 6px 12px; border-radius: 20px; border: 1.5px solid var(--bd); background: var(--bg2); color: var(--ink); font-family: var(--mo); font-size: 12px; outline: none; transition: all 0.2s;" />
+                <input type="number" id="customQCount" min="1" placeholder="1-160" oninput="onCustomQCountInput(this)" style="width: 80px; padding: 6px 12px; border-radius: 20px; border: 1.5px solid var(--bd); background: var(--bg2); color: var(--ink); font-family: var(--mo); font-size: 12px; outline: none; transition: all 0.2s;" />
               </div>
             </div>
           </div>
